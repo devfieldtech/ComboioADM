@@ -1,0 +1,15 @@
+30/06/2022 14:19:37 : Gerando Json
+30/06/2022 14:19:37 : Enviando para Protheus
+30/06/2022 14:19:37 : Dados Integrados com Sucesso!
+Abastecimento ID :7401 Status :ATUALIZADO
+Abastecimento ID :7342 Status :ATUALIZADO
+Abastecimento ID :7344 Status :ATUALIZADO
+Abastecimento ID :7345 Status :ATUALIZADO
+Abastecimento ID :7339 Status :ATUALIZADO
+Abastecimento ID :7349 Status :ATUALIZADO
+Abastecimento ID :7347 Status :ATUALIZADO
+Abastecimento ID :7346 Status :ATUALIZADO
+Abastecimento ID :7340 Status :ATUALIZADO
+Abastecimento ID :7341 Status :ATUALIZADO
+Abastecimento ID :7348 Status :ATUALIZADO
+Abastecimento ID :7343 Status :ATUALIZADO

@@ -1,0 +1,704 @@
+e
+      List.Appearance.Disabled.Color = clWhite
+      List.Appearance.Disabled.ColorTo = clNone
+      List.Appearance.Disabled.GradientMirrorType = gtVertical
+      List.Appearance.Disabled.BorderColor = 13948116
+      List.Appearance.Disabled.RoundingType = rtNone
+      List.Appearance.Disabled.Glow = gmNone
+      List.Appearance.ButtonDisabled.Color = clWhite
+      List.Appearance.ButtonDisabled.ColorTo = clNone
+      List.Appearance.ButtonDisabled.GradientMirrorType = gtVertical
+      List.Appearance.ButtonDisabled.BorderColor = 13948116
+      List.Appearance.ButtonDisabled.RoundingType = rtNone
+      List.Appearance.ButtonDisabled.Glow = gmNone
+      List.Appearance.Hovered.Color = 15917525
+      List.Appearance.Hovered.GradientMirrorType = gtVertical
+      List.Appearance.Hovered.BorderColor = 15917525
+      List.Appearance.Hovered.RoundingType = rtNone
+      List.Appearance.Hovered.Glow = gmNone
+      List.Appearance.ButtonHovered.Color = 15917525
+      List.Appearance.ButtonHovered.GradientMirrorType = gtVertical
+      List.Appearance.ButtonHovered.BorderColor = 15917525
+      List.Appearance.ButtonHovered.RoundingType = rtNone
+      List.Appearance.ButtonHovered.Glow = gmNone
+      List.Appearance.Selected.Color = 15914434
+      List.Appearance.Selected.GradientMirrorType = gtVertical
+      List.Appearance.Selected.BorderColor = 15914434
+      List.Appearance.Selected.RoundingType = rtNone
+      List.Appearance.Selected.Glow = gmNone
+      List.Appearance.ButtonSelected.Color = 15914434
+      List.Appearance.ButtonSelected.GradientMirrorType = gtVertical
+      List.Appearance.ButtonSelected.BorderColor = 15914434
+      List.Appearance.ButtonSelected.RoundingType = rtNone
+      List.Appearance.ButtonSelected.Glow = gmNone
+      List.Appearance.NormalFont.Color = clBlack
+      List.Appearance.DownFont.Color = clBlack
+      List.Appearance.DisabledFont.Color = clWhite
+      List.Appearance.HoveredFont.Color = clBlack
+      List.Appearance.SelectedFont.Color = clBlack
+      Fill.ColorTo = clNone
+      Fill.BorderColor = 13948116
+      TMSStyle = 21
+    end
+    inherited AppMenu1: TAdvPolyMenu
+      List.Appearance.Normal.Color = clWhite
+      List.Appearance.Normal.RoundingType = rtNone
+      List.Appearance.ButtonNormal.ColorTo = clNone
+      List.Appearance.ButtonNormal.GradientMirrorType = gtVertical
+      List.Appearance.ButtonNormal.BorderColor = clNone
+      List.Appearance.ButtonNormal.RoundingType = rtNone
+      List.Appearance.Down.Color = 14925219
+      List.Appearance.Down.Opacity = 40
+      List.Appearance.Down.BorderColor = 14925219
+      List.Appearance.Down.Glow = gmNone
+      List.Appearance.ButtonDown.Color = 14925219
+      List.Appearance.ButtonDown.Opacity = 40
+      List.Appearance.ButtonDown.BorderColor = 14925219
+      List.Appearance.ButtonDown.RoundingType = rtNone
+      List.Appearance.ButtonDown.Glow = gmNone
+      List.Appearance.Disabled.Color = clWhite
+      List.Appearance.Disabled.ColorTo = clNone
+      List.Appearance.Disabled.BorderColor = 13948116
+      List.Appearance.Disabled.RoundingType = rtNone
+      List.Appearance.Disabled.Glow = gmNone
+      List.Appearance.ButtonDisabled.Color = clWhite
+      List.Appearance.ButtonDisabled.ColorTo = clNone
+      List.Appearance.ButtonDisabled.BorderColor = 13948116
+      List.Appearance.ButtonDisabled.RoundingType = rtNone
+      List.Appearance.ButtonDisabled.Glow = gmNone
+      List.Appearance.Hovered.Color = 15917525
+      List.Appearance.Hovered.Opacity = 40
+      List.Appearance.Hovered.BorderColor = 15917525
+      List.Appearance.Hovered.Glow = gmNone
+      List.Appearance.ButtonHovered.Color = 15917525
+      List.Appearance.ButtonHovered.Opacity = 40
+      List.Appearance.ButtonHovered.BorderColor = 15917525
+      List.Appearance.ButtonHovered.RoundingType = rtNone
+      List.Appearance.ButtonHovered.Glow = gmNone
+      List.Appearance.Selected.Color = 15914434
+      List.Appearance.Selected.BorderColor = 15914434
+      List.Appearance.Selected.Glow = gmNone
+      List.Appearance.Selected.GlowGradientColor = 30208
+      List.Appearance.Selected.GlowRadialColor = clWhite
+      List.Appearance.ButtonSelected.Color = 15914434
+      List.Appearance.ButtonSelected.BorderColor = 15914434
+      List.Appearance.ButtonSelected.RoundingType = rtNone
+      List.Appearance.ButtonSelected.Glow = gmNone
+      List.Appearance.ButtonSelected.GlowGradientColor = 30208
+      List.Appearance.NormalFont.Color = clBlack
+      List.Appearance.DownFont.Color = clBlack
+      List.Appearance.DisabledFont.Color = clWhite
+      List.Appearance.HoveredFont.Color = clBlack
+      List.Appearance.SelectedFont.Color = clBlack
+      Fill.Color = clWhite
+      Fill.ColorTo = clNone
+      Fill.BorderColor = 13948116
+      TMSStyle = 21
+    end
+    inherited GDIPPictureContainer1: TGDIPPictureContainer
+      Left = 104
+      Top = 65520
+    end
+  end
+  object AdvToolBarOfficeStyler1: TAdvToolBarOfficeStyler
+    AppColor.AppButtonColor = clGreen
+    AppColor.AppButtonHoverColor = clLime
+    AppColor.TextColor = clWhite
+    AppColor.HoverColor = 16246477
+    AppColor.HoverTextColor = clBlack
+    AppColor.HoverBorderColor = 16246477
+    AppColor.SelectedColor = 15187578
+    AppColor.SelectedTextColor = clBlack
+    AppColor.SelectedBorderColor = 15187578
+    Style = bsOffice2016White
+    BorderColor = 13087391
+    BorderColorHot = 14074033
+    ButtonAppearance.Color = 16643823
+    ButtonAppearance.ColorTo = 15784647
+    ButtonAppearance.ColorChecked = 7131391
+    ButtonAppearance.ColorCheckedTo = 7131391
+    ButtonAppearance.ColorDown = 7131391
+    ButtonAppearance.ColorDownTo = 8122111
+    ButtonAppearance.ColorHot = 9102333
+    ButtonAppearance.ColorHotTo = 14285309
+    ButtonAppearance.BorderDownColor = clNone
+    ButtonAppearance.BorderHotColor = clNone
+    ButtonAppearance.BorderCheckedColor = 3181250
+    ButtonAppearance.CaptionFont.Charset = DEFAULT_CHARSET
+    ButtonAppearance.CaptionFont.Color = clWindowText
+    ButtonAppearance.CaptionFont.Height = -11
+    ButtonAppearance.CaptionFont.Name = 'Segoe UI'
+    ButtonAppearance.CaptionFont.Style = []
+    CaptionAppearance.CaptionColor = 16181724
+    CaptionAppearance.CaptionColorTo = 16181724
+    CaptionAppearance.CaptionTextColor = 5978398
+    CaptionAppearance.CaptionBorderColor = 16181724
+    CaptionAppearance.CaptionColorHot = 16117737
+    CaptionAppearance.CaptionColorHotTo = 16117737
+    CaptionAppearance.CaptionTextColorHot = 5978398
+    CaptionAppearance.CaptionBorderColorHot = 16117737
+    CaptionFont.Charset = DEFAULT_CHARSET
+    CaptionFont.Color = clWindowText
+    CaptionFont.Height = -11
+    CaptionFont.Name = 'Segoe UI'
+    CaptionFont.Style = []
+    ContainerAppearance.LineColor = clBtnShadow
+    ContainerAppearance.Line3D = True
+    Color.Color = clWhite
+    Color.ColorTo = clWhite
+    Color.Direction = gdVertical
+    Color.Mirror.Color = 16775925
+    Color.Mirror.ColorTo = 16445413
+    Color.Mirror.ColorMirror = 16445413
+    Color.Mirror.ColorMirrorTo = 16181724
+    ColorHot.Color = 16248291
+    ColorHot.ColorTo = 16643823
+    ColorHot.Direction = gdVertical
+    ColorHot.Mirror.Color = 16775925
+    ColorHot.Mirror.ColorTo = 16445413
+    ColorHot.Mirror.ColorMirror = 16445413
+    ColorHot.Mirror.ColorMirrorTo = 16117737
+    CompactGlowButtonAppearance.BorderColor = 13087391
+    CompactGlowButtonAppearance.BorderColorHot = 5819121
+    CompactGlowButtonAppearance.BorderColorDown = 3181250
+    CompactGlowButtonAppearance.BorderColorChecked = 3181250
+    CompactGlowButtonAppearance.Color = 16643823
+    CompactGlowButtonAppearance.ColorTo = 15784647
+    CompactGlowButtonAppearance.ColorChecked = 14285309
+    CompactGlowButtonAppearance.ColorCheckedTo = 7131391
+    CompactGlowButtonAppearance.ColorDisabled = 15921906
+    CompactGlowButtonAppearance.ColorDisabledTo = 15921906
+    CompactGlowButtonAppearance.ColorDown = 7131391
+    CompactGlowButtonAppearance.ColorDownTo = 8122111
+    CompactGlowButtonAppearance.ColorHot = 9102333
+    CompactGlowButtonAppearance.ColorHotTo = 14285309
+    CompactGlowButtonAppearance.ColorMirror = 15784647
+    CompactGlowButtonAppearance.ColorMirrorTo = 15784647
+    CompactGlowButtonAppearance.ColorMirrorHot = 14285309
+    CompactGlowButtonAppearance.ColorMirrorHotTo = 9102333
+    CompactGlowButtonAppearance.ColorMirrorDown = 8122111
+    CompactGlowButtonAppearance.ColorMirrorDownTo = 7131391
+    CompactGlowButtonAppearance.ColorMirrorChecked = 7131391
+    CompactGlowButtonAppearance.ColorMirrorCheckedTo = 7131391
+    CompactGlowButtonAppearance.ColorMirrorDisabled = 11974326
+    CompactGlowButtonAppearance.ColorMirrorDisabledTo = 15921906
+    CompactGlowButtonAppearance.GradientHot = ggVertical
+    CompactGlowButtonAppearance.GradientMirrorHot = ggVertical
+    CompactGlowButtonAppearance.GradientDown = ggVertical
+    CompactGlowButtonAppearance.GradientMirrorDown = ggVertical
+    CompactGlowButtonAppearance.GradientChecked = ggVertical
+    DockColor.Color = clWhite
+    DockColor.ColorTo = clWhite
+    DockColor.Direction = gdHorizontal
+    DockColor.Steps = 128
+    FloatingWindowBorderColor = 14074033
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'Segoe UI'
+    Font.Style = []
+    GlowButtonAppearance.BorderColor = 13948116
+    GlowButtonAppearance.BorderColorHot = 15917525
+    GlowButtonAppearance.BorderColorDown = 14925219
+    GlowButtonAppearance.BorderColorChecked = 15914434
+    GlowButtonAppearance.ColorTo = clNone
+    GlowButtonAppearance.ColorChecked = 15914434
+    GlowButtonAppearance.ColorCheckedTo = clNone
+    GlowButtonAppearance.ColorDisabled = 15921906
+    GlowButtonAppearance.ColorDisabledTo = 15921906
+    GlowButtonAppearance.ColorDown = 14925219
+    GlowButtonAppearance.ColorDownTo = clNone
+    GlowButtonAppearance.ColorHot = 15917525
+    GlowButtonAppearance.ColorHotTo = clNone
+    GlowButtonAppearance.ColorMirror = clWhite
+    GlowButtonAppearance.ColorMirrorTo = clNone
+    GlowButtonAppearance.ColorMirrorHot = 15917525
+    GlowButtonAppearance.ColorMirrorHotTo = clNone
+    GlowButtonAppearance.ColorMirrorDown = 14925219
+    GlowButtonAppearance.ColorMirrorDownTo = clNone
+    GlowButtonAppearance.ColorMirrorChecked = 15914434
+    GlowButtonAppearance.ColorMirrorCheckedTo = clNone
+    GlowButtonAppearance.ColorMirrorDisabled = 11974326
+    GlowButtonAppearance.ColorMirrorDisabledTo = 15921906
+    GlowButtonAppearance.GradientHot = ggVertical
+    GlowButtonAppearance.GradientMirrorHot = ggVertical
+    GlowButtonAppearance.GradientDown = ggVertical
+    GlowButtonAppearance.GradientMirrorDown = ggVertical
+    GlowButtonAppearance.GradientChecked = ggVertical
+    GlowButtonAppearance.TextColorChecked = 5263440
+    GlowButtonAppearance.TextColorDown = 5263440
+    GlowButtonAppearance.TextColorHot = 5263440
+    GroupAppearance.Background = clInfoBk
+    GroupAppearance.BorderColor = 1340927
+    GroupAppearance.Color = 4636927
+    GroupAppearance.ColorTo = 4636927
+    GroupAppearance.ColorMirror = 4636927
+    GroupAppearance.ColorMirrorTo = 4636927
+    GroupAppearance.Font.Charset = DEFAULT_CHARSET
+    GroupAppearance.Font.Color = clWindowText
+    GroupAppearance.Font.Height = -11
+    GroupAppearance.Font.Name = 'Segoe UI'
+    GroupAppearance.Font.Style = []
+    GroupAppearance.Gradient = ggVertical
+    GroupAppearance.GradientMirror = ggVertical
+    GroupAppearance.TextColor = clWhite
+    GroupAppearance.CaptionAppearance.CaptionColor = 16181724
+    GroupAppearance.CaptionAppearance.CaptionColorTo = 16181724
+    GroupAppearance.CaptionAppearance.CaptionTextColor = 5978398
+    GroupAppearance.CaptionAppearance.CaptionBorderColor = 16181724
+    GroupAppearance.CaptionAppearance.CaptionColorHot = 16117737
+    GroupAppearance.CaptionAppearance.CaptionColorHotTo = 16117737
+    GroupAppearance.CaptionAppearance.CaptionTextColorHot = 5978398
+    GroupAppearance.CaptionAppearance.CaptionBorderColorHot = 16117737
+    GroupAppearance.PageAppearance.BorderColor = 13087391
+    GroupAppearance.PageAppearance.Color = 16775925
+    GroupAppearance.PageAppearance.ColorTo = 16445413
+    GroupAppearance.PageAppearance.ColorMirror = 16445413
+    GroupAppearance.PageAppearance.ColorMirrorTo = 16181724
+    GroupAppearance.PageAppearance.Gradient = ggVertical
+    GroupAppearance.PageAppearance.GradientMirror = ggVertical
+    GroupAppearance.PageAppearance.ShadowColor = 15126975
+    GroupAppearance.PageAppearance.HighLightColor = 13416873
+    GroupAppearance.TabAppearance.BorderColor = 13087391
+    GroupAppearance.TabAppearance.BorderColorHot = 1340927
+    GroupAppearance.TabAppearance.BorderColorSelected = 1340927
+    GroupAppearance.TabAppearance.BorderColorSelectedHot = 1340927
+    GroupAppearance.TabAppearance.BorderColorDisabled = clNone
+    GroupAppearance.TabAppearance.BorderColorDown = clNone
+    GroupAppearance.TabAppearance.Color = clBtnFace
+    GroupAppearance.TabAppearance.ColorTo = clWhite
+    GroupAppearance.TabAppearance.ColorSelected = 16775925
+    GroupAppearance.TabAppearance.ColorSelectedTo = 16775925
+    GroupAppearance.TabAppearance.ColorDisabled = 15921906
+    GroupAppearance.TabAppearance.ColorDisabledTo = 15921906
+    GroupAppearance.TabAppearance.ColorHot = 16446701
+    GroupAppearance.TabAppearance.ColorHotTo = 16710903
+    GroupAppearance.TabAppearance.ColorMirror = clWhite
+    GroupAppearance.TabAppearance.ColorMirrorTo = clWhite
+    GroupAppearance.TabAppearance.ColorMirrorHot = 16710906
+    GroupAppearance.TabAppearance.ColorMirrorHotTo = 16710906
+    GroupAppearance.TabAppearance.ColorMirrorSelected = 16775925
+    GroupAppearance.TabAppearance.ColorMirrorSelectedTo = 16775925
+    GroupAppearance.TabAppearance.ColorMirrorDisabled = 15921906
+    GroupAppearance.TabAppearance.ColorMirrorDisabledTo = 15921906
+    GroupAppearance.TabAppearance.Font.Charset = DEFAULT_CHARSET
+    GroupAppearance.TabAppearance.Font.Color = clWindowText
+    GroupAppearance.TabAppearance.Font.Height = -11
+    GroupAppearance.TabAppearance.Font.Name = 'Segoe UI'
+    GroupAppearance.TabAppearance.Font.Style = []
+    GroupAppearance.TabAppearance.Gradient = ggVertical
+    GroupAppearance.TabAppearance.GradientMirror = ggVertical
+    GroupAppearance.TabAppearance.GradientHot = ggVertical
+    GroupAppearance.TabAppearance.GradientMirrorHot = ggVertical
+    GroupAppearance.TabAppearance.GradientSelected = ggVertical
+    GroupAppearance.TabAppearance.GradientMirrorSelected = ggVertical
+    GroupAppearance.TabAppearance.GradientDisabled = ggVertical
+    GroupAppearance.TabAppearance.GradientMirrorDisabled = ggVertical
+    GroupAppearance.TabAppearance.TextColor = 5978398
+    GroupAppearance.TabAppearance.TextColorHot = 5978398
+    GroupAppearance.TabAppearance.TextColorSelected = 5978398
+    GroupAppearance.TabAppearance.TextColorDisabled = clSilver
+    GroupAppearance.TabAppearance.ShadowColor = 13087391
+    GroupAppearance.TabAppearance.HighLightColor = 16775871
+    GroupAppearance.TabAppearance.HighLightColorHot = 16643823
+    GroupAppearance.TabAppearance.HighLightColorSelected = 13087391
+    GroupAppearance.TabAppearance.HighLightColorSelectedHot = 15784647
+    GroupAppearance.TabAppearance.HighLightColorDown = 16181209
+    GroupAppearance.ToolBarAppearance.BorderColor = 13087391
+    GroupAppearance.ToolBarAppearance.BorderColorHot = 13092807
+    GroupAppearance.ToolBarAppearance.Color.Color = 16775925
+    GroupAppearance.ToolBarAppearance.Color.ColorTo = 16181724
+    GroupAppearance.ToolBarAppearance.Color.Direction = gdHorizontal
+    GroupAppearance.ToolBarAppearance.ColorHot.Color = 16775925
+    GroupAppearance.ToolBarAppearance.ColorHot.ColorTo = 16117737
+    GroupAppearance.ToolBarAppearance.ColorHot.Direction = gdHorizontal
+    PageAppearance.BorderColor = 13087391
+    PageAppearance.Color = 16775925
+    PageAppearance.ColorTo = 16445413
+    PageAppearance.ColorMirror = 16445413
+    PageAppearance.ColorMirrorTo = 16181724
+    PageAppearance.Gradient = ggVertical
+    PageAppearance.GradientMirror = ggVertical
+    PageAppearance.ShadowColor = 15126975
+    PageAppearance.HighLightColor = 13416873
+    PagerCaption.BorderColor = 13087391
+    PagerCaption.Color = 16775925
+    PagerCaption.ColorTo = 15389631
+    PagerCaption.ColorMirror = 15389631
+    PagerCaption.ColorMirrorTo = 15389631
+    PagerCaption.Gradient = ggVertical
+    PagerCaption.GradientMirror = ggVertical
+    PagerCaption.TextColor = clGray
+    PagerCaption.TextColorExtended = clBlue
+    PagerCaption.Font.Charset = DEFAULT_CHARSET
+    PagerCaption.Font.Color = clWindowText
+    PagerCaption.Font.Height = -13
+    PagerCaption.Font.Name = 'Segoe UI'
+    PagerCaption.Font.Style = []
+    QATAppearance.BorderColor = 13087391
+    QATAppearance.Color = 16643823
+    QATAppearance.ColorTo = 15784647
+    QATAppearance.FullSizeBorderColor = 13087391
+    QATAppearance.FullSizeColor = 16643823
+    QATAppearance.FullSizeColorTo = 15784647
+    RightHandleColor = clWhite
+    RightHandleColorTo = clWhite
+    RightHandleColorHot = 15917525
+    RightHandleColorHotTo = 15917525
+    RightHandleColorDown = 14925219
+    RightHandleColorDownTo = 14925219
+    TabAppearance.BorderColor = 13087391
+    TabAppearance.BorderColorHot = 12236209
+    TabAppearance.BorderColorSelected = 14404024
+    TabAppearance.BorderColorSelectedHot = 14404024
+    TabAppearance.BorderColorDisabled = clNone
+    TabAppearance.BorderColorDown = clNone
+    TabAppearance.Color = clBtnFace
+    TabAppearance.ColorTo = clWhite
+    TabAppearance.ColorSelected = 16775925
+    TabAppearance.ColorSelectedTo = 16775925
+    TabAppearance.ColorDisabled = 15921906
+    TabAppearance.ColorDisabledTo = 15921906
+    TabAppearance.ColorHot = 16446701
+    TabAppearance.ColorHotTo = 16710903
+    TabAppearance.ColorMirror = clWhite
+    TabAppearance.ColorMirrorTo = clWhite
+    TabAppearance.ColorMirrorHot = 16710906
+    TabAppearance.ColorMirrorHotTo = 16710906
+    TabAppearance.ColorMirrorSelected = 16775925
+    TabAppearance.ColorMirrorSelectedTo = 16775925
+    TabAppearance.ColorMirrorDisabled = 15921906
+    TabAppearance.ColorMirrorDisabledTo = 15921906
+    TabAppearance.Font.Charset = DEFAULT_CHARSET
+    TabAppearance.Font.Color = clWindowText
+    TabAppearance.Font.Height = -11
+    TabAppearance.Font.Name = 'Segoe UI'
+    TabAppearance.Font.Style = []
+    TabAppearance.Gradient = ggVertical
+    TabAppearance.GradientMirror = ggVertical
+    TabAppearance.GradientHot = ggVertical
+    TabAppearance.GradientMirrorHot = ggVertical
+    TabAppearance.GradientSelected = ggVertical
+    TabAppearance.GradientMirrorSelected = ggVertical
+    TabAppearance.GradientDisabled = ggVertical
+    TabAppearance.GradientMirrorDisabled = ggVertical
+    TabAppearance.TextColor = 5978398
+    TabAppearance.TextColorHot = 5978398
+    TabAppearance.TextColorSelected = 5978398
+    TabAppearance.TextColorDisabled = clSilver
+    TabAppearance.ShadowColor = 13087391
+    TabAppearance.HighLightColor = 16775871
+    TabAppearance.HighLightColorHot = 16643823
+    TabAppearance.HighLightColorSelected = 13087391
+    TabAppearance.HighLightColorSelectedHot = 15784647
+    TabAppearance.HighLightColorDown = 16181209
+    TabAppearance.BackGround.Color = 16446701
+    TabAppearance.BackGround.ColorTo = 16710906
+    TabAppearance.BackGround.Direction = gdHorizontal
+    Left = 240
+    Top = 72
+  end
+  object AdvPreviewMenuOfficeStyler1: TAdvPreviewMenuOfficeStyler
+    FrameAppearance.BorderColor = 13948116
+    FrameAppearance.CaptionBackground = 15656925
+    FrameAppearance.Color = clWhite
+    FrameAppearance.ColorTo = clWhite
+    FrameAppearance.ColorMirror = clWhite
+    FrameAppearance.ColorMirrorTo = clWhite
+    FrameAppearance.Gradient = ggVertical
+    FrameAppearance.GradientMirror = ggVertical
+    LeftFrameColor = clWhite
+    RightFrameColor = clWhite
+    MenuItemAppearance.BorderColor = clNone
+    MenuItemAppearance.BorderColorHot = 15917525
+    MenuItemAppearance.BorderColorDown = 14925219
+    MenuItemAppearance.BorderColorChecked = 15914434
+    MenuItemAppearance.BorderColorDisabled = clNone
+    MenuItemAppearance.Color = clNone
+    MenuItemAppearance.ColorTo = clNone
+    MenuItemAppearance.ColorChecked = 15914434
+    MenuItemAppearance.ColorCheckedTo = 15914434
+    MenuItemAppearance.ColorDisabled = clNone
+    MenuItemAppearance.ColorDisabledTo = clNone
+    MenuItemAppearance.ColorDown = 14925219
+    MenuItemAppearance.ColorDownTo = 14925219
+    MenuItemAppearance.ColorHot = 15917525
+    MenuItemAppearance.ColorHotTo = 15917525
+    MenuItemAppearance.ColorMirror = clNone
+    MenuItemAppearance.ColorMirrorTo = clNone
+    MenuItemAppearance.ColorMirrorHot = 15917525
+    MenuItemAppearance.ColorMirrorHotTo = 15917525
+    MenuItemAppearance.ColorMirrorDown = 14925219
+    MenuItemAppearance.ColorMirrorDownTo = 14925219
+    MenuItemAppearance.ColorMirrorChecked = 15914434
+    MenuItemAppearance.ColorMirrorCheckedTo = 15914434
+    MenuItemAppearance.ColorMirrorDisabled = clNone
+    MenuItemAppearance.ColorMirrorDisabledTo = clNone
+    MenuItemAppearance.GradientHot = ggVertical
+    MenuItemAppearance.GradientMirrorHot = ggVertical
+    MenuItemAppearance.GradientDown = ggVertical
+    MenuItemAppearance.GradientMirrorDown = ggVertical
+    MenuItemAppearance.GradientChecked = ggVertical
+    MenuItemAppearance.GradientDisabled = ggVertical
+    MenuItemAppearance.GradientMirrorDisabled = ggVertical
+    MenuItemAppearance.TextColorChecked = clBlack
+    MenuItemAppearance.TextColorDown = 5263440
+    MenuItemAppearance.TextColorHot = 5263440
+    MenuItemAppearance.Font.Charset = DEFAULT_CHARSET
+    MenuItemAppearance.Font.Color = clWindowText
+    MenuItemAppearance.Font.Height = -11
+    MenuItemAppearance.Font.Name = 'Segoe UI'
+    MenuItemAppearance.Font.Style = []
+    MenuItemAppearance.SubMenuCaptionFont.Charset = DEFAULT_CHARSET
+    MenuItemAppearance.SubMenuCaptionFont.Color = clWindowText
+    MenuItemAppearance.SubMenuCaptionFont.Height = -11
+    MenuItemAppearance.SubMenuCaptionFont.Name = 'Segoe UI'
+    MenuItemAppearance.SubMenuCaptionFont.Style = []
+    MenuItemAppearance.SubItemTitleFont.Charset = DEFAULT_CHARSET
+    MenuItemAppearance.SubItemTitleFont.Color = clWindowText
+    MenuItemAppearance.SubItemTitleFont.Height = -11
+    MenuItemAppearance.SubItemTitleFont.Name = 'Segoe UI'
+    MenuItemAppearance.SubItemTitleFont.Style = [fsBold]
+    MenuItemAppearance.SubItemFont.Charset = DEFAULT_CHARSET
+    MenuItemAppearance.SubItemFont.Color = clWindowText
+    MenuItemAppearance.SubItemFont.Height = -11
+    MenuItemAppearance.SubItemFont.Name = 'Segoe UI'
+    MenuItemAppearance.SubItemFont.Style = []
+    MenuItemAppearance.TextColor = 5263440
+    MenuItemAppearance.TextColorDisabled = clGray
+    MenuItemAppearance.Rounded = False
+    ButtonAppearance.BorderColor = 13948116
+    ButtonAppearance.BorderColorHot = 15917525
+    ButtonAppearance.BorderColorDown = 14925219
+    ButtonAppearance.BorderColorChecked = 15914434
+    ButtonAppearance.BorderColorDisabled = 13948116
+    ButtonAppearance.ColorTo = clNone
+    ButtonAppearance.ColorChecked = 15914434
+    ButtonAppearance.ColorCheckedTo = clNone
+    ButtonAppearance.ColorDisabled = clWhite
+    ButtonAppearance.ColorDisabledTo = clNone
+    ButtonAppearance.ColorDown = 14925219
+    ButtonAppearance.ColorDownTo = clNone
+    ButtonAppearance.ColorHot = 15917525
+    ButtonAppearance.ColorHotTo = clNone
+    ButtonAppearance.ColorMirror = clWhite
+    ButtonAppearance.ColorMirrorTo = clNone
+    ButtonAppearance.ColorMirrorHot = 15917525
+    ButtonAppearance.ColorMirrorHotTo = clNone
+    ButtonAppearance.ColorMirrorDown = 14925219
+    ButtonAppearance.ColorMirrorDownTo = clNone
+    ButtonAppearance.ColorMirrorChecked = 15914434
+    ButtonAppearance.ColorMirrorCheckedTo = clNone
+    ButtonAppearance.ColorMirrorDisabled = clWhite
+    ButtonAppearance.ColorMirrorDisabledTo = clNone
+    ButtonAppearance.GradientHot = ggVertical
+    ButtonAppearance.GradientMirrorHot = ggVertical
+    ButtonAppearance.GradientDown = ggVertical
+    ButtonAppearance.GradientMirrorDown = ggVertical
+    ButtonAppearance.GradientChecked = ggVertical
+    Style = psOffice2016White
+    Left = 560
+    Top = 72
+  end
+  object AdvOfficeStatusBarOfficeStyler1: TAdvOfficeStatusBarOfficeStyler
+    Style = psOffice2016White
+    BorderColor = clWhite
+    PanelAppearanceLight.BorderColor = clNone
+    PanelAppearanceLight.BorderColorHot = clLime
+    PanelAppearanceLight.BorderColorDown = clLime
+    PanelAppearanceLight.Color = clWhite
+    PanelAppearanceLight.ColorTo = clWhite
+    PanelAppearanceLight.ColorHot = clLime
+    PanelAppearanceLight.ColorHotTo = clLime
+    PanelAppearanceLight.ColorDown = clLime
+    PanelAppearanceLight.ColorDownTo = clLime
+    PanelAppearanceLight.ColorMirror = clNone
+    PanelAppearanceLight.ColorMirrorTo = clNone
+    PanelAppearanceLight.ColorMirrorHot = clLime
+    PanelAppearanceLight.ColorMirrorHotTo = clLime
+    PanelAppearanceLight.ColorMirrorDown = clLime
+    PanelAppearanceLight.ColorMirrorDownTo = clLime
+    PanelAppearanceLight.TextColor = clBlack
+    PanelAppearanceLight.TextColorHot = clBlack
+    PanelAppearanceLight.TextColorDown = clBlack
+    PanelAppearanceLight.TextStyle = []
+    PanelAppearanceDark.BorderColor = clNone
+    PanelAppearanceDark.BorderColorHot = clLime
+    PanelAppearanceDark.BorderColorDown = clWhite
+    PanelAppearanceDark.Color = clWhite
+    PanelAppearanceDark.ColorTo = clWhite
+    PanelAppearanceDark.ColorHot = clLime
+    PanelAppearanceDark.ColorHotTo = clLime
+    PanelAppearanceDark.ColorDown = clWhite
+    PanelAppearanceDark.ColorDownTo = clWhite
+    PanelAppearanceDark.ColorMirror = clNone
+    PanelAppearanceDark.ColorMirrorTo = clNone
+    PanelAppearanceDark.ColorMirrorHot = clLime
+    PanelAppearanceDark.ColorMirrorHotTo = clLime
+    PanelAppearanceDark.ColorMirrorDown = clWhite
+    PanelAppearanceDark.ColorMirrorDownTo = clWhite
+    PanelAppearanceDark.TextColor = clWhite
+    PanelAppearanceDark.TextColorHot = clWhite
+    PanelAppearanceDark.TextColorDown = clWhite
+    PanelAppearanceDark.TextStyle = []
+    Left = 400
+    Top = 72
+  end
+  object AdvFormStyler1: TAdvFormStyler
+    AppColor = clGreen
+    Style = tsOffice2016White
+    Left = 576
+    Top = 192
+  end
+end
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        ÿÿ  ÿÿ                    @   ÿÿ
+ C O D E G E N 2 0 1 6 F R A M E         0         unit %0:s;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms, 
+  Dialogs, GDIPPictureContainer, GDIPWedgeItem, GDIPCustomItem, GDIPTextItem,
+  GDIPImageTextItem, CustomItemsContainer, AdvVerticalPolyList, AdvPolyList;
+
+type
+  T%1:s = class(%2:s)
+    AppMenu1: TAdvPolyMenu;
+    ImageTextItem1: TImageTextItem;
+    ImageTextItem3: TImageTextItem;
+    ImageTextItem2: TImageTextItem;
+    ImageTextItem4: TImageTextItem;
+    WedgeItem7: TWedgeItem;
+    WedgeItem8: TWedgeItem;
+    WedgeItem9: TWedgeItem;
+    ImageTextItem5: TImageTextItem;
+    ImageTextItem6: TImageTextItem;
+    GDIPPictureContainer1: TGDIPPictureContainer;
+    AdvPolyList1: TAdvPolyList;
+    TextItem1: TTextItem;
+    TextItem2: TTextItem;
+    TextItem3: TTextItem;
+    AdvPolyList2: TAdvPolyList;
+    TextItem4: TTextItem;
+    TextItem5: TTextItem;
+    TextItem6: TTextItem;
+    AdvPolyList3: TAdvPolyList;
+    TextItem7: TTextItem;
+    TextItem8: TTextItem;
+    TextItem9: TTextItem;
+    procedure AdvVerticalPolyList2ItemSelect(Sender: TObject; Item: TCustomItem;
+      var Allow: Boolean);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+    procedure ChangePage(PageID: Integer);
+    constructor Create(AOwner: TComponent); override;
+  end;
+
+implementation
+
+{$R *.dfm}
+
+procedure T%1:s.AdvVerticalPolyList2ItemSelect(Sender: TObject;
+  Item: TCustomItem; var Allow: Boolean);
+begin
+  ChangePage(Item.Tag);
+end;
+
+procedure T%1:s.ChangePage(PageID: Integer);
+begin
+  case PageID of
+  1: AdvPolyList1.BringToFront;
+  2: AdvPolyList2.BringToFront;
+  3: AdvPolyList3.BringToFront;
+  end;
+end;
+
+constructor T%1:s.Create(AOwner: TComponent);
+begin
+  inherited;
+  AppMenu1.SelectItem(4);
+end;
+
+end.
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           ÿÿ  ÿÿ                  Å  4   ÿÿ
+ C O D E G E N 2 0 1 6       0         unit %0:s;
+
+interface
+uses
+  Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms,
+  Dialogs, AdvToolBar, AdvToolBarStylers, AdvPreviewMenu,
+  AdvPreviewMenuStylers, AdvShapeButton, AdvOfficeStatusBar,
+  AdvOfficeStatusBarStylers, %4:s;
+
+type
+  T%1:s = class(%2:s)
+    AdvToolBarPager1: TAdvToolBarPager;
+    AdvPage1: TAdvPage;
+    AdvToolBarOfficeStyler1: TAdvToolBarOfficeStyler;
+    AdvToolBar1: TAdvToolBar;
+    AdvPreviewMenuOfficeStyler1: TAdvPreviewMenuOfficeStyler;
+    AdvOfficeStatusBar1: TAdvOfficeStatusBar;
+    AdvOfficeStatusBarOfficeStyler1: TAdvOfficeStatusBarOfficeStyler;
+    AdvQuickAccessToolBar1: TAdvQuickAccessToolBar;
+    AdvShapeButton1: TAdvShapeButton;
+    AdvFormStyler1: TAdvFormStyler;
+    %3:s: T%3:s;
+  private
+    { Private declarations }
+  protected
+    { Protected declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  %1:s: T%1:s;
+
+implementation
+
+{$R *.dfm}
+
+
+end.
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               ÿÿ  ÿÿ                  ¯  ,   ÿÿ
+ C O D E G E N       0 	        unit %0:s;
+
+interface
+uses
+  Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms,
+  Dialogs, AdvToolBar, AdvToolBarStylers, AdvPreviewMenu,
+  AdvPreviewMenuStylers, AdvShapeButton, AdvOfficeStatusBar,
+  AdvOfficeStatusBarStylers;
+
+type
+  T%1:s = class(%2:s)
+    AdvToolBarPager1: TAdvToolBarPager;
+    AdvPage1: TAdvPage;
+    AdvToolBarOfficeStyler1: TAdvToolBarOfficeStyler;
+    AdvToolBar1: TAdvToolBar;
+    AdvShapeButton1: TAdvShapeButton;
+    AdvPreviewMenu1: TAdvPreviewMenu;
+    AdvPreviewMenuOfficeStyler1: TAdvPreviewMenuOfficeStyler;
+    AdvOfficeStatusBar1: TAdvOfficeStatusBar;
+    AdvOfficeStatusBarOfficeStyler1: TAdvOfficeStatusBarOfficeStyler;
+    AdvQuickAccessToolBar1: TAdvQuickAccessToolBar;
+  private
+    { Private declarations }
+  protected
+    { Protected declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  %1:s: T%1:s;
+
+implementation
+
+{$R *.dfm}
+
+
+end.
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    

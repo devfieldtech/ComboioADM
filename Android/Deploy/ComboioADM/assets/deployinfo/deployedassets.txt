@@ -1,0 +1,12 @@
+.\assets\internal\LubrificacaoCriada.mp3
+.\assets\internal\StarteAntes.mp3
+.\assets\internal\HorimetroFinalMenor.mp3
+.\assets\internal\OperacaoFinalizada.mp3
+.\assets\internal\KMMaior600.mp3
+.\assets\internal\FotoTotalizadorInicial.mp3
+.\assets\internal\FotoTotalizadorFinalMenor.mp3
+.\assets\internal\KmFinalMenor.mp3
+.\assets\internal\Comboio.db
+.\assets\internal\DesejaDelatar.mp3
+.\assets\internal\OpaErro.mp3
+.\assets\internal\HorimetroMaior24Horas.mp3

@@ -1,0 +1,12 @@
+﻿[dmdb.TFornecedores]
+Visible=False
+
+[dmdb.TEstoqueEntrada]
+Visible=False
+
+[dmdb.TnotaFiscalIntem]
+Visible=False
+
+[dmdb.TMaquinas]
+Visible=False
+

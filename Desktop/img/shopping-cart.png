@@ -1,0 +1,32 @@
+           Canvas.Pen.Color := clRed;
+              Canvas.Pen.Width := 1;
+
+              l := (cr.Left div 2) * 2;
+              if (l mod 4)=0 then o := 2 else o := 0;
+
+              Canvas.MoveTo(l,r.Bottom + o - 1);
+              while l < cr.Right do
+              begin
+                if o = 2 then o := 0 else o := 2;
+                Canvas.LineTo(l + 2,r.bottom + o - 1);
+                Inc(l,2);
+              end;
+              // if o = 2 then o := 0 else o := 2;
+              // Canvas.LineTo(l + 2,r.Bottom + o - 1);
+            end;
+
+            // change to Bidimode 
+            if DrawStyle and DT_RTLREADING <> DT_RTLREADING then
+            begin
+              cr.Left := cr.Right;
+              cr.Right := r.Right;
+            end
+            else
+              cr.Right := err - cr.Right + cr.Left;
+
+            cr.Bottom := r.Bottom;
+            cr.Top := r.Top;
+          end
+        else
+          begin
+            
