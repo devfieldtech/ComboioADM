@@ -210,6 +210,7 @@ type
     Label9: TLabel;
     TreeViewItem3: TTreeViewItem;
     Image44: TImage;
+    Rectangle14: TRectangle;
     procedure FormShow(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure btnEntrarClick(Sender: TObject);

@@ -817,18 +817,49 @@ begin
 end;
 
 procedure TfrmStartBomba.edtTotalFim1ChangeTracking(Sender: TObject);
+var
+ vTotalIni1,vTotalIni2,vTotalIni3,vTotalIni4,vTotalIni5,vTotalIni6: string;
 begin
   if TEdit(Sender).Text.Length>0 then
   begin
+   if edtTotalFim1.Text.Length>0 then
+    vTotalIni1 := edtTotalFim1.Text
+   else
+    vTotalIni1 := edtTotalFim1.TextPrompt;
+
+   if edtTotalFim2.Text.Length>0 then
+    vTotalIni2 := edtTotalFim2.Text
+   else
+    vTotalIni2 := edtTotalFim2.TextPrompt;
+
+   if edtTotalFim3.Text.Length>0 then
+    vTotalIni3 := edtTotalFim3.Text
+   else
+    vTotalIni3 := edtTotalFim3.TextPrompt;
+
+   if edtTotalFim4.Text.Length>0 then
+    vTotalIni4 := edtTotalFim3.Text
+   else
+    vTotalIni4 := edtTotalFim4.TextPrompt;
+
+   if edtTotalFim5.Text.Length>0 then
+    vTotalIni5 := edtTotalFim5.Text
+   else
+    vTotalIni5 := edtTotalFim5.TextPrompt;
+
+   if edtTotalFim6.Text.Length>0 then
+    vTotalIni6 := edtTotalFim6.Text
+   else
+    vTotalIni6 := edtTotalFim6.TextPrompt;
 
     vTotalizadorFim :=(
-      edtTotalFim1.Text+
-      edtTotalFim2.Text+
-      edtTotalFim3.Text+
-      edtTotalFim4.Text+
-      edtTotalFim5.Text+
+      vTotalIni1+
+      vTotalIni2+
+      vTotalIni3+
+      vTotalIni4+
+      vTotalIni5+
       ','+
-      edtTotalFim6.Text);
+      vTotalIni6);
 
     if TEdit(Sender).Name='edtTotalFim1' then
      DelayedSetFocus(edtTotalFim2);
@@ -849,30 +880,96 @@ begin
 end;
 
 procedure TfrmStartBomba.edtTotalFim6ChangeTracking(Sender: TObject);
+var
+ vTotalIni1,vTotalIni2,vTotalIni3,vTotalIni4,vTotalIni5,vTotalIni6: string;
 begin
-    vTotalizadorFim :=
-      edtTotalFim1.Text+
-      edtTotalFim2.Text+
-      edtTotalFim3.Text+
-      edtTotalFim4.Text+
-      edtTotalFim5.Text+
+   if edtTotalFim1.Text.Length>0 then
+    vTotalIni1 := edtTotalFim1.Text
+   else
+    vTotalIni1 := edtTotalFim1.TextPrompt;
+
+   if edtTotalFim2.Text.Length>0 then
+    vTotalIni2 := edtTotalFim2.Text
+   else
+    vTotalIni2 := edtTotalFim2.TextPrompt;
+
+   if edtTotalFim3.Text.Length>0 then
+    vTotalIni3 := edtTotalFim3.Text
+   else
+    vTotalIni3 := edtTotalFim3.TextPrompt;
+
+   if edtTotalFim4.Text.Length>0 then
+    vTotalIni4 := edtTotalFim3.Text
+   else
+    vTotalIni4 := edtTotalFim4.TextPrompt;
+
+   if edtTotalFim5.Text.Length>0 then
+    vTotalIni5 := edtTotalFim5.Text
+   else
+    vTotalIni5 := edtTotalFim5.TextPrompt;
+
+   if edtTotalFim6.Text.Length>0 then
+    vTotalIni6 := edtTotalFim6.Text
+   else
+    vTotalIni6 := edtTotalFim6.TextPrompt;
+
+    vTotalizadorFim :=(
+      vTotalIni1+
+      vTotalIni2+
+      vTotalIni3+
+      vTotalIni4+
+      vTotalIni5+
       ','+
-      edtTotalFim6.Text;
+      vTotalIni6);
 end;
 
 procedure TfrmStartBomba.edtTotalIni1ChangeTracking(Sender: TObject);
+var
+ vTotalIni1,vTotalIni2,vTotalIni3,vTotalIni4,vTotalIni5,vTotalIni6: string;
 begin
  if TEdit(Sender).Text.Length>0 then
   begin
+   if edtTotalIni1.Text.Length>0 then
+    vTotalIni1 := edtTotalIni1.Text
+   else
+    vTotalIni1 := edtTotalIni1.TextPrompt;
+
+   if edtTotalIni2.Text.Length>0 then
+    vTotalIni2 := edtTotalIni2.Text
+   else
+    vTotalIni2 := edtTotalIni2.TextPrompt;
+
+   if edtTotalIni3.Text.Length>0 then
+    vTotalIni3 := edtTotalIni3.Text
+   else
+    vTotalIni3 := edtTotalIni3.TextPrompt;
+
+   if edtTotalIni4.Text.Length>0 then
+    vTotalIni4 := edtTotalIni3.Text
+   else
+    vTotalIni4 := edtTotalIni4.TextPrompt;
+
+   if edtTotalIni5.Text.Length>0 then
+    vTotalIni5 := edtTotalIni5.Text
+   else
+    vTotalIni5 := edtTotalIni5.TextPrompt;
+
+   if edtTotalIni6.Text.Length>0 then
+    vTotalIni6 := edtTotalIni6.Text
+   else
+    vTotalIni6 := edtTotalIni6.TextPrompt;
+
+
+
 
     vTotalizadorIni :=(
-      edtTotalIni1.Text+
-      edtTotalIni2.Text+
-      edtTotalIni3.Text+
-      edtTotalIni4.Text+
-      edtTotalIni5.Text+
+      vTotalIni1+
+      vTotalIni2+
+      vTotalIni3+
+      vTotalIni4+
+      vTotalIni5+
       ','+
-      edtTotalIni6.Text);
+      vTotalIni6);
 
     if TEdit(Sender).Name='edtTotalIni1' then
      DelayedSetFocus(edtTotalIni2);
@@ -927,15 +1024,47 @@ begin
 end;
 
 procedure TfrmStartBomba.edtTotalIni6ChangeTracking(Sender: TObject);
+var
+  vTotalIni1,vTotalIni2,vTotalIni3,vTotalIni4,vTotalIni5,vTotalIni6: string;
 begin
-   vTotalizadorIni :=
-      edtTotalIni1.Text+
-      edtTotalIni2.Text+
-      edtTotalIni3.Text+
-      edtTotalIni4.Text+
-      edtTotalIni5.Text+
+   if edtTotalIni1.Text.Length>0 then
+    vTotalIni1 := edtTotalIni1.Text
+   else
+    vTotalIni1 := edtTotalIni1.TextPrompt;
+
+   if edtTotalIni2.Text.Length>0 then
+    vTotalIni2 := edtTotalIni2.Text
+   else
+    vTotalIni2 := edtTotalIni2.TextPrompt;
+
+   if edtTotalIni3.Text.Length>0 then
+    vTotalIni3 := edtTotalIni3.Text
+   else
+    vTotalIni3 := edtTotalIni3.TextPrompt;
+
+   if edtTotalIni4.Text.Length>0 then
+    vTotalIni4 := edtTotalIni3.Text
+   else
+    vTotalIni4 := edtTotalIni4.TextPrompt;
+
+   if edtTotalIni5.Text.Length>0 then
+    vTotalIni5 := edtTotalIni5.Text
+   else
+    vTotalIni5 := edtTotalIni5.TextPrompt;
+
+   if edtTotalIni6.Text.Length>0 then
+    vTotalIni6 := edtTotalIni6.Text
+   else
+    vTotalIni6 := edtTotalIni6.TextPrompt;
+
+    vTotalizadorIni :=(
+      vTotalIni1+
+      vTotalIni2+
+      vTotalIni3+
+      vTotalIni4+
+      vTotalIni5+
       ','+
-      edtTotalIni6.Text;
+      vTotalIni6);
 end;
 
 procedure TfrmStartBomba.edtTotalIni6KeyUp(Sender: TObject; var Key: Word;

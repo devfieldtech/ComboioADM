@@ -1,0 +1,60 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <ProjectGuid>{C405767C-4200-4BBC-AD32-F7F94CF2081A}</ProjectGuid>
+    </PropertyGroup>
+    <ItemGroup>
+        <Projects Include="Desktop\Source\DProj\Comboio_ADM.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="WS\FuelManageWS\Source\DProj\WSFuelManage.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="Android\ComboioADM_MOB\Source\DProj\ComboioADM_Mob.dproj">
+            <Dependencies/>
+        </Projects>
+    </ItemGroup>
+    <ProjectExtensions>
+        <Borland.Personality>Default.Personality.12</Borland.Personality>
+        <Borland.ProjectType/>
+        <BorlandProject>
+            <Default.Personality/>
+        </BorlandProject>
+    </ProjectExtensions>
+    <Target Name="Comboio_ADM">
+        <MSBuild Projects="Desktop\Source\DProj\Comboio_ADM.dproj"/>
+    </Target>
+    <Target Name="Comboio_ADM:Clean">
+        <MSBuild Projects="Desktop\Source\DProj\Comboio_ADM.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="Comboio_ADM:Make">
+        <MSBuild Projects="Desktop\Source\DProj\Comboio_ADM.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="WSFuelManage">
+        <MSBuild Projects="WS\FuelManageWS\Source\DProj\WSFuelManage.dproj"/>
+    </Target>
+    <Target Name="WSFuelManage:Clean">
+        <MSBuild Projects="WS\FuelManageWS\Source\DProj\WSFuelManage.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="WSFuelManage:Make">
+        <MSBuild Projects="WS\FuelManageWS\Source\DProj\WSFuelManage.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="ComboioADM_Mob">
+        <MSBuild Projects="Android\ComboioADM_MOB\Source\DProj\ComboioADM_Mob.dproj"/>
+    </Target>
+    <Target Name="ComboioADM_Mob:Clean">
+        <MSBuild Projects="Android\ComboioADM_MOB\Source\DProj\ComboioADM_Mob.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="ComboioADM_Mob:Make">
+        <MSBuild Projects="Android\ComboioADM_MOB\Source\DProj\ComboioADM_Mob.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Build">
+        <CallTarget Targets="Comboio_ADM;WSFuelManage;ComboioADM_Mob"/>
+    </Target>
+    <Target Name="Clean">
+        <CallTarget Targets="Comboio_ADM:Clean;WSFuelManage:Clean;ComboioADM_Mob:Clean"/>
+    </Target>
+    <Target Name="Make">
+        <CallTarget Targets="Comboio_ADM:Make;WSFuelManage:Make;ComboioADM_Mob:Make"/>
+    </Target>
+    <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
+</Project>

@@ -548,11 +548,7 @@ begin
  try
   dmdb.TEstoqueEntrada.ApplyUpdates(-1);
   MyShowMessage('Entrada Atualizada com sucesso adicione os Itens!',false);
-//  if vTipoInsUp=1 then
-//   vIdNFCAD := dmdb.RetornaIdMaxNota
-//  else
-//   vIdNFCAD := dmdb.TEstoqueEntradaid.AsString;
-//  dmdb.AbreItensNf(vIdNFCAD,'');
+  Filtro;
   MudarAba(tbiLista,sender);
  except
  on E: Exception do
@@ -780,15 +776,15 @@ begin
   dmdb.TnotaFiscalIntemidusuario.AsString      := dmdb.vIdUsuarioLogado
  else
  begin
-  dmdb.TnotaFiscalIntemidusuarioalteracao.AsString := dmdb.vIdUsuarioLogado;
-  dmdb.TnotaFiscalIntemdataalteracao.AsDateTime    := now;
+  dmdb.TnotaFiscalIntemidusuarioalteracao.AsString  := dmdb.vIdUsuarioLogado;
+  dmdb.TnotaFiscalIntemdataalteracao.AsDateTime     := now;
  end;
- dmdb.TnotaFiscalIntemidnota.AsString         := dmdb.TEstoqueEntradaid.AsString;
- dmdb.TnotaFiscalIntemidproduto.AsString      := vIdProduto;
- dmdb.TnotaFiscalIntemvalortotalnf.AsString   := edtValorTotalNF.Text;
- dmdb.TnotaFiscalIntemqtditens.AsString       := edtqtd.Text;
- dmdb.TnotaFiscalIntemunidademedida.AsString  := cbxUnidadeMedida.Selected.Text;
- dmdb.TnotaFiscalIntemidlocalestoque.AsString := vIdLocalEstoque;
+ dmdb.TnotaFiscalIntemidnota.AsString               := dmdb.TEstoqueEntradaid.AsString;
+ dmdb.TnotaFiscalIntemidproduto.AsString            := vIdProduto;
+ dmdb.TnotaFiscalIntemvalortotalnf.AsString         := edtValorTotalNF.Text;
+ dmdb.TnotaFiscalIntemqtditens.AsString             := edtqtd.Text;
+ dmdb.TnotaFiscalIntemunidademedida.AsString        := cbxUnidadeMedida.Selected.Text;
+ dmdb.TnotaFiscalIntemidlocalestoque.AsString       := vIdLocalEstoque;
  try
   dmdb.TnotaFiscalIntem.ApplyUpdates(-1);
   MyShowMessage('Item adicionado com sucesso!',false);

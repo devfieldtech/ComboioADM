@@ -266,6 +266,12 @@ type
     ppLabel24: TppLabel;
     ppDBText20: TppDBText;
     ExtratoDiaMaquinaentradatransferencia: TBCDField;
+    ppDBCalc1: TppDBCalc;
+    ppDBCalc2: TppDBCalc;
+    ppDBCalc3: TppDBCalc;
+    ppDBCalc4: TppDBCalc;
+    ppDBCalc5: TppDBCalc;
+    ppShape18: TppShape;
     procedure ppDetailBand2BeforePrint(Sender: TObject);
     procedure ppDetailBand1BeforePrint(Sender: TObject);
     procedure ppDetailBandRepManutencaoBeforePrint(Sender: TObject);

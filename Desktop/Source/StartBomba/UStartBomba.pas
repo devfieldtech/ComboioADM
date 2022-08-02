@@ -298,6 +298,7 @@ end;
 
 procedure TfrmSatrtDiario.btnConferenciaClick(Sender: TObject);
 begin
+ GerarLista;
  MudarAba(tbiConf,sender)
 end;
 
@@ -446,162 +447,158 @@ var
 begin
  url := 'https://comboiodemo.s3.sa-east-1.amazonaws.com/';
  ListaFotos.Items.Clear;
- dmDB.TStartBomba.First;
- ListaFotos.BeginUpdate;
- if vLayout <>nil then
-  vLayout.free;
- vLayout  := TLayout.Create(ListaFotos);
- BindSourceDB1.DataSet :=nil;
-// TThread.CreateAnonymousThread(
-// procedure
-// begin
-//    TThread.Synchronize(TThread.CurrentThread,
-//    procedure()
-//    begin
-     recAguarde.Visible      := true;
-     ListaFotos.BeginUpdate;
-//    end);
-     I:=0;
-     while not dmDB.TStartBomba.eof do
-     begin
-       item := ListaFotos.Items.Add;
-       with TfrmSatrtDiario do
+ if not dmDB.TStartBomba.IsEmpty then
+ begin
+       dmDB.TStartBomba.First;
+       ListaFotos.BeginUpdate;
+       if vLayout <>nil then
+        vLayout.free;
+       vLayout  := TLayout.Create(ListaFotos);
+       BindSourceDB1.DataSet :=nil;
+       TThread.CreateAnonymousThread(
+       procedure
        begin
-         with item  do
+        TThread.Synchronize(TThread.CurrentThread,
+         procedure()
          begin
-           txt      := TListItemText(Objects.FindDrawable('Text1'));
-           txt.Text := dmDB.TStartBombalocalestoque.AsString;
-           txt.TagString := dmDB.TStartBombaid.AsString;
+           recAguarde.Visible      := true;
+             ListaFotos.BeginUpdate;
 
-           txt      := TListItemText(Objects.FindDrawable('Text14'));
-           txt.Text := 'Totalizador Inicial';
-           txt      := TListItemText(Objects.FindDrawable('Text20'));
-           txt.Text := dmDB.TStartBombavolumelitrosini.AsString;
+             I:=0;
+             while not dmDB.TStartBomba.eof do
+             begin
+               item := ListaFotos.Items.Add;
+               with TfrmSatrtDiario do
+               begin
+                 with item  do
+                 begin
+                   txt      := TListItemText(Objects.FindDrawable('Text1'));
+                   txt.Text := dmDB.TStartBombalocalestoque.AsString;
+                   txt.TagString := dmDB.TStartBombaid.AsString;
 
-           txt      := TListItemText(Objects.FindDrawable('Text15'));
-           txt.Text := 'Totalizador Final';
-           txt      := TListItemText(Objects.FindDrawable('Text21'));
-           txt.Text := dmDB.TStartBombavolumelitrosfim.AsString;
+                   txt      := TListItemText(Objects.FindDrawable('Text14'));
+                   txt.Text := 'Totalizador Inicial';
+                   txt      := TListItemText(Objects.FindDrawable('Text20'));
+                   txt.Text := dmDB.TStartBombavolumelitrosini.AsString;
 
-           img := TListItemImage(Objects.FindDrawable('Image32'));
-           img.Bitmap := frmPrincipal.imgDow.Bitmap;
+                   txt      := TListItemText(Objects.FindDrawable('Text15'));
+                   txt.Text := 'Totalizador Final';
+                   txt      := TListItemText(Objects.FindDrawable('Text21'));
+                   txt.Text := dmDB.TStartBombavolumelitrosfim.AsString;
 
-           img := TListItemImage(Objects.FindDrawable('Image33'));
-           img.Bitmap := frmPrincipal.imgDow.Bitmap;
+                   img := TListItemImage(Objects.FindDrawable('Image32'));
+                   img.Bitmap := frmPrincipal.imgDow.Bitmap;
 
-           img := TListItemImage(Objects.FindDrawable('Image38'));
-           img.Bitmap := frmPrincipal.imgEdit.Bitmap;
-           txt      := TListItemText(Objects.FindDrawable('Text41'));
-           txt.Text := 'Editar';
+                   img := TListItemImage(Objects.FindDrawable('Image33'));
+                   img.Bitmap := frmPrincipal.imgDow.Bitmap;
 
-           img := TListItemImage(Objects.FindDrawable('Image39'));
-           img.Bitmap := frmPrincipal.imgDelete.Bitmap;
-           txt      := TListItemText(Objects.FindDrawable('Text40'));
-           txt.Text := 'Deletar';
+                   img := TListItemImage(Objects.FindDrawable('Image38'));
+                   img.Bitmap := frmPrincipal.imgEdit.Bitmap;
+                   txt      := TListItemText(Objects.FindDrawable('Text41'));
+                   txt.Text := 'Editar';
 
-           img := TListItemImage(Objects.FindDrawable('Image5'));
-           img.Bitmap := frmPrincipal.imgStart.Bitmap;
-           txt      := TListItemText(Objects.FindDrawable('Text7'));
-           txt.Text := 'Inicio';
-           txt      := TListItemText(Objects.FindDrawable('Text6'));
-           txt.Text := dmDB.TStartBombadataastart.AsString;
+                   img := TListItemImage(Objects.FindDrawable('Image39'));
+                   img.Bitmap := frmPrincipal.imgDelete.Bitmap;
+                   txt      := TListItemText(Objects.FindDrawable('Text40'));
+                   txt.Text := 'Deletar';
 
-           img := TListItemImage(Objects.FindDrawable('Image8'));
-           img.Bitmap := frmPrincipal.imgEnd.Bitmap;
-           txt      := TListItemText(Objects.FindDrawable('Text9'));
-           txt.Text := 'Fim';
-           txt      := TListItemText(Objects.FindDrawable('Text10'));
-           txt.Text := dmDB.TStartBombadataastart.AsString;
+                   img := TListItemImage(Objects.FindDrawable('Image5'));
+                   img.Bitmap := frmPrincipal.imgStart.Bitmap;
+                   txt      := TListItemText(Objects.FindDrawable('Text7'));
+                   txt.Text := 'Inicio';
+                   txt      := TListItemText(Objects.FindDrawable('Text6'));
+                   txt.Text := dmDB.TStartBombadataastart.AsString;
 
-           img := TListItemImage(Objects.FindDrawable('Image35'));
-           img.Bitmap := frmPrincipal.imgHora.Bitmap;
-           txt      := TListItemText(Objects.FindDrawable('Text37'));
-           txt.Text := 'Hora Inicio:';
-           txt      := TListItemText(Objects.FindDrawable('Text36'));
-           txt.Text := dmDB.TStartBombahorastart.AsString;
+                   img := TListItemImage(Objects.FindDrawable('Image8'));
+                   img.Bitmap := frmPrincipal.imgEnd.Bitmap;
+                   txt      := TListItemText(Objects.FindDrawable('Text9'));
+                   txt.Text := 'Fim';
+                   txt      := TListItemText(Objects.FindDrawable('Text10'));
+                   txt.Text := dmDB.TStartBombadataastart.AsString;
+
+                   img := TListItemImage(Objects.FindDrawable('Image35'));
+                   img.Bitmap := frmPrincipal.imgHora.Bitmap;
+                   txt      := TListItemText(Objects.FindDrawable('Text37'));
+                   txt.Text := 'Hora Inicio:';
+                   txt      := TListItemText(Objects.FindDrawable('Text36'));
+                   txt.Text := dmDB.TStartBombahorastart.AsString;
 
 
-           img := TListItemImage(Objects.FindDrawable('Image11'));
-           img.Bitmap := frmPrincipal.imgHora.Bitmap;
-           txt      := TListItemText(Objects.FindDrawable('Text12'));
-           txt.Text := 'Hora Fim:';
-           txt      := TListItemText(Objects.FindDrawable('Text13'));
-           txt.Text := dmDB.TStartBombahoraend.AsString;
+                   img := TListItemImage(Objects.FindDrawable('Image11'));
+                   img.Bitmap := frmPrincipal.imgHora.Bitmap;
+                   txt      := TListItemText(Objects.FindDrawable('Text12'));
+                   txt.Text := 'Hora Fim:';
+                   txt      := TListItemText(Objects.FindDrawable('Text13'));
+                   txt.Text := dmDB.TStartBombahoraend.AsString;
 
-           if (dmDB.TStartBombaimgstart.AsString.Length>0) and
-           (dmDB.TStartBombaimgsyncs3.AsInteger=1) then
-           begin
-//             TThread.Synchronize(TThread.CurrentThread,
-//             procedure()
-//             begin
-              urlInicio := dmDB.TStartBombaimgstart.AsString;
-              try
-               imgCarregaImagem:= TImage.Create(vLayout);
-               imgCarregaImagem.Name := 'Start_FotoInicio_'+dmDB.TStartBombaid.asstring;
-               imgCarregaImagem.Bitmap.LoadFromUrl(urlInicio);
-               img := TListItemImage(Objects.FindDrawable('Image2'));
-               img.Bitmap    := imgCarregaImagem.Bitmap;
-               img.TagString := dmDB.TStartBombaimgstart.AsString;
-              except
-               on E : Exception do
-                ShowMessage('Erro ao carregar :'+urlInicio+#13+
-                 E.Message)
-              end;
-//             end);
-           end
-           else
-           begin
-             img := TListItemImage(Objects.FindDrawable('Image2'));
-             img.Bitmap := frmPrincipal.imgNoImage.Bitmap;
-             img.Width  := 50;
-             img.Height := 50;
-           end;
+                   if (dmDB.TStartBombaimgstart.AsString.Length>0) and
+                   (dmDB.TStartBombaimgsyncs3.AsInteger=1) then
+                   begin
+                      urlInicio := dmDB.TStartBombaimgstart.AsString;
+                      try
+                       imgCarregaImagem:= TImage.Create(vLayout);
+                       imgCarregaImagem.Name := 'Start_FotoInicio_'+dmDB.TStartBombaid.asstring;
+                       imgCarregaImagem.Bitmap.LoadFromUrl(urlInicio);
+                       img := TListItemImage(Objects.FindDrawable('Image2'));
+                       img.Bitmap    := imgCarregaImagem.Bitmap;
+                       img.TagString := dmDB.TStartBombaimgstart.AsString;
+                      except
+                       on E : Exception do
+                        ShowMessage('Erro ao carregar :'+urlInicio+#13+
+                         E.Message)
+                      end;
+                   end
+                   else
+                   begin
+                     img := TListItemImage(Objects.FindDrawable('Image2'));
+                     img.Bitmap := frmPrincipal.imgNoImage.Bitmap;
+                     img.Width  := 50;
+                     img.Height := 50;
+                   end;
 
-           if (dmDB.TStartBombaimgend.AsString.Length>0) and
-           (dmDB.TStartBombaimgsyncs3.AsInteger=1) then
-           begin
-//             TThread.Synchronize(TThread.CurrentThread,
-//             procedure()
-//             begin
-              urlFim := dmDB.TStartBombaimgend.AsString;
-              try
-               imgCarregaImagem:= TImage.Create(vLayout);
-               imgCarregaImagem.Name := 'Start_FotoFim_'+dmDB.TStartBombaid.asstring;
-               imgCarregaImagem.Bitmap.LoadFromUrl(urlFim);
-               img := TListItemImage(Objects.FindDrawable('Image3'));
-               img.Bitmap    := imgCarregaImagem.Bitmap;
-               img.TagString := dmDB.TStartBombaimgend.AsString;
-              except
-               on E : Exception do
-                ShowMessage('Erro ao carregar :'+urlFim+#13+
-                 E.Message)
-              end;
-//             end);
-           end
-           else
-           begin
-             img := TListItemImage(Objects.FindDrawable('Image3'));
-             img.Bitmap := frmPrincipal.imgNoImage.Bitmap;
-             img.Width  := 50;
-             img.Height := 50;
-           end;
-         end;
-       end;
-       INC(I);
-       dmDB.TStartBomba.Next;
-     end;
-//     TThread.Synchronize(TThread.CurrentThread,
-//     procedure()
-//     begin
-      recAguarde.Visible      := false;
-      MyShowMessage('Lista Carregada com Sucesso!',false);
-      lblFoterCout1.Text := intToStr(I);
-      ListaFotos.EndUpdate;
-      if ListaFotos.items.Count>0 then
-        ListaFotos.ItemIndex :=0;
-//     end);
-     BindSourceDB1.DataSet:= dmDB.TstartBomba;
-// end).Start;
+                   if (dmDB.TStartBombaimgend.AsString.Length>0) and
+                   (dmDB.TStartBombaimgsyncs3.AsInteger=1) then
+                   begin
+                      urlFim := dmDB.TStartBombaimgend.AsString;
+                      try
+                       imgCarregaImagem:= TImage.Create(vLayout);
+                       imgCarregaImagem.Name := 'Start_FotoFim_'+dmDB.TStartBombaid.asstring;
+                       imgCarregaImagem.Bitmap.LoadFromUrl(urlFim);
+                       img := TListItemImage(Objects.FindDrawable('Image3'));
+                       img.Bitmap    := imgCarregaImagem.Bitmap;
+                       img.TagString := dmDB.TStartBombaimgend.AsString;
+                      except
+                       on E : Exception do
+                        ShowMessage('Erro ao carregar :'+urlFim+#13+
+                         E.Message)
+                      end;
+                   end
+                   else
+                   begin
+                     img := TListItemImage(Objects.FindDrawable('Image3'));
+                     img.Bitmap := frmPrincipal.imgNoImage.Bitmap;
+                     img.Width  := 50;
+                     img.Height := 50;
+                   end;
+                 end;
+               end;
+               INC(I);
+               dmDB.TStartBomba.Next;
+             end;
+             TThread.Synchronize(TThread.CurrentThread,
+             procedure()
+             begin
+              recAguarde.Visible      := false;
+              MyShowMessage('Lista Carregada com Sucesso!',false);
+              lblFoterCout1.Text := intToStr(I);
+              ListaFotos.EndUpdate;
+              if ListaFotos.items.Count>0 then
+                ListaFotos.ItemIndex :=0;
+             end);
+             BindSourceDB1.DataSet:= dmDB.TstartBomba;
+         end);
+       end).Start;
+ end;
 end;
 
 
@@ -652,6 +649,7 @@ end;
 
 procedure TfrmSatrtDiario.cbxBombaFChange(Sender: TObject);
 begin
+ cbxBombaF1.ItemIndex := cbxBombaF.ItemIndex;
  if cbxBombaF.ItemIndex>-1 then
   vIdLocalEstoque := IntToStr(Integer(cbxBombaF.Items.Objects[cbxBombaF.ItemIndex]));
 end;
@@ -834,8 +832,6 @@ begin
   vImgFim             := TAppearanceListViewItem(ListaFotos.Selected).Objects.FindObjectT<TListItemImage>
    ('Image3').TagString;
 
-
-
   if ItemObject is TListItemImage then
   begin
     if TListItemImage(ItemObject).Name='Image32' then
@@ -934,7 +930,8 @@ begin
     frmCentroCusto.ShowModal;
   finally
     vIdCerntroCusto      := dmDB.TCentroCustoid.AsString;
-    edtCentroCustof.Text  := dmDB.TCentroCustonome.AsString;
+    edtCentroCustof.Text := dmDB.TCentroCustonome.AsString;
+    edtCentroCusto1.Text := dmDB.TCentroCustonome.AsString;
     CarregaLocalEstoque(vIdCerntroCusto);
   end;
 end;

@@ -531,6 +531,7 @@ type
     procedure detcheklistgenericReconcileError(DataSet: TFDDataSet;
       E: EFDException; UpdateKind: TFDDatSRowState;
       var Action: TFDDAptReconcileAction);
+    procedure FDConPGLost(Sender: TObject);
   private
     function  LerIni(Diretorio,Chave1, Chave2, ValorPadrao: String): String;
   public
@@ -1340,6 +1341,11 @@ procedure Tdmdb.detcheklistgenericReconcileError(DataSet: TFDDataSet;
   var Action: TFDDAptReconcileAction);
 begin
  ShowMessage(e.Message);
+end;
+
+procedure Tdmdb.FDConPGLost(Sender: TObject);
+begin
+ ShowMessage('Morreu largatixa')
 end;
 
 function Tdmdb.LerIni(Diretorio, Chave1, Chave2,

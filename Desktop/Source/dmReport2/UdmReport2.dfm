@@ -20173,53 +20173,61 @@ object dmReport2: TdmReport2
       FieldAlias = 'localestoque'
       FieldName = 'localestoque'
       FieldLength = 0
+      DataType = dtNotKnown
       DisplayWidth = 0
       Position = 1
+      Searchable = False
+      Sortable = False
     end
     object ppDBSaldoAtualppField3: TppField
-      Alignment = taRightJustify
       FieldAlias = 'entradanf'
       FieldName = 'entradanf'
       FieldLength = 0
-      DataType = dtDouble
-      DisplayWidth = 65
+      DataType = dtNotKnown
+      DisplayWidth = 0
       Position = 2
+      Searchable = False
+      Sortable = False
     end
     object ppDBSaldoAtualppField4: TppField
-      Alignment = taRightJustify
       FieldAlias = 'totalenttransf'
       FieldName = 'totalenttransf'
       FieldLength = 0
-      DataType = dtDouble
-      DisplayWidth = 65
+      DataType = dtNotKnown
+      DisplayWidth = 0
       Position = 3
+      Searchable = False
+      Sortable = False
     end
     object ppDBSaldoAtualppField5: TppField
-      Alignment = taRightJustify
       FieldAlias = 'saidaabastecimento'
       FieldName = 'saidaabastecimento'
       FieldLength = 0
-      DataType = dtDouble
-      DisplayWidth = 65
+      DataType = dtNotKnown
+      DisplayWidth = 0
       Position = 4
+      Searchable = False
+      Sortable = False
     end
     object ppDBSaldoAtualppField6: TppField
-      Alignment = taRightJustify
       FieldAlias = 'totalsaidatransf'
       FieldName = 'totalsaidatransf'
       FieldLength = 0
-      DataType = dtDouble
-      DisplayWidth = 65
+      DataType = dtNotKnown
+      DisplayWidth = 0
       Position = 5
+      Searchable = False
+      Sortable = False
     end
     object ppDBSaldoAtualppField7: TppField
-      Alignment = taRightJustify
       FieldAlias = 'saldatual'
       FieldName = 'saldatual'
       FieldLength = 0
-      DataType = dtDouble
-      DisplayWidth = 65
+      DataType = dtNotKnown
+      DisplayWidth = 0
       Position = 6
+      Searchable = False
+      Sortable = False
     end
   end
   object ppRepSaldoAtual: TppReport
@@ -22386,8 +22394,130 @@ object dmReport2: TdmReport2
       Background.Brush.Style = bsClear
       Border.mmPadding = 0
       mmBottomOffset = 0
-      mmHeight = 0
+      mmHeight = 5821
       mmPrintPosition = 0
+      object ppShape18: TppShape
+        DesignLayer = ppDesignLayer7
+        UserName = 'Shape18'
+        Brush.Color = clBlack
+        Pen.Style = psClear
+        mmHeight = 5270
+        mmLeft = 64104
+        mmTop = 69
+        mmWidth = 133290
+        BandType = 7
+        LayerName = BandLayer7
+      end
+      object ppDBCalc1: TppDBCalc
+        DesignLayer = ppDesignLayer7
+        UserName = 'DBCalc1'
+        Border.mmPadding = 0
+        Color = clBlack
+        DataField = 'entradanf'
+        DataPipeline = ppDBSaldoAtual
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWhite
+        Font.Name = 'Arial'
+        Font.Size = 8
+        Font.Style = []
+        TextAlignment = taCentered
+        VerticalAlignment = avCenter
+        DataPipelineName = 'ppDBSaldoAtual'
+        mmHeight = 4498
+        mmLeft = 65352
+        mmTop = 529
+        mmWidth = 25400
+        BandType = 7
+        LayerName = BandLayer7
+      end
+      object ppDBCalc2: TppDBCalc
+        DesignLayer = ppDesignLayer7
+        UserName = 'DBCalc2'
+        Border.mmPadding = 0
+        Color = clBlack
+        DataField = 'saidaabastecimento'
+        DataPipeline = ppDBSaldoAtual
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWhite
+        Font.Name = 'Arial'
+        Font.Size = 8
+        Font.Style = []
+        TextAlignment = taCentered
+        VerticalAlignment = avCenter
+        DataPipelineName = 'ppDBSaldoAtual'
+        mmHeight = 4498
+        mmLeft = 91811
+        mmTop = 529
+        mmWidth = 23949
+        BandType = 7
+        LayerName = BandLayer7
+      end
+      object ppDBCalc3: TppDBCalc
+        DesignLayer = ppDesignLayer7
+        UserName = 'DBCalc3'
+        Border.mmPadding = 0
+        Color = clBlack
+        DataField = 'totalenttransf'
+        DataPipeline = ppDBSaldoAtual
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWhite
+        Font.Name = 'Arial'
+        Font.Size = 8
+        Font.Style = []
+        TextAlignment = taCentered
+        VerticalAlignment = avCenter
+        DataPipelineName = 'ppDBSaldoAtual'
+        mmHeight = 4498
+        mmLeft = 116417
+        mmTop = 529
+        mmWidth = 27335
+        BandType = 7
+        LayerName = BandLayer7
+      end
+      object ppDBCalc4: TppDBCalc
+        DesignLayer = ppDesignLayer7
+        UserName = 'DBCalc4'
+        Border.mmPadding = 0
+        Color = clBlack
+        DataField = 'totalsaidatransf'
+        DataPipeline = ppDBSaldoAtual
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWhite
+        Font.Name = 'Arial'
+        Font.Size = 8
+        Font.Style = []
+        TextAlignment = taCentered
+        VerticalAlignment = avCenter
+        DataPipelineName = 'ppDBSaldoAtual'
+        mmHeight = 4498
+        mmLeft = 144463
+        mmTop = 529
+        mmWidth = 25400
+        BandType = 7
+        LayerName = BandLayer7
+      end
+      object ppDBCalc5: TppDBCalc
+        DesignLayer = ppDesignLayer7
+        UserName = 'DBCalc5'
+        Border.mmPadding = 0
+        Color = clBlack
+        DataField = 'saldatual'
+        DataPipeline = ppDBSaldoAtual
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWhite
+        Font.Name = 'Arial'
+        Font.Size = 8
+        Font.Style = []
+        TextAlignment = taCentered
+        VerticalAlignment = avCenter
+        DataPipelineName = 'ppDBSaldoAtual'
+        mmHeight = 4498
+        mmLeft = 170657
+        mmTop = 529
+        mmWidth = 25157
+        BandType = 7
+        LayerName = BandLayer7
+      end
     end
     object ppDesignLayers7: TppDesignLayers
       object ppDesignLayer7: TppDesignLayer

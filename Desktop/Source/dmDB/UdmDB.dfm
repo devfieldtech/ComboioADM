@@ -10,7 +10,10 @@ object dmdb: Tdmdb
       'Pooled='
       'Database=FuelManager'
       'DriverID=PG')
+    ResourceOptions.AssignedValues = [rvAutoReconnect]
+    ResourceOptions.AutoReconnect = True
     LoginPrompt = False
+    OnLost = FDConPGLost
     Left = 21
     Top = 8
   end

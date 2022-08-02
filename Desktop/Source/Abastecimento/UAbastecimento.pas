@@ -19,7 +19,7 @@ uses
   Data.Cloud.CloudAPI, Data.Cloud.AmazonAPI,ShellApi,
   System.Json.writers,System.JSON.Types,FMX.Platform.Win,System.JSON,
   FMX.Memo.Types, FMX.Memo, IdBaseComponent, IdComponent, IdTCPConnection,
-  IdTCPClient, REST.Types, REST.Client, Data.Bind.ObjectScope;
+  IdTCPClient, REST.Types, REST.Client, Data.Bind.ObjectScope, FMX.Effects;
 
 type
   TfrmAbastecimento = class(TfrmCadPadrao)
@@ -217,6 +217,23 @@ type
     Image22: TImage;
     btnIntegracao1: TButton;
     Image21: TImage;
+    Layout9: TLayout;
+    btnAbreImgInicial: TRectangle;
+    Layout21: TLayout;
+    Rectangle23: TRectangle;
+    ImgBombaEdit: TImage;
+    Label45: TLabel;
+    btnImgStop: TRectangle;
+    Layout23: TLayout;
+    Label46: TLabel;
+    Rectangle24: TRectangle;
+    ImgHorimetroEdit: TImage;
+    ShadowEffect1: TShadowEffect;
+    Rectangle17: TRectangle;
+    Layout25: TLayout;
+    Label47: TLabel;
+    Rectangle18: TRectangle;
+    ImgHodometroEdit: TImage;
     procedure FormShow(Sender: TObject);
     procedure btnAddClick(Sender: TObject);
     procedure edtVolumeLitrosChangeTracking(Sender: TObject);
@@ -394,23 +411,40 @@ procedure TfrmAbastecimento.btnEditarClick(Sender: TObject);
 begin
  vListaCheck :=0;
  dmDB.TAbastecimento.Edit;
- edtCentroCusto.Text       := dmDB.TAbastecimentocentrocustonome.AsString;
- vIdCerntroCusto           := dmDB.TAbastecimentoidcentrocusto.AsString;
-// edtAtividade.Text         := dmDB.TAbastecimentoAtividade.AsString;
- vIdAtividade              := dmDB.TAbastecimentoidAtividade.AsString;
- edtDataAbastecimento.Date := dmDB.TAbastecimentodataabastecimento.AsDateTime;
- vIdLocalEstoque           := dmDB.TAbastecimentoidlocalestoque.AsString;
- edtLocalEstoque.text      := dmDB.TAbastecimentolocaldeEstoque.AsString;
- vIdMaquina                := dmDB.TAbastecimentoidmaquina.AsString;
- edtMaquina.Text           := dmDB.TAbastecimentoprefixo.AsString;
- vIdOperador               := dmDB.TAbastecimentoidoperador.AsString;
-// edtOperador.Text          := dmDB.TAbastecimentooperador.AsString;
- edtVolumeLitros.Text      := dmDB.TAbastecimentovolumelt.AsString;
- edtcombustivel.Text       := dmDB.TAbastecimentoproduto.AsString;
- edtHorimetro.Text         := dmDB.TAbastecimentohorimetro.AsString;
- edtKMAtual.Text           := dmDB.TAbastecimentokmatual.AsString;
- edtObs.Text               := dmDB.TAbastecimentoobs.AsString;
- IdCombustivel             := dmDB.TAbastecimentocombustivel.AsString;
+ edtCentroCusto.Text           := dmDB.TAbastecimentocentrocustonome.AsString;
+ vIdCerntroCusto               := dmDB.TAbastecimentoidcentrocusto.AsString;
+ vIdAtividade                  := dmDB.TAbastecimentoidAtividade.AsString;
+ edtDataAbastecimento.Date     := dmDB.TAbastecimentodataabastecimento.AsDateTime;
+ vIdLocalEstoque               := dmDB.TAbastecimentoidlocalestoque.AsString;
+ edtLocalEstoque.text          := dmDB.TAbastecimentolocaldeEstoque.AsString;
+ vIdMaquina                    := dmDB.TAbastecimentoidmaquina.AsString;
+ edtMaquina.Text               := dmDB.TAbastecimentoprefixo.AsString;
+ vIdOperador                   := dmDB.TAbastecimentoidoperador.AsString;
+ edtVolumeLitros.Text          := dmDB.TAbastecimentovolumelt.AsString;
+ edtcombustivel.Text           := dmDB.TAbastecimentoproduto.AsString;
+ edtHorimetro.Text             := dmDB.TAbastecimentohorimetro.AsString;
+ edtKMAtual.Text               := dmDB.TAbastecimentokmatual.AsString;
+ edtObs.Text                   := dmDB.TAbastecimentoobs.AsString;
+ IdCombustivel                 := dmDB.TAbastecimentocombustivel.AsString;
+
+ edtDataAbastecimento.DateTime := dmDB.TAbastecimentodataabastecimento.AsDateTime;
+ edtHoraAbastecimento.Time     := dmDB.TAbastecimentohora.AsDateTime;
+
+ if dmDB.TAbastecimentoimg.AsString.Length>0 then
+   ImgHorimetroEdit.Bitmap.LoadFromUrl(dmDB.TAbastecimentoimg.AsString)
+ else
+   ImgHorimetroEdit.Bitmap := nil;
+
+ if dmDB.TAbastecimentoimg2.AsString.Length>0 then
+   ImgBombaEdit.Bitmap.LoadFromUrl(dmDB.TAbastecimentoimg2.AsString)
+ else
+   ImgBombaEdit.Bitmap := nil;
+
+ if dmDB.TAbastecimentoimg3.AsString.Length>0 then
+   ImgHodometroEdit.Bitmap.LoadFromUrl(dmDB.TAbastecimentoimg3.AsString)
+ else
+   ImgHodometroEdit.Bitmap := nil;
+
  inherited;
 end;
 
@@ -458,7 +492,7 @@ var
  vJoGet      : TJSONArray;
  I           : Integer;
 begin
-   URL       :=  'http://172.16.1.208:8030/rest/wsabastecimento/v1/incluir';
+   URL       :=  'http://172.16.1.206:8030/rest/wsabastecimento/v1/incluir';
    if dmdb.TAbastecimento.IsEmpty then
    begin
      MyShowMessage('Filtre os dados antes!',false);
@@ -1063,15 +1097,6 @@ begin
            img := TListItemImage(Objects.FindDrawable('Image31'));
            img.Bitmap := imgMaps.Bitmap;
 
-//           img := TListItemImage(Objects.FindDrawable('Image32'));
-//           img.Bitmap := imgDowload.Bitmap;
-//
-//           img := TListItemImage(Objects.FindDrawable('Image33'));
-//           img.Bitmap := imgDowload.Bitmap;
-//
-//           img := TListItemImage(Objects.FindDrawable('Image34'));
-//           img.Bitmap := imgDowload.Bitmap;
-
            img := TListItemImage(Objects.FindDrawable('Image38'));
            img.Bitmap := imgEdit.Bitmap;
            txt      := TListItemText(Objects.FindDrawable('Text41'));
@@ -1164,8 +1189,6 @@ begin
                procedure()
                begin
                 urlBomba := dmDB.TAbastecimentoimg.AsString;
-//                if CheckFileOnlineExists(urlBomba) then
-//                begin
                   try
                    imgCarregaImagem:= TImage.Create(vLayout);
                    imgCarregaImagem.Name := 'Bomba_'+dmDB.TAbastecimentoid.asstring;
@@ -1178,7 +1201,6 @@ begin
                     ShowMessage('Erro ao carregar :'+urlBomba+#13+
                      E.Message)
                   end;
-//                end;
                end);
              end;
            end
@@ -1199,8 +1221,6 @@ begin
              procedure()
              begin
               urlHorimetro := dmDB.TAbastecimentoimg2.AsString;
-//              if CheckFileOnlineExists(urlHorimetro) then
-//              begin
                 try
                  imgCarregaImagem:= TImage.Create(vLayout);
                  imgCarregaImagem.Name := 'Horimetro_'+dmDB.TAbastecimentoid.asstring;
@@ -1214,7 +1234,6 @@ begin
                    ShowMessage('Erro ao carregar :'+urlHorimetro+#13+
                     E.Message)
                 end;
-//              end;
              end);
             end;
            end
@@ -1235,8 +1254,6 @@ begin
               procedure()
               begin
                urlKM :=dmDB.TAbastecimentoimg3.AsString;
-//               if CheckFileOnlineExists(urlKM) then
-//               begin
                  try
                   imgCarregaImagem:= TImage.Create(vLayout);
                   imgCarregaImagem.Name := 'KM_'+dmDB.TAbastecimentoid.asstring;
@@ -1249,7 +1266,6 @@ begin
                    ShowMessage('Erro ao carregar :'+urlKM+#13+
                     E.Message)
                  end
-//               end;
               end);
             end;
            end
@@ -1311,8 +1327,10 @@ begin
 
   vImgBombaLista          := TAppearanceListViewItem(ListaFotos.Selected).Objects.FindObjectT<TListItemImage>
    ('Image2').TagString;
+
   vImgHorimetroLista      := TAppearanceListViewItem(ListaFotos.Selected).Objects.FindObjectT<TListItemImage>
    ('Image3').TagString;
+
   vImgKMLista             := TAppearanceListViewItem(ListaFotos.Selected).Objects.FindObjectT<TListItemImage>
    ('Image4').TagString;
 
@@ -1435,6 +1453,22 @@ begin
       edtKMAtual.Text           := dmDB.TAbastecimentokmatual.AsString;
       edtObs.Text               := dmDB.TAbastecimentoobs.AsString;
       IdCombustivel             := dmDB.TAbastecimentocombustivel.AsString;
+
+      if dmDB.TAbastecimentoimg.AsString.Length>0 then
+        ImgHorimetroEdit.Bitmap.LoadFromUrl(dmDB.TAbastecimentoimg.AsString)
+      else
+        ImgHorimetroEdit.Bitmap := nil;
+
+      if dmDB.TAbastecimentoimg2.AsString.Length>0 then
+        ImgBombaEdit.Bitmap.LoadFromUrl(dmDB.TAbastecimentoimg2.AsString)
+      else
+        ImgBombaEdit.Bitmap     := nil;
+
+      if dmDB.TAbastecimentoimg3.AsString.Length>0 then
+        ImgHodometroEdit.Bitmap.LoadFromUrl(dmDB.TAbastecimentoimg3.AsString)
+      else
+        ImgHodometroEdit.Bitmap := nil;
+
       MudarAba(tbiCad,sender);
     end;
   end;
