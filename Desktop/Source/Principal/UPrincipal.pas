@@ -211,6 +211,12 @@ type
     TreeViewItem3: TTreeViewItem;
     Image44: TImage;
     Rectangle14: TRectangle;
+    TreeProdutoProd: TTreeViewItem;
+    Image45: TImage;
+    TreeProducao: TTreeViewItem;
+    Image46: TImage;
+    TreeApontamentos: TTreeViewItem;
+    Image47: TImage;
     procedure FormShow(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure btnEntrarClick(Sender: TObject);
@@ -272,6 +278,7 @@ type
     procedure TreeViewItem3Click(Sender: TObject);
     procedure Image42Click(Sender: TObject);
     procedure cbxTipoRelatorioChange(Sender: TObject);
+    procedure TreeProdutoProdClick(Sender: TObject);
   private
     vWebBrowser:TWebBrowser;
     procedure ReCreateBrowser(URL: STRING);
@@ -968,10 +975,24 @@ begin
   end;
 end;
 
+procedure TfrmPrincipal.TreeProdutoProdClick(Sender: TObject);
+begin
+ frmCadProdutos := TfrmCadProdutos.Create(Self);
+  try
+    frmCadProdutos.vTipo    :=1;
+    layMnuPrincipal.Opacity :=0;
+    frmCadProdutos.ShowModal;
+  finally
+    AnimationPrincipal.Start;
+    frmCadProdutos.Free;
+  end;
+end;
+
 procedure TfrmPrincipal.TreeProdutosClick(Sender: TObject);
 begin
   frmCadProdutos := TfrmCadProdutos.Create(Self);
   try
+    frmCadProdutos.vTipo    :=0;
     layMnuPrincipal.Opacity :=0;
     frmCadProdutos.ShowModal;
   finally

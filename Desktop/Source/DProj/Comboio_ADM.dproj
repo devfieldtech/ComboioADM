@@ -342,6 +342,10 @@
             <Form>frmManutencao</Form>
         </DCCReference>
         <DCCReference Include="..\Util\fOpen.pas"/>
+        <DCCReference Include="..\Apontamento\UApontamento.pas">
+            <Form>frmCadApontamento</Form>
+            <FormType>fmx</FormType>
+        </DCCReference>
         <BuildConfiguration Include="Debug">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>
@@ -400,6 +404,12 @@
                     <Platform Name="Win32">
                         <RemoteDir>Assets\</RemoteDir>
                         <RemoteName>Logo44x44.png</RemoteName>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="..\..\..\Deploy\Comboio_ADM.exe" Configuration="Debug" Class="ProjectOutput">
+                    <Platform Name="Win32">
+                        <RemoteName>Comboio_ADM.exe</RemoteName>
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>

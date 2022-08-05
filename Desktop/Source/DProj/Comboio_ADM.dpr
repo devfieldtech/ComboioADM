@@ -39,7 +39,8 @@ uses
   UdmManutencao in '..\dmDB\UdmManutencao.pas' {dmManutencao: TDataModule},
   UModeloMaquina in '..\Maquinas\Modelo\UModeloMaquina.pas' {frmCadModeloMaquina},
   UManutencao in '..\Manutencao\UManutencao.pas' {frmManutencao},
-  fOpen in '..\Util\fOpen.pas';
+  fOpen in '..\Util\fOpen.pas',
+  UApontamento in '..\Apontamento\UApontamento.pas' {frmCadApontamento};
 
 {$R *.res}
 
@@ -52,5 +53,6 @@ begin
   Application.CreateForm(TdmDash, dmDash);
   Application.CreateForm(TdmReport2, dmReport2);
   Application.CreateForm(TdmManutencao, dmManutencao);
+  Application.CreateForm(TfrmCadApontamento, frmCadApontamento);
   Application.Run;
 end.

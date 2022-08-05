@@ -510,6 +510,42 @@ type
     TAbastecimentousuarinome: TWideStringField;
     TAbastecimentoid_erp_centrocusto: TIntegerField;
     TAbastecimentoid_erp_local_estoque: TIntegerField;
+    TProdutosproducao: TIntegerField;
+    TApontamento: TFDQuery;
+    TApontamentoid: TIntegerField;
+    TApontamentostatus: TIntegerField;
+    TApontamentodatareg: TSQLTimeStampField;
+    TApontamentoidusuario: TIntegerField;
+    TApontamentodataalteracao: TSQLTimeStampField;
+    TApontamentodataoperacao: TDateField;
+    TApontamentoidusuarioalteracao: TIntegerField;
+    TApontamentoidcentrocusto: TIntegerField;
+    TApontamentoidescavadeira: TIntegerField;
+    TApontamentoidproduto: TIntegerField;
+    TApontamentoaplicacaoproduto: TWideStringField;
+    TApontamentokmatualescavadeira: TWideStringField;
+    TApontamentoobservacao: TWideStringField;
+    TApontamentomaquina: TWideStringField;
+    TApontamentocentrocusto: TWideStringField;
+    TApontamentoprodutos: TWideStringField;
+    TApontamentoValores: TFDQuery;
+    TApontamentoValoresid: TIntegerField;
+    TApontamentoValoresstatus: TIntegerField;
+    TApontamentoValoresdatareg: TSQLTimeStampField;
+    TApontamentoValoresidusuario: TIntegerField;
+    TApontamentoValoresdataalteracao: TSQLTimeStampField;
+    TApontamentoValoresdataoperacao: TDateField;
+    TApontamentoValoreshoraoperacao: TTimeField;
+    TApontamentoValoresidusuarioalteracao: TIntegerField;
+    TApontamentoValoresidapontamento: TIntegerField;
+    TApontamentoValoresidmaquina: TIntegerField;
+    TApontamentoValoreslatitude: TFMTBCDField;
+    TApontamentoValoreslongitude: TFMTBCDField;
+    TApontamentoValorestipoidentificacaomaquina: TIntegerField;
+    TApontamentoValoresimgveiculo: TBlobField;
+    TApontamentoValoresobservacao: TWideStringField;
+    TApontamentoValoresmaquina: TWideStringField;
+    dsApontamento: TDataSource;
     procedure TUsuarioReconcileError(DataSet: TFDDataSet; E: EFDException;
       UpdateKind: TFDDatSRowState; var Action: TFDDAptReconcileAction);
     procedure TAuxMarcaReconcileError(DataSet: TFDDataSet; E: EFDException;
@@ -571,6 +607,7 @@ type
     function  VerificaModeloPlano(idModelo,idPLano:string):boolean;
     procedure ChecaItem(idItem,tipo: string);
     procedure CopyChecklist;
+    procedure AbreApontamento(vFiltro:String);
 end;
 
 var
@@ -978,6 +1015,26 @@ begin
    Add('left join compartimentolubricficacao c on c.id=l.idcompartimento');
    Add('where l.status=1');
    Add('and l.idlubrificacao='+vIdLubrificacao);
+   Open;
+ end;
+end;
+
+procedure Tdmdb.AbreApontamento(vFiltro: String);
+begin
+ with TApontamento,TApontamento.SQL do
+ begin
+   Clear;
+   Add('select');
+   Add(' a.*,');
+   Add(' m.prefixo Maquina,');
+   Add(' c.nome CentroCusto,');
+   Add(' p.nome Produtos');
+   Add('from apontamento a');
+   Add('join maquinaveiculo m on a.idescavadeira=m.id');
+   Add('join centrocusto    c on c.id=a.idproduto');
+   Add('join produtos       p on a.idproduto=p.id');
+   Add('where a.status=1');
+   Add(vFiltro);
    Open;
  end;
 end;

@@ -1,23 +1,25 @@
 object dmdb: Tdmdb
   OldCreateOrder = False
   Height = 582
-  Width = 689
+  Width = 756
   object FDConPG: TFDConnection
     Params.Strings = (
-      'Server=bdcomboio.chhbmii57c8o.us-east-2.rds.amazonaws.com'
+      'Server=127.0.0.1'
       'User_Name=postgres'
-      'Password=SoloDev#110485'
+      'Password=Dev#110485'
       'Pooled='
-      'Database=FuelManager'
+      'Database=ComboioNew'
       'DriverID=PG')
     ResourceOptions.AssignedValues = [rvAutoReconnect]
     ResourceOptions.AutoReconnect = True
+    Connected = True
     LoginPrompt = False
     OnLost = FDConPGLost
     Left = 21
     Top = 8
   end
   object PgDriverLink: TFDPhysPgDriverLink
+    VendorLib = 'E:\Projetos2021\ComboioADM\Deploy\libpq.dll'
     Left = 21
     Top = 80
   end
@@ -455,6 +457,10 @@ object dmdb: Tdmdb
     object TProdutosiderp: TIntegerField
       FieldName = 'iderp'
       Origin = 'iderp'
+    end
+    object TProdutosproducao: TIntegerField
+      FieldName = 'producao'
+      Origin = 'producao'
     end
   end
   object TMaquinas: TFDQuery
@@ -2613,5 +2619,194 @@ object dmdb: Tdmdb
       Origin = 'tableendpoints3'
       Size = 1000
     end
+  end
+  object TApontamento: TFDQuery
+    Connection = FDConPG
+    SQL.Strings = (
+      'select '
+      ' a.*,'
+      ' m.prefixo Maquina,'
+      ' c.nome CentroCusto,'
+      ' p.nome Produtos'
+      'from apontamento a'
+      'join maquinaveiculo m on a.idescavadeira=m.id '
+      'join centrocusto    c on c.id=a.idproduto  '
+      'join produtos       p on a.idproduto=p.id '
+      'where a.status=1')
+    Left = 480
+    Top = 400
+    object TApontamentoid: TIntegerField
+      FieldName = 'id'
+      Origin = 'id'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+    end
+    object TApontamentostatus: TIntegerField
+      FieldName = 'status'
+      Origin = 'status'
+    end
+    object TApontamentodatareg: TSQLTimeStampField
+      FieldName = 'datareg'
+      Origin = 'datareg'
+    end
+    object TApontamentoidusuario: TIntegerField
+      FieldName = 'idusuario'
+      Origin = 'idusuario'
+    end
+    object TApontamentodataalteracao: TSQLTimeStampField
+      FieldName = 'dataalteracao'
+      Origin = 'dataalteracao'
+    end
+    object TApontamentodataoperacao: TDateField
+      FieldName = 'dataoperacao'
+      Origin = 'dataoperacao'
+    end
+    object TApontamentoidusuarioalteracao: TIntegerField
+      FieldName = 'idusuarioalteracao'
+      Origin = 'idusuarioalteracao'
+    end
+    object TApontamentoidcentrocusto: TIntegerField
+      FieldName = 'idcentrocusto'
+      Origin = 'idcentrocusto'
+    end
+    object TApontamentoidescavadeira: TIntegerField
+      FieldName = 'idescavadeira'
+      Origin = 'idescavadeira'
+    end
+    object TApontamentoidproduto: TIntegerField
+      FieldName = 'idproduto'
+      Origin = 'idproduto'
+    end
+    object TApontamentoaplicacaoproduto: TWideStringField
+      FieldName = 'aplicacaoproduto'
+      Origin = 'aplicacaoproduto'
+      Size = 50
+    end
+    object TApontamentokmatualescavadeira: TWideStringField
+      FieldName = 'kmatualescavadeira'
+      Origin = 'kmatualescavadeira'
+      Size = 50
+    end
+    object TApontamentoobservacao: TWideStringField
+      FieldName = 'observacao'
+      Origin = 'observacao'
+      Size = 100
+    end
+    object TApontamentomaquina: TWideStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'maquina'
+      Origin = 'maquina'
+    end
+    object TApontamentocentrocusto: TWideStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'centrocusto'
+      Origin = 'centrocusto'
+      Size = 50
+    end
+    object TApontamentoprodutos: TWideStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'produtos'
+      Origin = 'produtos'
+      Size = 50
+    end
+  end
+  object TApontamentoValores: TFDQuery
+    IndexFieldNames = 'idapontamento'
+    MasterSource = dsApontamento
+    MasterFields = 'id'
+    DetailFields = 'idapontamento'
+    Connection = FDConPG
+    SQL.Strings = (
+      'select '
+      ' a.*,'
+      ' m.prefixo Maquina'
+      'from apontamentoValores a'
+      'join maquinaveiculo m on a.idmaquina=m.id '
+      'where a.status=1'
+      'and idapontamento=:id')
+    Left = 480
+    Top = 456
+    ParamData = <
+      item
+        Name = 'ID'
+        DataType = ftInteger
+        ParamType = ptInput
+        Value = Null
+      end>
+    object TApontamentoValoresid: TIntegerField
+      FieldName = 'id'
+      Origin = 'id'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+    end
+    object TApontamentoValoresstatus: TIntegerField
+      FieldName = 'status'
+      Origin = 'status'
+    end
+    object TApontamentoValoresdatareg: TSQLTimeStampField
+      FieldName = 'datareg'
+      Origin = 'datareg'
+    end
+    object TApontamentoValoresidusuario: TIntegerField
+      FieldName = 'idusuario'
+      Origin = 'idusuario'
+    end
+    object TApontamentoValoresdataalteracao: TSQLTimeStampField
+      FieldName = 'dataalteracao'
+      Origin = 'dataalteracao'
+    end
+    object TApontamentoValoresdataoperacao: TDateField
+      FieldName = 'dataoperacao'
+      Origin = 'dataoperacao'
+    end
+    object TApontamentoValoreshoraoperacao: TTimeField
+      FieldName = 'horaoperacao'
+      Origin = 'horaoperacao'
+    end
+    object TApontamentoValoresidusuarioalteracao: TIntegerField
+      FieldName = 'idusuarioalteracao'
+      Origin = 'idusuarioalteracao'
+    end
+    object TApontamentoValoresidapontamento: TIntegerField
+      FieldName = 'idapontamento'
+      Origin = 'idapontamento'
+    end
+    object TApontamentoValoresidmaquina: TIntegerField
+      FieldName = 'idmaquina'
+      Origin = 'idmaquina'
+    end
+    object TApontamentoValoreslatitude: TFMTBCDField
+      FieldName = 'latitude'
+      Origin = 'latitude'
+      Precision = 9
+      Size = 6
+    end
+    object TApontamentoValoreslongitude: TFMTBCDField
+      FieldName = 'longitude'
+      Origin = 'longitude'
+      Precision = 9
+      Size = 6
+    end
+    object TApontamentoValorestipoidentificacaomaquina: TIntegerField
+      FieldName = 'tipoidentificacaomaquina'
+      Origin = 'tipoidentificacaomaquina'
+    end
+    object TApontamentoValoresimgveiculo: TBlobField
+      FieldName = 'imgveiculo'
+      Origin = 'imgveiculo'
+    end
+    object TApontamentoValoresobservacao: TWideStringField
+      FieldName = 'observacao'
+      Origin = 'observacao'
+      Size = 100
+    end
+    object TApontamentoValoresmaquina: TWideStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'maquina'
+      Origin = 'maquina'
+    end
+  end
+  object dsApontamento: TDataSource
+    DataSet = TApontamento
+    Left = 560
+    Top = 432
   end
 end

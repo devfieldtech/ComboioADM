@@ -40,18 +40,16 @@ type
     cbxTipo: TComboBox;
     edtNome: TEdit;
     ClearEditButton8: TClearEditButton;
-    Layout7: TLayout;
+    layProdutoNaoProd: TLayout;
     Rectangle3: TRectangle;
     Layout8: TLayout;
     Layout9: TLayout;
     Label10: TLabel;
     Label14: TLabel;
     Label6: TLabel;
-    Label17: TLabel;
     edtCodBarras: TEdit;
     edtCodigoFabricante: TEdit;
     edtEstoqueMin: TEdit;
-    cbxUnidadeMedida: TComboBox;
     Layout11: TLayout;
     Label20: TLabel;
     edtCodFabF: TEdit;
@@ -64,6 +62,8 @@ type
     Label4: TLabel;
     edtIdErp: TEdit;
     ClearEditButton13: TClearEditButton;
+    Label17: TLabel;
+    cbxUnidadeMedida: TComboBox;
     procedure FormShow(Sender: TObject);
     procedure edtEstoqueMinKeyDown(Sender: TObject; var Key: Word;
       var KeyChar: Char; Shift: TShiftState);
@@ -92,6 +92,7 @@ type
     Keys:string;
     procedure LimpaCampos;
   public
+    vTipo:integer;
     vIdCategoriaF,vIdSegmento,vIdGrupoF,vIdSubGrupoF,vIdMarcaF,
     vIdSessao,vIdGrupo,vIdSubGrupo,vIdMarca:string;
     procedure CarregaCombos;
@@ -115,18 +116,15 @@ var
  vFiltro:string;
 begin
  vFiltrado :=0;
- vFiltro   :='';
+ vFiltro   :='AND PRODUCAO='+intToStr(vTipo);
  dmdb.TUsuario.Filtered := false;
+
  if edtNomeFiltro.Text.Length>0 then
- begin
-   vFiltrado :=1;
-   vFiltro := 'AND NOME LIKE '+QuotedStr('%'+edtNomeFiltro.Text+'%');
- end;
+   vFiltro := vFiltro+ 'AND NOME LIKE '+QuotedStr('%'+edtNomeFiltro.Text+'%');
+
  if edtCodFabF.Text.Length>0 then
- begin
    vFiltro := vFiltro+' and codigofabricante LIKE '+QuotedStr('%'+edtCodFabF.Text+'%');
-   vFiltrado :=1;
- end;
+
  dmdb.AbreProdutos(vFiltro);
  lblFoterCout.Text := intToStr(StringGrid1.RowCount);
 end;
@@ -181,6 +179,7 @@ begin
  dmdb.TProdutosEstoqueMinimo.AsString       := edtEstoqueMin.Text;
  dmdb.TProdutosCodigoBarras.AsString        := edtCodBarras.Text;
  dmdb.TProdutostipo.AsInteger               := cbxTipo.ItemIndex;
+ dmdb.TProdutosproducao.AsInteger           := vTipo;
  if edtIdErp.Text.Length>0 then
   dmdb.TMaquinasiderp.AsString              := edtIdErp.Text;
  try
@@ -223,6 +222,18 @@ procedure TfrmCadProdutos.btnEditarClick(Sender: TObject);
 var
  Stream : TMemoryStream;
 begin
+   if vTipo=0 then
+   begin
+    cbxTipo.Enabled              := true;
+    cbxTipo.ItemIndex            :=-1;
+   end;
+   if vTipo=1 then
+   begin
+    cbxTipo.Enabled              := false;
+    cbxTipo.ItemIndex            :=3;
+   end;
+   layProdutoNaoProd.Visible    := vTipo=0;
+
   edtNome.Text               := dmdb.TProdutosNome.AsString;
   edtEstoqueMin.Text         := dmdb.TProdutosEstoqueMinimo.AsString;
   edtCodBarras.Text          := dmdb.TProdutosCodigoBarras.AsString;
@@ -326,7 +337,13 @@ end;
 
 procedure TfrmCadProdutos.FormShow(Sender: TObject);
 begin
-  dmdb.AbreProdutos('');
+  if vTipo=0 then
+   lblCad.Text := 'Cadastro de Produtos';
+
+  if vTipo=1 then
+   lblCad.Text := 'Cadastro de Produtos de Produção';
+
+  Filtro;
   lblFoterCout.Text := intToStr(StringGrid1.RowCount);
   inherited;
 end;
@@ -340,10 +357,23 @@ procedure TfrmCadProdutos.LimpaCampos;
 begin
  edtCodigoFabricante.Text     :='';
  edtNome.Text                 :='';
- cbxTipo.ItemIndex        :=-1;
+ cbxTipo.ItemIndex            :=-1;
  cbxUnidadeMedida.ItemIndex   :=-1;
  edtEstoqueMin.Text           :='';
  edtCodBarras.Text            :='';
+
+ if vTipo=0 then
+ begin
+  cbxTipo.Enabled              := true;
+  cbxTipo.ItemIndex            :=-1;
+ end;
+ if vTipo=1 then
+ begin
+  cbxTipo.Enabled              := false;
+  cbxTipo.ItemIndex            :=3;
+ end;
+ layProdutoNaoProd.Visible    := vTipo=0;
+
 end;
 
 procedure TfrmCadProdutos.btnBuscarFiltroClick(Sender: TObject);
