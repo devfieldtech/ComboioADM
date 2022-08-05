@@ -9,7 +9,7 @@ uses
   FireDAC.Comp.DataSet, FireDAC.Comp.Client, ppParameter, ppDesignLayer,
   ppCtrls, ppBands, ppVar, Vcl.Imaging.jpeg, ppPrnabl, ppClass, ppCache, ppProd,
   ppReport, ppDB, ppComm, ppRelatv, ppDBPipe, Vcl.Imaging.pngimage, ppStrtch,
-  ppMemo,FMX.Graphics,Soap.EncdDecd,FMX.Objects;
+  ppMemo,FMX.Graphics,Soap.EncdDecd,FMX.Objects, myChkBox;
 
 type
   TdmReport = class(TDataModule)
@@ -807,6 +807,79 @@ type
     ppShape6: TppShape;
     ppLabel4: TppLabel;
     ppDBCalc1: TppDBCalc;
+    ppRepApontamento: TppReport;
+    ppHeaderBand4: TppHeaderBand;
+    ppShape8: TppShape;
+    ppLabel54: TppLabel;
+    ppImage16: TppImage;
+    ppShape15: TppShape;
+    ppLabel131: TppLabel;
+    ppDBText47: TppDBText;
+    ppLabel135: TppLabel;
+    ppDBText90: TppDBText;
+    ppLabel136: TppLabel;
+    ppDBText95: TppDBText;
+    ppDBText96: TppDBText;
+    ppLabel137: TppLabel;
+    ppLabel138: TppLabel;
+    ppDetailBand4: TppDetailBand;
+    ppLine9: TppLine;
+    ppDBText103: TppDBText;
+    ppFooterBand4: TppFooterBand;
+    ppLine10: TppLine;
+    ppSummaryBand3: TppSummaryBand;
+    ppShape23: TppShape;
+    ppLabel139: TppLabel;
+    ppDesignLayers4: TppDesignLayers;
+    ppDesignLayer4: TppDesignLayer;
+    ppParameterList4: TppParameterList;
+    ppDBPApontamento: TppDBPipeline;
+    dsApontamento: TDataSource;
+    ppLabel142: TppLabel;
+    myCheckDiurno: TmyCheckBox;
+    ppLabel143: TppLabel;
+    ppLabel146: TppLabel;
+    myCheckNoturno: TmyCheckBox;
+    ppLine37: TppLine;
+    ppLabel147: TppLabel;
+    ppDBText104: TppDBText;
+    ppLabel148: TppLabel;
+    ppDBText105: TppDBText;
+    ppLabel151: TppLabel;
+    ppShape39: TppShape;
+    ppDBMemo1: TppDBMemo;
+    ppLabel77: TppLabel;
+    ppLabel74: TppLabel;
+    ppDBText97: TppDBText;
+    ppDBText98: TppDBText;
+    ppColumnHeaderBand1: TppColumnHeaderBand;
+    ppColumnFooterBand1: TppColumnFooterBand;
+    ppSystemVariable7: TppSystemVariable;
+    ppSystemVariable8: TppSystemVariable;
+    TApontamento: TFDQuery;
+    TApontamentoid: TIntegerField;
+    TApontamentostatus: TIntegerField;
+    TApontamentodatareg: TSQLTimeStampField;
+    TApontamentoidusuario: TIntegerField;
+    TApontamentodataalteracao: TSQLTimeStampField;
+    TApontamentodataoperacao: TDateField;
+    TApontamentoidusuarioalteracao: TIntegerField;
+    TApontamentoidcentrocusto: TIntegerField;
+    TApontamentoidescavadeira: TIntegerField;
+    TApontamentoidproduto: TIntegerField;
+    TApontamentoaplicacaoproduto: TWideStringField;
+    TApontamentokmatualescavadeira: TWideStringField;
+    TApontamentoobservacao: TWideStringField;
+    TApontamentomaquina: TWideStringField;
+    TApontamentocentrocusto: TWideStringField;
+    TApontamentoprodutos: TWideStringField;
+    TApontamentohorainicio: TTimeField;
+    TApontamentoitem: TLargeintField;
+    TApontamentohoraoperacao: TTimeField;
+    TApontamentomaquinaapontamento: TWideStringField;
+    ppLabel124: TppLabel;
+    ppDBText99: TppDBText;
+    pplblTotalViagens: TppLabel;
     procedure ppGroupFooterBand6BeforePrint(Sender: TObject);
     procedure ppDetailBand14BeforeGenerate(Sender: TObject);
     procedure imgStartPrint(Sender: TObject);
@@ -830,6 +903,7 @@ type
     procedure ReportConsumoMaquinaDia(DataIni, DataFim:TDate;IdMaquina:string);
     procedure AbreLubrificacao(vFiltro:string);
     procedure AbreAbastecimento(vFiltro: string);
+    procedure AbreApontamento(vFiltro:String);
   end;
 
 var
@@ -1007,6 +1081,37 @@ begin
   finally
     Input.Free;
   end;
+end;
+
+procedure TdmReport.AbreApontamento(vFiltro: String);
+begin
+ with TApontamento,TApontamento.SQL do
+ begin
+   Clear;
+   Add('select');
+   Add(' a.*,');
+   Add(' m.prefixo Maquina,');
+   Add(' c.nome CentroCusto,');
+   Add(' p.nome Produtos,');
+   Add(' case');
+   Add('   when mv.prefixo is not null then');
+   Add('    ROW_NUMBER () OVER (ORDER BY v.id)');
+   Add('   else');
+   Add('    null');
+   Add('  end item, ');
+   Add(' v.horaoperacao,');
+   Add(' mv.prefixo MaquinaApontamento');
+   Add('from apontamento a');
+   Add('join maquinaveiculo m on a.idescavadeira=m.id');
+   Add('join centrocusto    c on c.id=a.idCentroCusto');
+   Add('join produtos       p on a.idproduto=p.id');
+   Add('left join apontamentoValores v on v.idapontamento=a.id and v.status=1');
+   Add('left join maquinaveiculo mv on v.idmaquina=mv.id');
+   Add('where a.status=1');
+   Add(vFiltro);
+   Open;
+   dmReport.ppRepApontamento.PrintReport;
+ end;
 end;
 
 procedure TdmReport.AbreExtratoBomba(idComb, NomeCOmb, DataIni,

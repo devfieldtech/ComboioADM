@@ -418,6 +418,7 @@ Coordinates=1356,3026,97,36
 
 [dmDB.TProdutos]
 Coordinates=768,2286,113,410
+Visible=False
 
 [layBaseMSG]
 Coordinates=1356,3081,89,36

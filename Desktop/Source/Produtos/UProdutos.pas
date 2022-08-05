@@ -181,11 +181,11 @@ begin
  dmdb.TProdutostipo.AsInteger               := cbxTipo.ItemIndex;
  dmdb.TProdutosproducao.AsInteger           := vTipo;
  if edtIdErp.Text.Length>0 then
-  dmdb.TMaquinasiderp.AsString              := edtIdErp.Text;
+  dmdb.TProdutosiderp.AsString              := edtIdErp.Text;
  try
   dmdb.TProdutos.ApplyUpdates(-1);
   MyShowMessage('Produto Cadastrado com Sucesso!',false);
-  dmdb.AbreProdutos('');
+  Filtro;
   lblFoterCout.Text := intToStr(StringGrid1.RowCount);
   CarregaCombos;
   MudarAba(tbiLista,sender);

@@ -4,3 +4,9 @@ Visible=False
 [dmdb.TLubrificacaoprodutos]
 Visible=False
 
+[dmdb.TApontamento]
+Visible=False
+
+[dmdb.TApontamentoValores]
+Visible=False
+

@@ -204,3 +204,6 @@ Coordinates=660,359,119,339
 [dmdb.TApontamentoValores]
 Visible=False
 
+[dmdb.TProdutos]
+Visible=False
+

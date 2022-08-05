@@ -10,7 +10,7 @@ uses
   FMX.Effects, System.Notification, FMX.ScrollBox, FMX.Memo, FMX.WebBrowser,
   shellapi, FMX.Memo.Types, View.WebCharts,Charts.Types, FMX.DateTimeCtrls,
   System.Math.Vectors, FMX.Controls3D, FMX.Layers3D, UManutencao,
-  fOpen, FMX.ListBox, UdmReport2;
+  fOpen, FMX.ListBox, UdmReport2, UApontamento;
 
 type
   TfrmPrincipal = class(TForm)
@@ -279,6 +279,7 @@ type
     procedure Image42Click(Sender: TObject);
     procedure cbxTipoRelatorioChange(Sender: TObject);
     procedure TreeProdutoProdClick(Sender: TObject);
+    procedure TreeApontamentosClick(Sender: TObject);
   private
     vWebBrowser:TWebBrowser;
     procedure ReCreateBrowser(URL: STRING);
@@ -1103,9 +1104,21 @@ begin
   end;
 end;
 
+procedure TfrmPrincipal.TreeApontamentosClick(Sender: TObject);
+begin
+  frmCadApontamento := TfrmCadApontamento.Create(Self);
+  try
+    layMnuPrincipal.Opacity :=0;
+    frmCadApontamento.ShowModal;
+  finally
+    AnimationPrincipal.Start;
+    frmCadApontamento.Free;
+  end;
+end;
+
 procedure TfrmPrincipal.TreeAuxAtividadeClick(Sender: TObject);
 begin
-   frmAuxAtividadeAbastecimento := TfrmAuxAtividadeAbastecimento.Create(Self);
+  frmAuxAtividadeAbastecimento := TfrmAuxAtividadeAbastecimento.Create(Self);
   try
     layMnuPrincipal.Opacity :=0;
     frmAuxAtividadeAbastecimento.ShowModal;

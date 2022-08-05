@@ -8,7 +8,7 @@ object dmdb: Tdmdb
       'User_Name=postgres'
       'Password=Dev#110485'
       'Pooled='
-      'Database=ComboioNew'
+      'Database=ComboioADM_Apontamento'
       'DriverID=PG')
     ResourceOptions.AssignedValues = [rvAutoReconnect]
     ResourceOptions.AutoReconnect = True
@@ -2621,6 +2621,8 @@ object dmdb: Tdmdb
     end
   end
   object TApontamento: TFDQuery
+    CachedUpdates = True
+    OnReconcileError = TApontamentoReconcileError
     Connection = FDConPG
     SQL.Strings = (
       'select '
@@ -2630,7 +2632,7 @@ object dmdb: Tdmdb
       ' p.nome Produtos'
       'from apontamento a'
       'join maquinaveiculo m on a.idescavadeira=m.id '
-      'join centrocusto    c on c.id=a.idproduto  '
+      'join centrocusto    c on c.id=a.idCentroCusto  '
       'join produtos       p on a.idproduto=p.id '
       'where a.status=1')
     Left = 480
@@ -2708,21 +2710,30 @@ object dmdb: Tdmdb
       Origin = 'produtos'
       Size = 50
     end
+    object TApontamentohorainicio: TTimeField
+      FieldName = 'horainicio'
+      Origin = 'horainicio'
+    end
   end
   object TApontamentoValores: TFDQuery
+    Active = True
+    CachedUpdates = True
     IndexFieldNames = 'idapontamento'
     MasterSource = dsApontamento
     MasterFields = 'id'
     DetailFields = 'idapontamento'
+    OnReconcileError = TApontamentoValoresReconcileError
     Connection = FDConPG
     SQL.Strings = (
-      'select '
+      'select'
+      ' ROW_NUMBER () OVER (ORDER BY a.id)Item, '
       ' a.*,'
       ' m.prefixo Maquina'
       'from apontamentoValores a'
       'join maquinaveiculo m on a.idmaquina=m.id '
       'where a.status=1'
-      'and idapontamento=:id')
+      'and idapontamento=:id'
+      'order by a.horaoperacao ')
     Left = 480
     Top = 456
     ParamData = <
@@ -2730,7 +2741,7 @@ object dmdb: Tdmdb
         Name = 'ID'
         DataType = ftInteger
         ParamType = ptInput
-        Value = Null
+        Value = 1
       end>
     object TApontamentoValoresid: TIntegerField
       FieldName = 'id'
@@ -2802,6 +2813,16 @@ object dmdb: Tdmdb
       AutoGenerateValue = arDefault
       FieldName = 'maquina'
       Origin = 'maquina'
+    end
+    object TApontamentoValoresimgsyncs3: TIntegerField
+      FieldName = 'imgsyncs3'
+      Origin = 'imgsyncs3'
+    end
+    object TApontamentoValoresitem: TLargeintField
+      AutoGenerateValue = arDefault
+      FieldName = 'item'
+      Origin = 'item'
+      ReadOnly = True
     end
   end
   object dsApontamento: TDataSource

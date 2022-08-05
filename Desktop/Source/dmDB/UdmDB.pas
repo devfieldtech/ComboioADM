@@ -546,6 +546,9 @@ type
     TApontamentoValoresobservacao: TWideStringField;
     TApontamentoValoresmaquina: TWideStringField;
     dsApontamento: TDataSource;
+    TApontamentoValoresimgsyncs3: TIntegerField;
+    TApontamentoValoresitem: TLargeintField;
+    TApontamentohorainicio: TTimeField;
     procedure TUsuarioReconcileError(DataSet: TFDDataSet; E: EFDException;
       UpdateKind: TFDDatSRowState; var Action: TFDDAptReconcileAction);
     procedure TAuxMarcaReconcileError(DataSet: TFDDataSet; E: EFDException;
@@ -568,6 +571,11 @@ type
       E: EFDException; UpdateKind: TFDDatSRowState;
       var Action: TFDDAptReconcileAction);
     procedure FDConPGLost(Sender: TObject);
+    procedure TApontamentoReconcileError(DataSet: TFDDataSet; E: EFDException;
+      UpdateKind: TFDDatSRowState; var Action: TFDDAptReconcileAction);
+    procedure TApontamentoValoresReconcileError(DataSet: TFDDataSet;
+      E: EFDException; UpdateKind: TFDDatSRowState;
+      var Action: TFDDAptReconcileAction);
   private
     function  LerIni(Diretorio,Chave1, Chave2, ValorPadrao: String): String;
   public
@@ -1031,11 +1039,13 @@ begin
    Add(' p.nome Produtos');
    Add('from apontamento a');
    Add('join maquinaveiculo m on a.idescavadeira=m.id');
-   Add('join centrocusto    c on c.id=a.idproduto');
+   Add('join centrocusto    c on c.id=a.idCentroCusto ');
    Add('join produtos       p on a.idproduto=p.id');
    Add('where a.status=1');
    Add(vFiltro);
+   Add('order by a.id desc');
    Open;
+   TApontamentoValores.Open();
  end;
 end;
 
@@ -1425,6 +1435,19 @@ procedure Tdmdb.TAbastecimentoReconcileError(DataSet: TFDDataSet;
   var Action: TFDDAptReconcileAction);
 begin
  ShowMessage(E.Message)
+end;
+
+procedure Tdmdb.TApontamentoReconcileError(DataSet: TFDDataSet; E: EFDException;
+  UpdateKind: TFDDatSRowState; var Action: TFDDAptReconcileAction);
+begin
+ ShowMessage(E.Message)
+end;
+
+procedure Tdmdb.TApontamentoValoresReconcileError(DataSet: TFDDataSet;
+  E: EFDException; UpdateKind: TFDDatSRowState;
+  var Action: TFDDAptReconcileAction);
+begin
+ ShowMessage(E.Message);
 end;
 
 procedure Tdmdb.TAuxGrupoMaquinasReconcileError(DataSet: TFDDataSet;
