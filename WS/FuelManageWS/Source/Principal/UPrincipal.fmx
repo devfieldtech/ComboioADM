@@ -845,18 +845,25 @@ object frmPrincipal: TfrmPrincipal
     Text = 'Sincroniza Img AWS'
     OnClick = Button1Click
   end
+  object Timer1: TTimer
+    Interval = 3600000
+    OnTimer = Timer1Timer
+    Left = 144
+    Top = 216
+  end
   object FDConPG: TFDConnection
     Params.Strings = (
-      'Database=FuelManager'
+      'Database=ComboioADM_Apontamento'
       'User_Name=postgres'
-      'Password=SoloDev#110485'
-      'Server=bdcomboio.chhbmii57c8o.us-east-2.rds.amazonaws.com'
+      'Password=Dev#110485'
+      'Server=127.0.0.1'
       'DriverID=PG')
     LoginPrompt = False
     Left = 240
     Top = 184
   end
   object PgDriverLink: TFDPhysPgDriverLink
+    VendorLib = 'E:\Projetos2021\ComboioADM\Deploy\libpq.dll'
     Left = 240
     Top = 232
   end
@@ -865,11 +872,5 @@ object frmPrincipal: TfrmPrincipal
     HistoryFilename = 'iphist.dat'
     Left = 304
     Top = 224
-  end
-  object Timer1: TTimer
-    Interval = 3600000
-    OnTimer = Timer1Timer
-    Left = 144
-    Top = 216
   end
 end

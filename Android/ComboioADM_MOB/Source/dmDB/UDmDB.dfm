@@ -33,8 +33,8 @@ object dmDB: TdmDB
   object FCon: TFDConnection
     Params.Strings = (
       
-        'Database=E:\Projetos2021\FuelManager\Android\FuelManageAndroid_D' +
-        '4\db\Comboio.db'
+        'Database=E:\Projetos2021\ComboioADM\Android\ComboioADM_MOB\db\Cb' +
+        'Adm1.db'
       'DriverID=SQLite')
     Connected = True
     LoginPrompt = False
@@ -1278,6 +1278,16 @@ object dmDB: TdmDB
       Required = True
       Size = 32767
     end
+    object TUsuarioabastecimento: TIntegerField
+      FieldName = 'abastecimento'
+      Origin = 'abastecimento'
+      Required = True
+    end
+    object TUsuarioapontamento: TIntegerField
+      FieldName = 'apontamento'
+      Origin = 'apontamento'
+      Required = True
+    end
   end
   object TCentroCusto: TFDQuery
     CachedUpdates = True
@@ -2396,6 +2406,220 @@ object dmDB: TdmDB
     object cheklistregrupoitemdescricao: TStringField
       FieldName = 'descricao'
       Size = 200
+    end
+  end
+  object TApontamento: TFDQuery
+    CachedUpdates = True
+    Connection = FCon
+    SQL.Strings = (
+      'select '
+      ' a.*,'
+      ' m.prefixo Maquina,'
+      ' c.nome CentroCusto,'
+      ' p.nome Produtos'
+      'from apontamento a'
+      'join maquinaveiculo m on a.idescavadeira=m.id '
+      'join centrocusto    c on c.id=a.idCentroCusto  '
+      'join produtos       p on a.idproduto=p.id '
+      'where a.status=1')
+    Left = 480
+    Top = 400
+    object TApontamentoid: TFDAutoIncField
+      FieldName = 'id'
+    end
+    object TApontamentostatus: TWideStringField
+      FieldName = 'status'
+      Required = True
+      Size = 32767
+    end
+    object TApontamentodatareg: TWideStringField
+      FieldName = 'datareg'
+      Required = True
+      Size = 32767
+    end
+    object TApontamentoidusuario: TWideStringField
+      FieldName = 'idusuario'
+      Required = True
+      Size = 32767
+    end
+    object TApontamentodataalteracao: TWideStringField
+      FieldName = 'dataalteracao'
+      Size = 32767
+    end
+    object TApontamentodataoperacao: TDateField
+      FieldName = 'dataoperacao'
+      Required = True
+    end
+    object TApontamentoidusuarioalteracao: TWideStringField
+      FieldName = 'idusuarioalteracao'
+      Size = 32767
+    end
+    object TApontamentoidcentrocusto: TWideStringField
+      FieldName = 'idcentrocusto'
+      Required = True
+      Size = 32767
+    end
+    object TApontamentoidescavadeira: TWideStringField
+      FieldName = 'idescavadeira'
+      Required = True
+      Size = 32767
+    end
+    object TApontamentoidproduto: TWideStringField
+      FieldName = 'idproduto'
+      Required = True
+      Size = 32767
+    end
+    object TApontamentoaplicacaoproduto: TStringField
+      FieldName = 'aplicacaoproduto'
+      Size = 50
+    end
+    object TApontamentokmatualescavadeira: TStringField
+      FieldName = 'kmatualescavadeira'
+      Size = 50
+    end
+    object TApontamentoobservacao: TStringField
+      FieldName = 'observacao'
+      Size = 100
+    end
+    object TApontamentohorainicio: TTimeField
+      FieldName = 'horainicio'
+    end
+    object TApontamentoMaquina: TStringField
+      FieldName = 'Maquina'
+      ReadOnly = True
+    end
+    object TApontamentoCentroCusto: TStringField
+      FieldName = 'CentroCusto'
+      ReadOnly = True
+      Size = 50
+    end
+    object TApontamentoProdutos: TStringField
+      FieldName = 'Produtos'
+      ReadOnly = True
+      Size = 50
+    end
+  end
+  object TApontamentoValores: TFDQuery
+    CachedUpdates = True
+    IndexFieldNames = 'idapontamento'
+    MasterFields = 'id'
+    DetailFields = 'idapontamento'
+    Connection = FCon
+    SQL.Strings = (
+      'select'
+      ' ROW_NUMBER () OVER (ORDER BY a.id)Item, '
+      ' a.*,'
+      ' m.prefixo Maquina'
+      'from apontamentoValores a'
+      'join maquinaveiculo m on a.idmaquina=m.id '
+      'where a.status=1'
+      'and idapontamento=1'
+      'order by a.horaoperacao ')
+    Left = 480
+    Top = 456
+    object TApontamentoValoresItem: TWideStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'Item'
+      Origin = 'Item'
+      ProviderFlags = []
+      ReadOnly = True
+      Size = 32767
+    end
+    object TApontamentoValoresid: TFDAutoIncField
+      FieldName = 'id'
+      Origin = 'id'
+      ProviderFlags = [pfInWhere, pfInKey]
+    end
+    object TApontamentoValoresstatus: TWideStringField
+      FieldName = 'status'
+      Origin = 'status'
+      Required = True
+      Size = 32767
+    end
+    object TApontamentoValoresdatareg: TWideStringField
+      FieldName = 'datareg'
+      Origin = 'datareg'
+      Required = True
+      Size = 32767
+    end
+    object TApontamentoValoresidusuario: TWideStringField
+      FieldName = 'idusuario'
+      Origin = 'idusuario'
+      Required = True
+      Size = 32767
+    end
+    object TApontamentoValoresdataalteracao: TWideStringField
+      FieldName = 'dataalteracao'
+      Origin = 'dataalteracao'
+      Size = 32767
+    end
+    object TApontamentoValoresdataoperacao: TDateField
+      FieldName = 'dataoperacao'
+      Origin = 'dataoperacao'
+      Required = True
+    end
+    object TApontamentoValoreshoraoperacao: TTimeField
+      FieldName = 'horaoperacao'
+      Origin = 'horaoperacao'
+      Required = True
+    end
+    object TApontamentoValoresidusuarioalteracao: TWideStringField
+      FieldName = 'idusuarioalteracao'
+      Origin = 'idusuarioalteracao'
+      Size = 32767
+    end
+    object TApontamentoValoresidapontamento: TWideStringField
+      FieldName = 'idapontamento'
+      Origin = 'idapontamento'
+      Required = True
+      Size = 32767
+    end
+    object TApontamentoValoresidmaquina: TWideStringField
+      FieldName = 'idmaquina'
+      Origin = 'idmaquina'
+      Required = True
+      Size = 32767
+    end
+    object TApontamentoValoreslatitude: TFMTBCDField
+      FieldName = 'latitude'
+      Origin = 'latitude'
+      Precision = 9
+      Size = 6
+    end
+    object TApontamentoValoreslongitude: TFMTBCDField
+      FieldName = 'longitude'
+      Origin = 'longitude'
+      Precision = 9
+      Size = 6
+    end
+    object TApontamentoValorestipoidentificacaomaquina: TWideStringField
+      FieldName = 'tipoidentificacaomaquina'
+      Origin = 'tipoidentificacaomaquina'
+      Required = True
+      Size = 32767
+    end
+    object TApontamentoValoresimgveiculo: TWideStringField
+      FieldName = 'imgveiculo'
+      Origin = 'imgveiculo'
+      Size = 32767
+    end
+    object TApontamentoValoresobservacao: TStringField
+      FieldName = 'observacao'
+      Origin = 'observacao'
+      Size = 100
+    end
+    object TApontamentoValoresimgsyncs3: TWideStringField
+      FieldName = 'imgsyncs3'
+      Origin = 'imgsyncs3'
+      Required = True
+      Size = 32767
+    end
+    object TApontamentoValoresMaquina: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'Maquina'
+      Origin = 'prefixo'
+      ProviderFlags = []
+      ReadOnly = True
     end
   end
 end

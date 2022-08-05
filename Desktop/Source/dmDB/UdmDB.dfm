@@ -116,6 +116,14 @@ object dmdb: Tdmdb
       FieldName = 'iderp'
       Origin = 'iderp'
     end
+    object TUsuarioapontamento: TIntegerField
+      FieldName = 'apontamento'
+      Origin = 'apontamento'
+    end
+    object TUsuarioabastecimento: TIntegerField
+      FieldName = 'abastecimento'
+      Origin = 'abastecimento'
+    end
   end
   object TAuxMarca: TFDQuery
     CachedUpdates = True

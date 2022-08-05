@@ -197,15 +197,6 @@
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
         </DeployFile>
-        <DeployFile Include="..\..\img\logo\3636.png" Condition="'$(Config)'=='Debug'">
-            <RemoteDir>ComboioADM_Mob\res\drawable-ldpi\</RemoteDir>
-            <RemoteName>ic_launcher.png</RemoteName>
-            <DeployClass>Android_LauncherIcon36</DeployClass>
-            <Operation>1</Operation>
-            <LocalCommand/>
-            <RemoteCommand/>
-            <Overwrite>True</Overwrite>
-        </DeployFile>
         <DeployFile Include="..\..\..\..\..\FuelManager\Android\Deploy\libComboioADM_Mob.so" Condition="'$(Config)'=='Debug'">
             <RemoteDir>ComboioADM_Mob\library\lib\armeabi-v7a\</RemoteDir>
             <RemoteName>libComboioADM_Mob.so</RemoteName>
@@ -215,6 +206,15 @@
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
             <Required>True</Required>
+        </DeployFile>
+        <DeployFile Include="..\..\img\logo\3636.png" Condition="'$(Config)'=='Debug'">
+            <RemoteDir>ComboioADM_Mob\res\drawable-ldpi\</RemoteDir>
+            <RemoteName>ic_launcher.png</RemoteName>
+            <DeployClass>Android_LauncherIcon36</DeployClass>
+            <Operation>1</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
         </DeployFile>
         <DeployFile Include="$(BDS)\bin\Artwork\Android\FM_NotificationIcon_96x96.png" Condition="'$(Config)'=='Debug'">
             <RemoteDir>ComboioADM_Mob\res\drawable-xxxhdpi\</RemoteDir>
@@ -360,6 +360,15 @@
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
         </DeployFile>
+        <DeployFile Include="..\..\db\CbAdm.db" Condition="'$(Config)'=='Debug'">
+            <RemoteDir>ComboioADM_Mob\assets\internal\</RemoteDir>
+            <RemoteName>CbAdm.db</RemoteName>
+            <DeployClass>ProjectFile</DeployClass>
+            <Operation>0</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
         <DeployFile Include="$(BDS)\bin\Artwork\Android\FM_SplashImage_960x720.png" Condition="'$(Config)'=='Debug'">
             <RemoteDir>ComboioADM_Mob\res\drawable-xlarge\</RemoteDir>
             <RemoteName>splash_image.png</RemoteName>
@@ -419,15 +428,6 @@
             <RemoteName>gdbserver</RemoteName>
             <DeployClass>AndroidGDBServer</DeployClass>
             <Operation>1</Operation>
-            <LocalCommand/>
-            <RemoteCommand/>
-            <Overwrite>True</Overwrite>
-        </DeployFile>
-        <DeployFile Include="..\..\db\Comboio.db" Condition="'$(Config)'=='Debug'">
-            <RemoteDir>ComboioADM_Mob\assets\internal\</RemoteDir>
-            <RemoteName>Comboio.db</RemoteName>
-            <DeployClass>ProjectFile</DeployClass>
-            <Operation>0</Operation>
             <LocalCommand/>
             <RemoteCommand/>
             <Overwrite>True</Overwrite>

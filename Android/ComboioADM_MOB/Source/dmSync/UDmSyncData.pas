@@ -319,6 +319,8 @@ type
     detcheklistRealizadonaoseaplica: TBooleanField;
     cheklistRealizadoobservasao: TStringField;
     TMaquinasidmodelo: TIntegerField;
+    TUsuarioabastecimento: TIntegerField;
+    TUsuarioapontamento: TIntegerField;
     procedure cheklistgenericReconcileError(DataSet: TFDDataSet;
       E: EFDException; UpdateKind: TFDDatSRowState;
       var Action: TFDDAptReconcileAction);
@@ -1619,7 +1621,7 @@ begin
           end;
        end;
        TUsuario.Close;
-       TUsuario.Open;;
+       TUsuario.Open;
        result:='Usuarios Baixados com Sucesso'
     end
     else

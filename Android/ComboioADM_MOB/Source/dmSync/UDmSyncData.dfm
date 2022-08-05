@@ -17,8 +17,7 @@ object dmsync: Tdmsync
     Request.Ranges.Units = 'bytes'
     Request.Ranges = <>
     HTTPOptions = [hoForceEncodeParams]
-    Left = 48
-    Top = 48
+    Left = 8
   end
   object qryAux: TFDQuery
     Connection = dmDB.FCon
@@ -105,6 +104,16 @@ object dmsync: Tdmsync
       Origin = 'syncaws'
       Required = True
       Size = 32767
+    end
+    object TUsuarioabastecimento: TIntegerField
+      FieldName = 'abastecimento'
+      Origin = 'abastecimento'
+      Required = True
+    end
+    object TUsuarioapontamento: TIntegerField
+      FieldName = 'apontamento'
+      Origin = 'apontamento'
+      Required = True
     end
   end
   object TOperadorMaquina: TFDQuery

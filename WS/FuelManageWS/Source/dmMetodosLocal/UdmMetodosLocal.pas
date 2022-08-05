@@ -326,6 +326,9 @@ type
     ConfigS3accontkey: TWideStringField;
     ConfigS3accontname: TWideStringField;
     ConfigS3nomes3: TWideStringField;
+    TUsuarioiderp: TIntegerField;
+    TUsuarioapontamento: TIntegerField;
+    TUsuarioabastecimento: TIntegerField;
     procedure TStartDiarioReconcileError(DataSet: TFDDataSet; E: EFDException;
       UpdateKind: TFDDatSRowState; var Action: TFDDAptReconcileAction);
     procedure TAbastecimentoReconcileError(DataSet: TFDDataSet; E: EFDException;

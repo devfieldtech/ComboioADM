@@ -433,6 +433,45 @@ type
     detcheklistRealizadonaoseaplica: TBooleanField;
     cheklistRealizadoobservasao: TStringField;
     TMaquinasidmodelo: TIntegerField;
+    TUsuarioabastecimento: TIntegerField;
+    TUsuarioapontamento: TIntegerField;
+    TApontamento: TFDQuery;
+    TApontamentoValores: TFDQuery;
+    TApontamentoid: TFDAutoIncField;
+    TApontamentostatus: TWideStringField;
+    TApontamentodatareg: TWideStringField;
+    TApontamentoidusuario: TWideStringField;
+    TApontamentodataalteracao: TWideStringField;
+    TApontamentodataoperacao: TDateField;
+    TApontamentoidusuarioalteracao: TWideStringField;
+    TApontamentoidcentrocusto: TWideStringField;
+    TApontamentoidescavadeira: TWideStringField;
+    TApontamentoidproduto: TWideStringField;
+    TApontamentoaplicacaoproduto: TStringField;
+    TApontamentokmatualescavadeira: TStringField;
+    TApontamentoobservacao: TStringField;
+    TApontamentohorainicio: TTimeField;
+    TApontamentoMaquina: TStringField;
+    TApontamentoCentroCusto: TStringField;
+    TApontamentoProdutos: TStringField;
+    TApontamentoValoresItem: TWideStringField;
+    TApontamentoValoresid: TFDAutoIncField;
+    TApontamentoValoresstatus: TWideStringField;
+    TApontamentoValoresdatareg: TWideStringField;
+    TApontamentoValoresidusuario: TWideStringField;
+    TApontamentoValoresdataalteracao: TWideStringField;
+    TApontamentoValoresdataoperacao: TDateField;
+    TApontamentoValoreshoraoperacao: TTimeField;
+    TApontamentoValoresidusuarioalteracao: TWideStringField;
+    TApontamentoValoresidapontamento: TWideStringField;
+    TApontamentoValoresidmaquina: TWideStringField;
+    TApontamentoValoreslatitude: TFMTBCDField;
+    TApontamentoValoreslongitude: TFMTBCDField;
+    TApontamentoValorestipoidentificacaomaquina: TWideStringField;
+    TApontamentoValoresimgveiculo: TWideStringField;
+    TApontamentoValoresobservacao: TStringField;
+    TApontamentoValoresimgsyncs3: TWideStringField;
+    TApontamentoValoresMaquina: TStringField;
     procedure TstartBombaReconcileError(DataSet: TFDDataSet; E: EFDException;
       UpdateKind: TFDDatSRowState; var Action: TFDDAptReconcileAction);
     procedure FConBeforeConnect(Sender: TObject);
@@ -468,7 +507,7 @@ type
     vNomeOperador,vIdOperador,vIdAtividade,vNomeAtividade,
     vNomeLocalEstoque,vIdLocalEstoqueSel,vTipoUser:string;
     vPrimeiroAcesso:Boolean;
-    vTipoOp,vLocalMov:integer;//1= start bomba 2= abastecimento
+    vTipoOp,vLocalMov,vAbatecimento,vApontamento:integer;//1= start bomba 2= abastecimento
     procedure CreateTablesVersao(NumeroVersao: string);
     function  VerificaTabelaExiste(Atabela: string): Boolean;
     function  VerificaCampoExiste(Acampo, Atabela: string):Boolean;
@@ -1276,7 +1315,7 @@ begin
  {$IF DEFINED(iOS) or DEFINED(ANDROID)}
    FCon.Params.DriverID :='SQLite';
    FCon.Params.Values['Database'] :=
-   TPath.Combine(TPath.GetDocumentsPath,'Comboio.db');
+   TPath.Combine(TPath.GetDocumentsPath,'CbAdm.db');
  {$ENDIF}
  {$IFDEF MSWINDOWS}
    vPath := 'E:\20102021\Projetos2021\Pecuarizze\ManejoPastagem\Mobile\db\dbw.db';
@@ -1565,6 +1604,8 @@ begin
    begin
     vIdUser          := qryAux.FieldByName('id').AsString;
     vTipoUser        := qryAux.FieldByName('tipo').AsString;
+    vAbatecimento    := qryAux.FieldByName('abastecimento').AsInteger;
+    vApontamento     := qryAux.FieldByName('apontamento').AsInteger;
     Result := true
    end
    else
@@ -1653,36 +1694,23 @@ var
 begin
  vQryAux:=TFDQuery.Create(nil);
  vQryAux.Connection := FCon;
-// if VerificaTabelaExiste('compartimentolubricficacao') then
-// begin
-//   with vQryAux,vQryAux.SQL do
-//  begin
-//   Clear;
-//   Add('CREATE TABLE compartimentolubricficacao (');
-//   Add('id integer NOT NULL,');
-//   Add('status integer NOT NULL DEFAULT 1,');
-//   Add('datareg timestamptz NOT NULL DEFAULT CURRENT_TIMESTAMP,');
-//   Add('idusuario int4 NOT NULL,');
-//   Add('dataalteracao timestamptz,');
-//   Add('idusuarioalteracao int4,');
-//   Add('nome varchar (50),');
-//   Add('syncaws int4 NOT NULL DEFAULT 0,');
-//   Add('CONSTRAINT auxcompartimentolubricficacao PRIMARY KEY (id));');
-//   try
-//    ExecSQL;
-//   except
-//     on E : Exception do
-//      ShowMessage('Erro ao inserir Campo : '+E.Message);
-//   end;
-//  end;
-// end;
-//******************************************************************************
-
- if not VerificaCampoExiste('idmodelo','maquinaveiculo')then
+ if not VerificaCampoExiste('abastecimento','usuario')then
  with vQryAux,vQryAux.SQL do
  begin
    Clear;
-   Add('ALTER TABLE maquinaveiculo add idmodelo integer');
+   Add('ALTER TABLE usuario add abastecimento integer not null default 0');
+   try
+    ExecSQL;
+   except
+     on E : Exception do
+      ShowMessage('Erro ao inserir Campo : '+E.Message);
+   end;
+ end;
+ if not VerificaCampoExiste('apontamento','usuario')then
+ with vQryAux,vQryAux.SQL do
+ begin
+   Clear;
+   Add('ALTER TABLE usuario add apontamento integer not null default 0');
    try
     ExecSQL;
    except

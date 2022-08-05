@@ -14,6 +14,7 @@ CREATE TABLE public.apontamento (
 	aplicacaoproduto varchar(50) NULL,
 	kmatualescavadeira varchar(50) NULL,
 	observacao varchar(100) NULL,
+	horainicio time NULL,
 	CONSTRAINT "Apontamento_pkey" PRIMARY KEY (id),
 	CONSTRAINT centrocusto_fk FOREIGN KEY (idcentrocusto) REFERENCES public.centrocusto(id),
 	CONSTRAINT maquina_fk FOREIGN KEY (idescavadeira) REFERENCES public.maquinaveiculo(id),
@@ -40,3 +41,7 @@ CREATE TABLE public.apontamentovalores (
 	CONSTRAINT "ApontamentoValores_pkey" PRIMARY KEY (id),
 	CONSTRAINT maquina_fk FOREIGN KEY (idmaquina) REFERENCES public.maquinaveiculo(id)
 );
+
+
+ALTER TABLE public.usuario ADD apontamento integer NOT NULL DEFAULT 0;
+ALTER TABLE public.usuario ADD abastecimento integer NOT NULL DEFAULT 0;

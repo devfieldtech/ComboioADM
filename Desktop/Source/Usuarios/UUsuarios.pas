@@ -32,12 +32,20 @@ type
     Label9: TLabel;
     BindSourceDB1: TBindSourceDB;
     btnReset: TEditButton;
-    BindingsList1: TBindingsList;
-    LinkGridToDataSourceBindSourceDB1: TLinkGridToDataSource;
     Rectangle2: TRectangle;
     Layout2: TLayout;
     Label4: TLabel;
     edtNome: TEdit;
+    Layout3: TLayout;
+    Rectangle5: TRectangle;
+    Layout10: TLayout;
+    Layout11: TLayout;
+    Label11: TLabel;
+    Layout18: TLayout;
+    chkAbastecimento: TCheckBox;
+    chkApontamento: TCheckBox;
+    BindingsList1: TBindingsList;
+    LinkGridToDataSourceBindSourceDB1: TLinkGridToDataSource;
     procedure btnConfirmaClick(Sender: TObject);
     procedure btnAddClick(Sender: TObject);
     procedure btnEditarClick(Sender: TObject);
@@ -91,6 +99,7 @@ end;
 procedure TfrmUsuarios.btnConfirmaClick(Sender: TObject);
 var
   Stream: TMemoryStream;
+  vApontamento,vAbastecimento :integer;
 begin
   if edtNome.Text.Length =0 then
   begin
@@ -122,11 +131,17 @@ begin
     MyShowMessage('Já Existe Um Usuário Cadastrado Com Essa Credencial!',false);
     Exit;
    end;
+
+  vApontamento    := chkApontamento.IsChecked.ToInteger;
+  vAbastecimento  := chkAbastecimento.IsChecked.ToInteger;
+
   dmdb.TUsuarionome.AsString                := edtNome.Text;
   dmdb.TUsuariousuario.AsString             := edtUsuario.Text;
   dmdb.TUsuariosenha.AsString               := edtSenha.Text;
   dmdb.TUsuariotipo.AsInteger               := cbxTipo.ItemIndex;
   dmdb.TUsuarioidusuario.AsString           := dmdb.vIdUsuarioLogado;
+  dmdb.TUsuarioapontamento.AsInteger        := vApontamento;
+  dmdb.TUsuarioabastecimento.AsInteger      := vAbastecimento;
   try
    dmdb.TUsuario.ApplyUpdates(-1);
    dmdb.TUsuario.Close;
@@ -161,7 +176,8 @@ end;
 
 procedure TfrmUsuarios.btnEditarClick(Sender: TObject);
 var
- vTipo:integer;
+ vTipo,
+ vApontamento,vAbastecimento:integer;
  Stream : TMemoryStream;
 begin
   btnReset.Visible           := true;
@@ -170,6 +186,10 @@ begin
   edtSenha.ReadOnly          := true;
   edtSenha.Text              := dmdb.TUsuariosenha.AsString;
   cbxTipo.ItemIndex          := dmdb.TUsuariotipo.AsInteger;
+  vApontamento               := dmdb.TUsuarioapontamento.AsInteger;
+  chkApontamento.IsChecked   := Boolean(vApontamento);
+  vAbastecimento             := dmdb.TUsuarioabastecimento.AsInteger;
+  chkAbastecimento.IsChecked := Boolean(vAbastecimento);
   dmdb.TUsuario.edit;
   inherited;
 end;

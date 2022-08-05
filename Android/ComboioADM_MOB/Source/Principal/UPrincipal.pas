@@ -64,7 +64,6 @@ type
     lblVersao: TLabel;
     recTopMnu: TRectangle;
     layTopmnu: TLayout;
-    Label11: TLabel;
     Image4: TImage;
     tbiConfig: TTabItem;
     Layout18: TLayout;
@@ -133,7 +132,7 @@ type
     Image3: TImage;
     ShadowEffect7: TShadowEffect;
     Label7: TLabel;
-    Layout14: TLayout;
+    layAbastecimento2: TLayout;
     ShadowEffect3: TShadowEffect;
     Label5: TLabel;
     imgScore: TImage;
@@ -198,7 +197,7 @@ type
     Image5: TImage;
     ShadowEffect4: TShadowEffect;
     Label6: TLabel;
-    Layout15: TLayout;
+    layAbastecimento1: TLayout;
     Image10: TImage;
     btnAbastecimento: TRectangle;
     imgCobustivel: TImage;
@@ -224,7 +223,7 @@ type
     ImgListaBomba: TImage;
     ImgListaHorimetro: TImage;
     ImgListaKM: TImage;
-    Layout38: TLayout;
+    LayAbastecimento3: TLayout;
     btnCheckList: TRectangle;
     Image15: TImage;
     ShadowEffect13: TShadowEffect;
@@ -234,6 +233,11 @@ type
     Image16: TImage;
     ShadowEffect14: TShadowEffect;
     lblCheckListPendente: TLabel;
+    layApontamento: TLayout;
+    btnApontamento: TRectangle;
+    Image18: TImage;
+    ShadowEffect15: TShadowEffect;
+    Label24: TLabel;
     procedure btnEntrarMouseUp(Sender: TObject; Button: TMouseButton;
       Shift: TShiftState; X, Y: Single);
     procedure btnEntrarMouseDown(Sender: TObject; Button: TMouseButton;
@@ -533,6 +537,10 @@ begin
  end;
  if dmDB.AutenticaUsuario(edtUsuario.Text,edtSenha.Text)then
  begin
+  layAbastecimento1.Visible := dmDB.vAbatecimento=1;
+  layAbastecimento2.Visible := dmDB.vAbatecimento=1;
+  LayAbastecimento3.Visible := dmDB.vAbatecimento=1;
+  layApontamento.Visible    := dmDB.vApontamento =1;
   if chkSalvaSenha.IsChecked then
   begin
     dmdb.qryConfig.Close;
@@ -885,6 +893,8 @@ end;
 
 procedure TfrmPrincipal.FormShow(Sender: TObject);
 begin
+ lblversao.text                 := GetVersaoArq;
+ dmdb.CreateTablesVersao(GetVersaoArq);
  MostraMenu;
  TThread.CreateAnonymousThread(procedure
  begin

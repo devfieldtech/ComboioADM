@@ -304,6 +304,18 @@ object dmLocal: TdmLocal
       FieldName = 'syncaws'
       Origin = 'syncaws'
     end
+    object TUsuarioiderp: TIntegerField
+      FieldName = 'iderp'
+      Origin = 'iderp'
+    end
+    object TUsuarioapontamento: TIntegerField
+      FieldName = 'apontamento'
+      Origin = 'apontamento'
+    end
+    object TUsuarioabastecimento: TIntegerField
+      FieldName = 'abastecimento'
+      Origin = 'abastecimento'
+    end
   end
   object Toperadormaquinas: TFDQuery
     CachedUpdates = True

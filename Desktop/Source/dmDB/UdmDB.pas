@@ -549,6 +549,8 @@ type
     TApontamentoValoresimgsyncs3: TIntegerField;
     TApontamentoValoresitem: TLargeintField;
     TApontamentohorainicio: TTimeField;
+    TUsuarioapontamento: TIntegerField;
+    TUsuarioabastecimento: TIntegerField;
     procedure TUsuarioReconcileError(DataSet: TFDDataSet; E: EFDException;
       UpdateKind: TFDDatSRowState; var Action: TFDDAptReconcileAction);
     procedure TAuxMarcaReconcileError(DataSet: TFDDataSet; E: EFDException;
