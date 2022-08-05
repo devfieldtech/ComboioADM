@@ -379,10 +379,10 @@ begin
  if SaveDialog1.Execute then
  begin
    csv:= tstringlist.create;
-   for row:= 1 to StringGrid1.rowcount do
+   for row:= 0 to StringGrid1.rowcount do
     begin
      s:= '';
-     if row=1 then
+     if row=0 then
      begin
        for col:= 0 to StringGrid1.ColumnCount-1 do
         s:= s + StringGrid1.Columns[col].Header + ';';
