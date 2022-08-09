@@ -1453,6 +1453,8 @@ begin
       edtKMAtual.Text           := dmDB.TAbastecimentokmatual.AsString;
       edtObs.Text               := dmDB.TAbastecimentoobs.AsString;
       IdCombustivel             := dmDB.TAbastecimentocombustivel.AsString;
+      edtDataAbastecimento.DateTime := dmDB.TAbastecimentodataabastecimento.AsDateTime;
+      edtHoraAbastecimento.Time     := dmDB.TAbastecimentohora.AsDateTime;
 
       if dmDB.TAbastecimentoimg.AsString.Length>0 then
         ImgHorimetroEdit.Bitmap.LoadFromUrl(dmDB.TAbastecimentoimg.AsString)
