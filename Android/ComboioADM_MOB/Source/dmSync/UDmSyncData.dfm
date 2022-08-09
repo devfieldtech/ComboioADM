@@ -455,6 +455,11 @@ object dmsync: Tdmsync
       Origin = 'saldoatual'
       Precision = 15
     end
+    object TProdutosproducao: TIntegerField
+      FieldName = 'producao'
+      Origin = 'producao'
+      Required = True
+    end
   end
   object TMaquinas: TFDQuery
     CachedUpdates = True

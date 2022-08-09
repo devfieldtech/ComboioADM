@@ -2410,13 +2410,18 @@ object dmDB: TdmDB
   end
   object TApontamento: TFDQuery
     CachedUpdates = True
+    OnReconcileError = TApontamentoReconcileError
     Connection = FCon
     SQL.Strings = (
       'select '
       ' a.*,'
       ' m.prefixo Maquina,'
       ' c.nome CentroCusto,'
-      ' p.nome Produtos'
+      ' p.nome Produtos,'
+      ' case'
+      '   when A.status=1 then '#39'ABERTO'#39
+      '   when A.status=2 then '#39'FINALIZADO'#39
+      ' end statusStr '
       'from apontamento a'
       'join maquinaveiculo m on a.idescavadeira=m.id '
       'join centrocusto    c on c.id=a.idCentroCusto  '
@@ -2426,20 +2431,18 @@ object dmDB: TdmDB
     Top = 400
     object TApontamentoid: TFDAutoIncField
       FieldName = 'id'
+      ReadOnly = True
     end
     object TApontamentostatus: TWideStringField
       FieldName = 'status'
-      Required = True
       Size = 32767
     end
     object TApontamentodatareg: TWideStringField
       FieldName = 'datareg'
-      Required = True
       Size = 32767
     end
     object TApontamentoidusuario: TWideStringField
       FieldName = 'idusuario'
-      Required = True
       Size = 32767
     end
     object TApontamentodataalteracao: TWideStringField
@@ -2448,7 +2451,6 @@ object dmDB: TdmDB
     end
     object TApontamentodataoperacao: TDateField
       FieldName = 'dataoperacao'
-      Required = True
     end
     object TApontamentoidusuarioalteracao: TWideStringField
       FieldName = 'idusuarioalteracao'
@@ -2456,17 +2458,14 @@ object dmDB: TdmDB
     end
     object TApontamentoidcentrocusto: TWideStringField
       FieldName = 'idcentrocusto'
-      Required = True
       Size = 32767
     end
     object TApontamentoidescavadeira: TWideStringField
       FieldName = 'idescavadeira'
-      Required = True
       Size = 32767
     end
     object TApontamentoidproduto: TWideStringField
       FieldName = 'idproduto'
-      Required = True
       Size = 32767
     end
     object TApontamentoaplicacaoproduto: TStringField
@@ -2498,12 +2497,25 @@ object dmDB: TdmDB
       ReadOnly = True
       Size = 50
     end
+    object TApontamentosyncaws: TIntegerField
+      FieldName = 'syncaws'
+      Origin = 'syncaws'
+    end
+    object TApontamentostatusStr: TWideStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'statusStr'
+      Origin = 'statusStr'
+      ProviderFlags = []
+      ReadOnly = True
+      Size = 32767
+    end
   end
   object TApontamentoValores: TFDQuery
     CachedUpdates = True
     IndexFieldNames = 'idapontamento'
     MasterFields = 'id'
     DetailFields = 'idapontamento'
+    OnReconcileError = TApontamentoValoresReconcileError
     Connection = FCon
     SQL.Strings = (
       'select'
@@ -2529,23 +2541,21 @@ object dmDB: TdmDB
       FieldName = 'id'
       Origin = 'id'
       ProviderFlags = [pfInWhere, pfInKey]
+      ReadOnly = True
     end
     object TApontamentoValoresstatus: TWideStringField
       FieldName = 'status'
       Origin = 'status'
-      Required = True
       Size = 32767
     end
     object TApontamentoValoresdatareg: TWideStringField
       FieldName = 'datareg'
       Origin = 'datareg'
-      Required = True
       Size = 32767
     end
     object TApontamentoValoresidusuario: TWideStringField
       FieldName = 'idusuario'
       Origin = 'idusuario'
-      Required = True
       Size = 32767
     end
     object TApontamentoValoresdataalteracao: TWideStringField
@@ -2556,12 +2566,10 @@ object dmDB: TdmDB
     object TApontamentoValoresdataoperacao: TDateField
       FieldName = 'dataoperacao'
       Origin = 'dataoperacao'
-      Required = True
     end
     object TApontamentoValoreshoraoperacao: TTimeField
       FieldName = 'horaoperacao'
       Origin = 'horaoperacao'
-      Required = True
     end
     object TApontamentoValoresidusuarioalteracao: TWideStringField
       FieldName = 'idusuarioalteracao'
@@ -2571,13 +2579,11 @@ object dmDB: TdmDB
     object TApontamentoValoresidapontamento: TWideStringField
       FieldName = 'idapontamento'
       Origin = 'idapontamento'
-      Required = True
       Size = 32767
     end
     object TApontamentoValoresidmaquina: TWideStringField
       FieldName = 'idmaquina'
       Origin = 'idmaquina'
-      Required = True
       Size = 32767
     end
     object TApontamentoValoreslatitude: TFMTBCDField
@@ -2595,7 +2601,6 @@ object dmDB: TdmDB
     object TApontamentoValorestipoidentificacaomaquina: TWideStringField
       FieldName = 'tipoidentificacaomaquina'
       Origin = 'tipoidentificacaomaquina'
-      Required = True
       Size = 32767
     end
     object TApontamentoValoresimgveiculo: TWideStringField
@@ -2611,7 +2616,6 @@ object dmDB: TdmDB
     object TApontamentoValoresimgsyncs3: TWideStringField
       FieldName = 'imgsyncs3'
       Origin = 'imgsyncs3'
-      Required = True
       Size = 32767
     end
     object TApontamentoValoresMaquina: TStringField

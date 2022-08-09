@@ -321,6 +321,7 @@ type
     TMaquinasidmodelo: TIntegerField;
     TUsuarioabastecimento: TIntegerField;
     TUsuarioapontamento: TIntegerField;
+    TProdutosproducao: TIntegerField;
     procedure cheklistgenericReconcileError(DataSet: TFDDataSet;
       E: EFDException; UpdateKind: TFDDatSRowState;
       var Action: TFDDAptReconcileAction);

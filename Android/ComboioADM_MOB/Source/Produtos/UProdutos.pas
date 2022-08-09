@@ -51,7 +51,7 @@ type
     procedure GeraLista;
   public
     vIdProduto,vNomeProduto:string;
-    vAbastecimento:integer;
+    vAbastecimento,vTipo:integer;
     { Public declarations }
   end;
 
@@ -121,23 +121,29 @@ end;
 procedure TfrmProdutos.FormShow(Sender: TObject);
 begin
  frmProdutos.StyleBook := frmPrincipal.StyleBook1;
- BindSourceDB1.DataSet   := nil;
  dmDB.TProdutos.Close;
  dmDB.TProdutos.Open();
-
- if vAbastecimento=1 then
+ if vTipo=1 then
  begin
   dmDB.TProdutos.Filtered := false;
-  dmDB.TProdutos.Filter   := 'tipo=0';
+  dmDB.TProdutos.Filter   := 'producao=1';
   dmDB.TProdutos.Filtered := True;
  end
  else
  begin
-  dmDB.TProdutos.Filtered := false;
-  dmDB.TProdutos.Filter   := 'tipo>0';
-  dmDB.TProdutos.Filtered := True;
+   if vAbastecimento=1 then
+   begin
+    dmDB.TProdutos.Filtered := false;
+    dmDB.TProdutos.Filter   := 'tipo=0';
+    dmDB.TProdutos.Filtered := True;
+   end
+   else
+   begin
+    dmDB.TProdutos.Filtered := false;
+    dmDB.TProdutos.Filter   := 'tipo>0';
+    dmDB.TProdutos.Filtered := True;
+   end;
  end;
- BindSourceDB1.DataSet   := dmDB.TProdutos;
  GeraLista;
 end;
 

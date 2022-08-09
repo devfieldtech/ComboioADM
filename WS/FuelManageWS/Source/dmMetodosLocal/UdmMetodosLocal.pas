@@ -329,6 +329,7 @@ type
     TUsuarioiderp: TIntegerField;
     TUsuarioapontamento: TIntegerField;
     TUsuarioabastecimento: TIntegerField;
+    TProdutosproducao: TIntegerField;
     procedure TStartDiarioReconcileError(DataSet: TFDDataSet; E: EFDException;
       UpdateKind: TFDDatSRowState; var Action: TFDDAptReconcileAction);
     procedure TAbastecimentoReconcileError(DataSet: TFDDataSet; E: EFDException;

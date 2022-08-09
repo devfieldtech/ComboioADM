@@ -858,6 +858,7 @@ object frmPrincipal: TfrmPrincipal
       'Password=Dev#110485'
       'Server=127.0.0.1'
       'DriverID=PG')
+    Connected = True
     LoginPrompt = False
     Left = 240
     Top = 184

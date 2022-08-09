@@ -1,8 +1,4 @@
-﻿[dmDB.TCentroCusto]
-Visible=False
-Coordinates=1356,441,133,36
-
-[RecImgHrimetro]
+﻿[RecImgHrimetro]
 Coordinates=1180,2003,108,36
 
 [Label1]
@@ -10,9 +6,6 @@ Coordinates=993,2696,53,58
 
 [lblmsg]
 Coordinates=993,1772,52,58
-
-[dmDB.detcheklistgeneric]
-Coordinates=758,254,157,322
 
 [Label21]
 Coordinates=865,2786,60,58
@@ -70,9 +63,6 @@ Coordinates=1180,1079,58,58
 
 [btnConfirmar]
 Coordinates=1180,2553,89,36
-
-[dmDB.TMaquinas]
-Coordinates=261,2140,120,608
 
 [RecImgBomba]
 Coordinates=1180,2608,99,36
@@ -242,9 +232,6 @@ Coordinates=1180,1926,60,58
 [recToolBar]
 Coordinates=1356,991,77,36
 
-[dmDB.dscheklistGeneric]
-Coordinates=539,540,155,36
-
 [edtQtdOutroProduto]
 Coordinates=490,2786,130,58
 
@@ -268,9 +255,6 @@ Coordinates=1356,1266,67,36
 
 [AcLeft]
 Coordinates=0,2978,51,36
-
-[dmDB.TAuxCompLub]
-Coordinates=539,1497,139,234
 
 [Rectangle16]
 Coordinates=1356,1321,87,36
@@ -321,7 +305,7 @@ Coordinates=1356,1871,98,36
 Coordinates=1180,1233,60,58
 
 [frmPrincipal.BindSourceDB1]
-Coordinates=758,595,178,256
+Coordinates=1356,441,133,36
 
 [SEffectBtnCancel]
 Coordinates=1356,1926,115,36
@@ -358,9 +342,6 @@ Coordinates=1356,2256,95,36
 
 [Layout7]
 Coordinates=1356,2311,60,36
-
-[dmDB.Tauxatividadeabastecimento]
-Coordinates=738,1,217,234
 
 [Layout54]
 Coordinates=1356,2366,67,36
@@ -401,9 +382,6 @@ Coordinates=1356,2806,95,36
 [layImagens]
 Coordinates=1356,2861,80,36
 
-[dmDB.TStartbomba]
-Coordinates=0,0,128,586
-
 [Layout13]
 Coordinates=1356,2916,67,36
 
@@ -415,10 +393,6 @@ Coordinates=1356,2971,60,36
 
 [layFotoBomba]
 Coordinates=1356,3026,97,36
-
-[dmDB.TProdutos]
-Coordinates=768,2286,113,410
-Visible=False
 
 [layBaseMSG]
 Coordinates=1356,3081,89,36
@@ -537,12 +511,6 @@ Coordinates=1527,386,67,36
 [Layout1]
 Coordinates=1527,441,60,36
 
-[dmDB.TLocalEstoque]
-Coordinates=348,1156,139,322
-
-[dmDB.TLubrificacao]
-Coordinates=140,1383,131,564
-
 [Label42]
 Coordinates=1180,1002,60,58
 
@@ -566,9 +534,6 @@ Coordinates=739,2209,60,58
 
 [lblUltimoAbastecimento]
 Coordinates=993,386,149,58
-
-[dmDB.TUsuario]
-Coordinates=539,1827,108,344
 
 [Label30]
 Coordinates=993,2234,60,58
@@ -600,9 +565,6 @@ Coordinates=1527,881,107,36
 [Image8]
 Coordinates=1180,1695,57,58
 
-[dmDB.dscheklistRealizado]
-Coordinates=758,1255,168,36
-
 [lblUltimoHr]
 Coordinates=1180,232,78,58
 
@@ -629,9 +591,6 @@ Coordinates=993,540,60,58
 
 [Layout12]
 Coordinates=1527,1211,67,36
-
-[dmDB.cheklistRealizado]
-Coordinates=539,1156,154,322
 
 [edtLocalEstoque]
 Coordinates=348,1002,110,58
@@ -683,9 +642,6 @@ Coordinates=1527,1706,67,36
 
 [RecImgkm]
 Coordinates=1527,1761,76,36
-
-[dmDB.TAbastecimento]
-Coordinates=164,639,146,740
 
 [edtHorimetro]
 Coordinates=348,1079,89,58
@@ -745,9 +701,6 @@ Coordinates=1527,2201,67,36
 [dmDB.detcheklistRealizado]
 Coordinates=329,364,172,366
 
-[dmDB.TOperadorMaquina]
-Coordinates=329,1,165,344
-
 [Rectangle10]
 Coordinates=1527,2256,87,36
 
@@ -772,9 +725,6 @@ Coordinates=1527,2421,87,36
 [ActLibrary]
 Coordinates=1527,2476,73,36
 
-[dmDB.TMovLocalEstoque]
-Coordinates=147,1,163,542
-
 [layFotoKM]
 Coordinates=1527,2531,76,36
 
@@ -798,9 +748,6 @@ Coordinates=993,694,64,58
 
 [Layout23]
 Coordinates=1527,2806,67,36
-
-[dmDB.TLubrificacaoprodutos]
-Coordinates=539,793,181,344
 
 [imgFotoKM]
 Coordinates=322,2786,80,58
@@ -831,9 +778,6 @@ Coordinates=1527,3081,87,36
 
 [layImgHorimetro]
 Coordinates=1527,3136,109,36
-
-[dmDB.cheklistgeneric]
-Coordinates=348,749,139,234
 
 [GestureManager1]
 Coordinates=1408,3162,118,36

@@ -604,6 +604,10 @@ object dmLocal: TdmLocal
       Origin = 'saldoatual'
       Precision = 15
     end
+    object TProdutosproducao: TIntegerField
+      FieldName = 'producao'
+      Origin = 'producao'
+    end
   end
   object TMaquinas: TFDQuery
     CachedUpdates = True
@@ -1090,8 +1094,8 @@ object dmLocal: TdmLocal
     QueueEndpoint = 'queue.amazonaws.com'
     StorageEndpoint = 's3-us-east-2.amazonaws.com'
     UseDefaultEndpoints = False
-    Left = 248
-    Top = 16
+    Left = 32
+    Top = 456
   end
   object cheklistregrupoitem: TFDQuery
     CachedUpdates = True

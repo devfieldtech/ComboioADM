@@ -20,7 +20,9 @@ uses
   ULubrificacao in '..\Lubrificacao\ULubrificacao.pas' {frmLubrificacao},
   UFrameLista in '..\Abastecimento\UFrameLista.pas' {FItemListaAbastecimento: TFrame},
   UChekList in '..\ChekList\UChekList.pas' {frmCheckList},
-  uCombobox in '..\ChekList\uCombobox.pas';
+  uCombobox in '..\ChekList\uCombobox.pas',
+  UApontamento in '..\Apontamento\UApontamento.pas' {frmApontamento},
+  UFrameListaApontamento in '..\Apontamento\UFrameListaApontamento.pas' {FListaApontamento: TFrame};
 
 {$R *.res}
 
@@ -31,5 +33,6 @@ begin
   Application.CreateForm(TdmDB, dmDB);
   Application.CreateForm(Tdmsync, dmsync);
   Application.CreateForm(TfrmCheckList, frmCheckList);
+  Application.CreateForm(TfrmApontamento, frmApontamento);
   Application.Run;
 end.

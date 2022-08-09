@@ -472,6 +472,8 @@ type
     TApontamentoValoresobservacao: TStringField;
     TApontamentoValoresimgsyncs3: TWideStringField;
     TApontamentoValoresMaquina: TStringField;
+    TApontamentosyncaws: TIntegerField;
+    TApontamentostatusStr: TWideStringField;
     procedure TstartBombaReconcileError(DataSet: TFDDataSet; E: EFDException;
       UpdateKind: TFDDatSRowState; var Action: TFDDAptReconcileAction);
     procedure FConBeforeConnect(Sender: TObject);
@@ -498,6 +500,11 @@ type
       var Action: TFDDAptReconcileAction);
     procedure TLubrificacaoReconcileError(DataSet: TFDDataSet; E: EFDException;
       UpdateKind: TFDDatSRowState; var Action: TFDDAptReconcileAction);
+    procedure TApontamentoReconcileError(DataSet: TFDDataSet; E: EFDException;
+      UpdateKind: TFDDatSRowState; var Action: TFDDAptReconcileAction);
+    procedure TApontamentoValoresReconcileError(DataSet: TFDDataSet;
+      E: EFDException; UpdateKind: TFDDatSRowState;
+      var Action: TFDDAptReconcileAction);
   private
 
   public
@@ -564,6 +571,9 @@ type
     procedure AtualizaFotoItemCheckList(vId,vBase64:String);
     procedure DeletaCheckListRealizado(vId:string);
     function  CheckFotosTirada(vIdChek:string):string;
+    procedure AbreApontamento(vFiltro:String);
+    procedure AbreApontamentoValores(vFiltro:string);
+    function  VerificaApontamentoAberto:Boolean;
   end;
 
 var
@@ -685,6 +695,19 @@ begin
   ShowMessage(e.Message);
 end;
 
+procedure TdmDB.TApontamentoReconcileError(DataSet: TFDDataSet; E: EFDException;
+  UpdateKind: TFDDatSRowState; var Action: TFDDAptReconcileAction);
+begin
+  ShowMessage(e.Message);
+end;
+
+procedure TdmDB.TApontamentoValoresReconcileError(DataSet: TFDDataSet;
+  E: EFDException; UpdateKind: TFDDatSRowState;
+  var Action: TFDDAptReconcileAction);
+begin
+  ShowMessage(e.Message);
+end;
+
 procedure TdmDB.TLubrificacaoprodutosReconcileError(DataSet: TFDDataSet;
   E: EFDException; UpdateKind: TFDDatSRowState;
   var Action: TFDDAptReconcileAction);
@@ -717,6 +740,23 @@ procedure TdmDB.TstartBombaReconcileError(DataSet: TFDDataSet; E: EFDException;
   UpdateKind: TFDDatSRowState; var Action: TFDDAptReconcileAction);
 begin
  ShowMessage(e.Message);
+end;
+
+function TdmDB.VerificaApontamentoAberto: Boolean;
+var
+ vQryAux:TFDQuery;
+ vExiste:integer;
+begin
+ vQryAux:=TFDQuery.Create(nil);
+ vQryAux.Connection := FCon;
+ with vQryAux,vQryAux.SQL do
+ begin
+   Clear;
+   Add('SELECT * FROM APONTAMENTO WHERE STATUS=1');
+   Open;
+   Result := vQryAux.IsEmpty;
+ end;
+ vQryAux.Free;
 end;
 
 function TdmDB.VerificaCampoExiste(Acampo, Atabela: string): Boolean;
@@ -800,6 +840,50 @@ begin
    Result:=vQryAux.IsEmpty;
  end;
  vQryAux.Free;
+end;
+
+procedure TdmDB.AbreApontamento(vFiltro: String);
+begin
+ with TApontamento,TApontamento.SQL do
+ begin
+   Clear;
+   Add('select');
+   Add(' a.*,');
+   Add(' m.prefixo Maquina,');
+   Add(' c.nome CentroCusto,');
+   Add(' p.nome Produtos,');
+   Add(' p.nome Produtos,');
+   Add(' case');
+   Add('   when A.status=1 then ''ABERTO''');
+   Add('   when A.status=2 then ''FINALIZADO''');
+   Add(' end statusStr');
+   Add('from apontamento a');
+   Add('join maquinaveiculo m on a.idescavadeira=m.id');
+   Add('join centrocusto    c on c.id=a.idCentroCusto ');
+   Add('join produtos       p on a.idproduto=p.id');
+   Add('where a.status=1');
+   Add(vFiltro);
+   Add('order by a.id desc');
+   Open;
+ end;
+end;
+
+procedure TdmDB.AbreApontamentoValores(vFiltro: string);
+begin
+ with TApontamentoValores,TApontamentoValores.SQL do
+ begin
+   Clear;
+   Add('select');
+   Add(' ROW_NUMBER () OVER (ORDER BY a.id)Item,');
+   Add(' a.*,');
+   Add(' m.prefixo Maquina');
+   Add('from apontamentoValores a');
+   Add('join maquinaveiculo m on a.idmaquina=m.id');
+   Add('where a.status=1');
+   Add(vFiltro);
+   Add('order by a.horaoperacao desc');
+   Open;
+ end;
 end;
 
 procedure TdmDB.AbreCheckList(IdGrupo: string);
@@ -1315,7 +1399,7 @@ begin
  {$IF DEFINED(iOS) or DEFINED(ANDROID)}
    FCon.Params.DriverID :='SQLite';
    FCon.Params.Values['Database'] :=
-   TPath.Combine(TPath.GetDocumentsPath,'CbAdm.db');
+   TPath.Combine(TPath.GetDocumentsPath,'CbAdm1.db');
  {$ENDIF}
  {$IFDEF MSWINDOWS}
    vPath := 'E:\20102021\Projetos2021\Pecuarizze\ManejoPastagem\Mobile\db\dbw.db';

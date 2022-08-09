@@ -16,7 +16,7 @@ uses
   ,AndroidApi.helpers,AndroidApi.JNI.JavaTypes,AndroidApi.JNI.GraphicsContentViewText,
   Androidapi.JNI.Os,Androidapi.JNIBridge,Androidapi.JNI.Telephony,Androidapi.JNI.Provider,
   FMX.Helpers.Android,FMX.Platform.Android,System.PushNotification,System.Permissions,
-  FMX.VirtualKeyboard, FMX.Media,System.IOUtils
+  FMX.VirtualKeyboard, FMX.Media,System.IOUtils, UApontamento
  {$IFDEF MSWINDOWS}
   ,Winapi.Windows
  {$ENDIF}
@@ -271,6 +271,7 @@ type
     procedure btnLubrificacaoClick(Sender: TObject);
     procedure laySelectSyncClick(Sender: TObject);
     procedure btnCheckListClick(Sender: TObject);
+    procedure btnApontamentoClick(Sender: TObject);
   private
     {$IF DEFINED(iOS) or DEFINED(ANDROID)}
      function GetVersaoArq: string;
@@ -309,6 +310,15 @@ begin
  edtPortaServidorDados.Text := dmDB.qryConfigPOTA_SERVIDOR.AsString;
  edtNumPatrimonio.Text      := dmDB.qryConfigPATRIMONIO.AsString;
  MudarAba(tbiConfig,sender);
+end;
+
+procedure TfrmPrincipal.btnApontamentoClick(Sender: TObject);
+begin
+ frmApontamento:= TfrmApontamento.Create(nil);
+  frmApontamento.ShowModal(procedure(ModalResult: TModalResult)
+  begin
+
+  end);
 end;
 
 procedure TfrmPrincipal.btnCheckListClick(Sender: TObject);
