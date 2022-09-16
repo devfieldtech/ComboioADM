@@ -226,22 +226,14 @@ type
     imgChekEnd: TImage;
     layTotInicial: TLayout;
     edtTotalIni1: TEdit;
-    edtTotalIni2: TEdit;
-    edtTotalIni3: TEdit;
-    edtTotalIni4: TEdit;
-    edtTotalIni5: TEdit;
     edtTotalIni6: TEdit;
     Label15: TLabel;
     Rectangle26: TRectangle;
     Layout19: TLayout;
     Rectangle28: TRectangle;
-    edtTotalFim1: TEdit;
-    edtTotalFim2: TEdit;
-    edtTotalFim3: TEdit;
-    edtTotalFim4: TEdit;
-    edtTotalFim5: TEdit;
     edtTotalFim6: TEdit;
     Label16: TLabel;
+    edtTotalFim1: TEdit;
     procedure EditButton1Click(Sender: TObject);
     procedure tbPrincipalChange(Sender: TObject);
     procedure btnBuscarClick(Sender: TObject);
@@ -272,20 +264,8 @@ type
     procedure btnAbreImgInicialClick(Sender: TObject);
     procedure Layout17Click(Sender: TObject);
     procedure btnImgStopClick(Sender: TObject);
-    procedure edtTotalIni1MouseUp(Sender: TObject; Button: TMouseButton;
-      Shift: TShiftState; X, Y: Single);
     procedure edtTotalIni1ChangeTracking(Sender: TObject);
-    procedure edtTotalIni6ChangeTracking(Sender: TObject);
     procedure edtTotalFim1ChangeTracking(Sender: TObject);
-    procedure edtTotalFim6ChangeTracking(Sender: TObject);
-    procedure edtTotalIni5KeyUp(Sender: TObject; var Key: Word;
-      var KeyChar: Char; Shift: TShiftState);
-    procedure edtTotalIni6KeyUp(Sender: TObject; var Key: Word;
-      var KeyChar: Char; Shift: TShiftState);
-    procedure edtTotalIni4KeyUp(Sender: TObject; var Key: Word;
-      var KeyChar: Char; Shift: TShiftState);
-    procedure edtTotalIni3KeyUp(Sender: TObject; var Key: Word;
-      var KeyChar: Char; Shift: TShiftState);
     procedure edtTotalIni2KeyUp(Sender: TObject; var Key: Word;
       var KeyChar: Char; Shift: TShiftState);
   private
@@ -314,7 +294,7 @@ type
      property ImageStream: TStringStream read FImageStream write FImageStream;
     procedure AfterConstruction; override;
   public
-    vTotalizadorIni,vTotalizadorFim:String;
+    vTotalizadorIni,vTotalizadorFim:double;
     vFlagSync,vIdStart,dLocalEstoque:string;
     permissao : T99Permissions;
     vImg64Start,vImg64Stop,vIdCombustivel,vIdLocalEstoque,
@@ -387,15 +367,23 @@ begin
    ShowMessage('Foto do Inicio é Obrigatoria!!');
    Exit;
   end;
-  if(strToFloat(vTotalizadorIni)<=0)then
+  if(edtTotalIni1.Text.Length=0)then
   begin
-   ShowMessage('Totalizado Inicial deve ser informado!');
+   ShowMessage('Totalizado Inicial deve ter pelo menos 6 digitos antes da Virgula!!');
    exit;
   end;
+  if(edtTotalIni6.Text.Length=0)then
+  begin
+   ShowMessage('Totalizado Inicial deve ter pelo menos 1 digitos depois da Virgula!!');
+   exit;
+  end;
+  vTotalizadorIni :=strToFloat(edtTotalIni1.Text+','+edtTotalIni6.Text);
+
+
   dmdb.TStartBombaInsertidlocalestoque.AsString         := vIdLocalEstoque;
   dmdb.TStartBombaInsertdataastart.AsString             := edtData.Text;
   dmdb.TStartBombaInserthorastart.AsString              := edtHora.Text;
-  dmdb.TStartBombaInsertvolumelitrosIni.AsString        := vTotalizadorIni;
+  dmdb.TStartBombaInsertvolumelitrosIni.AsFloat         := vTotalizadorIni;
 
   dmdb.TStartbombaInsertimgStartSend.AsString           := vImg64StartSend;
   dmdb.TStartbombaInsertimgStart.AsString               := vImg64Start;
@@ -428,13 +416,20 @@ begin
      ShowMessage('Foto do Fim é Obrigatoria!!');
      Exit;
     end;
-    if(strToFloat(vTotalizadorFim)=0) then
+    if(edtTotalFim1.Text.Length=0)then
     begin
-     ShowMessage('Totalizador final deve ser informado!');
-     Exit;
-    end
-    else
-    if strToFloat(vTotalizadorFim)<=strToFloat(vTotalizadorIni) then
+     ShowMessage('Totalizado Inicial deve ter pelo menos 6 digitos antes da Virgula!!');
+     exit;
+    end;
+    if(edtTotalFim6.Text.Length=0)then
+    begin
+     ShowMessage('Totalizado Inicial deve ter pelo menos 1 digitos depois da Virgula!!');
+     exit;
+    end;
+    vTotalizadorFim :=strToFloat(edtTotalFim1.Text+','+edtTotalFim6.Text);
+
+
+    if vTotalizadorIni>=vTotalizadorFim  then
     begin
      //frmPrincipal.ReproduzSom('Totalizado Final Menor');
      MessageDlg('Totalizador Final menor que Inicial, oque indica virada dos contadores'+#13+
@@ -448,8 +443,8 @@ begin
        mrYES:
        begin
           dmdb.TStartbombaInsertstatus.AsInteger := 2;
-          if vTotalizadorFim.Length>0 then
-           dmdb.TStartBombaInsertvolumelitrosFim.Asstring   :=vTotalizadorFim;
+          if vTotalizadorFim>0 then
+           dmdb.TStartBombaInsertvolumelitrosFim.AsFloat   :=vTotalizadorFim;
           if vImg64Stop.Length>0 then
           begin
            dmdb.TStartbombaInsertimgStopSend.AsString       := vImg64StopSend;
@@ -478,14 +473,14 @@ begin
     else
     begin
       dmdb.TStartbombaInsertstatus.AsInteger := 2;
-      if vTotalizadorFim.Length>0 then
-       dmdb.TStartBombaInsertvolumelitrosFim.AsString   :=vTotalizadorFim;
+      if vTotalizadorFim>0 then
+       dmdb.TStartBombaInsertvolumelitrosFim.AsFloat   :=vTotalizadorFim;
       if vImg64Stop.Length>0 then
       begin
        dmdb.TStartbombaInsertimgStopSend.AsString       := vImg64StopSend;
        dmdb.TStartBombaInsertimgEnd.AsString            := vImg64Stop;
       end;
-      dmdb.TStartBombaInserthoraend.AsString           := edtHoraFim.Text;
+      dmdb.TStartBombaInserthoraend.AsString            := edtHoraFim.Text;
       try
         dmdb.TStartBombaInsert.ApplyUpdates(-1);
         frmPrincipal.ReproduzSom('Operacao Finalizada');
@@ -663,29 +658,16 @@ begin
 end;
 
 procedure TfrmStartBomba.AjustaTotaliuzadorTela;
-var
- vWidth :single;
 begin
- vWidth             := ((layTotInicial.Width/6)-10);
- edtTotalIni1.Width := vWidth;
- edtTotalIni2.Width := vWidth;
- edtTotalIni3.Width := vWidth;
- edtTotalIni4.Width := vWidth;
- edtTotalIni5.Width := vWidth;
- edtTotalIni6.Width := vWidth;
 end;
 
 procedure TfrmStartBomba.AtualizaValoresTotalInicial(vTotaIni: String);
-var
- vText : string;
 begin
- vText      := LPad(vTotaIni,7,'0');
- edtTotalIni6.Text :=  Copy(vText,(vText.Length),1);
- edtTotalIni5.Text :=  Copy(vText,5,1);
- edtTotalIni4.Text :=  Copy(vText,4,1);
- edtTotalIni3.Text :=  Copy(vText,3,1);
- edtTotalIni2.Text :=  Copy(vText,2,1);
- edtTotalIni1.Text :=  Copy(vText,1,1);
+ if vTotaIni.Length>5 then
+ begin
+  edtTotalIni1.Text :=  Copy(vTotaIni,0,(pos(',',vTotaIni)-1));
+  edtTotalIni6.Text :=  Copy(vTotaIni,(pos(',',vTotaIni)+1),1);
+ end;
 end;
 
 function TfrmStartBomba.LPad(value:string; tamanho:integer; caractere:char): string;
@@ -787,7 +769,7 @@ begin
        vFiltro := vFiltro+' and l.id='+vIdLocalEstoque;
 
 //       edtLitros.Text := dmDB.RetornaUltimoTotalizador(vIdLocalEstoque);
-
+       AtualizaValoresTotalInicial(dmDB.RetornaUltimoTotalizador(vIdLocalEstoque));
        dmDB.AbrirStartBomba(vFiltro);
        if not dmDB.VerificaStartAberto(vIdLocalEstoque) then
        begin
@@ -817,182 +799,15 @@ begin
 end;
 
 procedure TfrmStartBomba.edtTotalFim1ChangeTracking(Sender: TObject);
-var
- vTotalIni1,vTotalIni2,vTotalIni3,vTotalIni4,vTotalIni5,vTotalIni6: string;
 begin
-  if TEdit(Sender).Text.Length>0 then
-  begin
-   if edtTotalFim1.Text.Length>0 then
-    vTotalIni1 := edtTotalFim1.Text
-   else
-    vTotalIni1 := edtTotalFim1.TextPrompt;
-
-   if edtTotalFim2.Text.Length>0 then
-    vTotalIni2 := edtTotalFim2.Text
-   else
-    vTotalIni2 := edtTotalFim2.TextPrompt;
-
-   if edtTotalFim3.Text.Length>0 then
-    vTotalIni3 := edtTotalFim3.Text
-   else
-    vTotalIni3 := edtTotalFim3.TextPrompt;
-
-   if edtTotalFim4.Text.Length>0 then
-    vTotalIni4 := edtTotalFim3.Text
-   else
-    vTotalIni4 := edtTotalFim4.TextPrompt;
-
-   if edtTotalFim5.Text.Length>0 then
-    vTotalIni5 := edtTotalFim5.Text
-   else
-    vTotalIni5 := edtTotalFim5.TextPrompt;
-
-   if edtTotalFim6.Text.Length>0 then
-    vTotalIni6 := edtTotalFim6.Text
-   else
-    vTotalIni6 := edtTotalFim6.TextPrompt;
-
-    vTotalizadorFim :=(
-      vTotalIni1+
-      vTotalIni2+
-      vTotalIni3+
-      vTotalIni4+
-      vTotalIni5+
-      ','+
-      vTotalIni6);
-
-    if TEdit(Sender).Name='edtTotalFim1' then
-     DelayedSetFocus(edtTotalFim2);
-
-    if TEdit(Sender).Name='edtTotalFim2' then
-     DelayedSetFocus(edtTotalFim3);
-
-    if TEdit(Sender).Name='edtTotalFim3' then
-     DelayedSetFocus(edtTotalFim4);
-
-    if TEdit(Sender).Name='edtTotalFim4' then
-     DelayedSetFocus(edtTotalFim5);
-
-    if TEdit(Sender).Name='edtTotalFim5' then
-     DelayedSetFocus(edtTotalFim6);
-
-  end;
-end;
-
-procedure TfrmStartBomba.edtTotalFim6ChangeTracking(Sender: TObject);
-var
- vTotalIni1,vTotalIni2,vTotalIni3,vTotalIni4,vTotalIni5,vTotalIni6: string;
-begin
-   if edtTotalFim1.Text.Length>0 then
-    vTotalIni1 := edtTotalFim1.Text
-   else
-    vTotalIni1 := edtTotalFim1.TextPrompt;
-
-   if edtTotalFim2.Text.Length>0 then
-    vTotalIni2 := edtTotalFim2.Text
-   else
-    vTotalIni2 := edtTotalFim2.TextPrompt;
-
-   if edtTotalFim3.Text.Length>0 then
-    vTotalIni3 := edtTotalFim3.Text
-   else
-    vTotalIni3 := edtTotalFim3.TextPrompt;
-
-   if edtTotalFim4.Text.Length>0 then
-    vTotalIni4 := edtTotalFim3.Text
-   else
-    vTotalIni4 := edtTotalFim4.TextPrompt;
-
-   if edtTotalFim5.Text.Length>0 then
-    vTotalIni5 := edtTotalFim5.Text
-   else
-    vTotalIni5 := edtTotalFim5.TextPrompt;
-
-   if edtTotalFim6.Text.Length>0 then
-    vTotalIni6 := edtTotalFim6.Text
-   else
-    vTotalIni6 := edtTotalFim6.TextPrompt;
-
-    vTotalizadorFim :=(
-      vTotalIni1+
-      vTotalIni2+
-      vTotalIni3+
-      vTotalIni4+
-      vTotalIni5+
-      ','+
-      vTotalIni6);
+ if edtTotalFim1.Text.Length>=6 then
+   DelayedSetFocus(edtTotalFim6);
 end;
 
 procedure TfrmStartBomba.edtTotalIni1ChangeTracking(Sender: TObject);
-var
- vTotalIni1,vTotalIni2,vTotalIni3,vTotalIni4,vTotalIni5,vTotalIni6: string;
 begin
- if TEdit(Sender).Text.Length>0 then
-  begin
-   if edtTotalIni1.Text.Length>0 then
-    vTotalIni1 := edtTotalIni1.Text
-   else
-    vTotalIni1 := edtTotalIni1.TextPrompt;
-
-   if edtTotalIni2.Text.Length>0 then
-    vTotalIni2 := edtTotalIni2.Text
-   else
-    vTotalIni2 := edtTotalIni2.TextPrompt;
-
-   if edtTotalIni3.Text.Length>0 then
-    vTotalIni3 := edtTotalIni3.Text
-   else
-    vTotalIni3 := edtTotalIni3.TextPrompt;
-
-   if edtTotalIni4.Text.Length>0 then
-    vTotalIni4 := edtTotalIni3.Text
-   else
-    vTotalIni4 := edtTotalIni4.TextPrompt;
-
-   if edtTotalIni5.Text.Length>0 then
-    vTotalIni5 := edtTotalIni5.Text
-   else
-    vTotalIni5 := edtTotalIni5.TextPrompt;
-
-   if edtTotalIni6.Text.Length>0 then
-    vTotalIni6 := edtTotalIni6.Text
-   else
-    vTotalIni6 := edtTotalIni6.TextPrompt;
-
-
-
-
-    vTotalizadorIni :=(
-      vTotalIni1+
-      vTotalIni2+
-      vTotalIni3+
-      vTotalIni4+
-      vTotalIni5+
-      ','+
-      vTotalIni6);
-
-    if TEdit(Sender).Name='edtTotalIni1' then
-     DelayedSetFocus(edtTotalIni2);
-
-    if TEdit(Sender).Name='edtTotalIni2' then
-     DelayedSetFocus(edtTotalIni3);
-
-    if TEdit(Sender).Name='edtTotalIni3' then
-     DelayedSetFocus(edtTotalIni4);
-
-    if TEdit(Sender).Name='edtTotalIni4' then
-     DelayedSetFocus(edtTotalIni5);
-
-    if TEdit(Sender).Name='edtTotalIni5' then
-     DelayedSetFocus(edtTotalIni6);
-
-  end;
-end;
-
-procedure TfrmStartBomba.edtTotalIni1MouseUp(Sender: TObject;
-  Button: TMouseButton; Shift: TShiftState; X, Y: Single);
-begin
-   TEdit(Sender).SelectAll;
+ if edtTotalIni1.Text.Length>=6 then
+   DelayedSetFocus(edtTotalIni6);
 end;
 
 procedure TfrmStartBomba.edtTotalIni2KeyUp(Sender: TObject; var Key: Word;
@@ -1000,78 +815,6 @@ procedure TfrmStartBomba.edtTotalIni2KeyUp(Sender: TObject; var Key: Word;
 begin
  if key = vkBack then
     frmStartBomba.edtTotalIni1.SetFocus;
-end;
-
-procedure TfrmStartBomba.edtTotalIni3KeyUp(Sender: TObject; var Key: Word;
-  var KeyChar: Char; Shift: TShiftState);
-begin
- if key = vkBack then
-    frmStartBomba.edtTotalIni2.SetFocus;
-end;
-
-procedure TfrmStartBomba.edtTotalIni4KeyUp(Sender: TObject; var Key: Word;
-  var KeyChar: Char; Shift: TShiftState);
-begin
- if key = vkBack then
-    frmStartBomba.edtTotalIni3.SetFocus;
-end;
-
-procedure TfrmStartBomba.edtTotalIni5KeyUp(Sender: TObject; var Key: Word;
-  var KeyChar: Char; Shift: TShiftState);
-begin
-  if key = vkBack then
-    frmStartBomba.edtTotalIni4.SetFocus;
-end;
-
-procedure TfrmStartBomba.edtTotalIni6ChangeTracking(Sender: TObject);
-var
-  vTotalIni1,vTotalIni2,vTotalIni3,vTotalIni4,vTotalIni5,vTotalIni6: string;
-begin
-   if edtTotalIni1.Text.Length>0 then
-    vTotalIni1 := edtTotalIni1.Text
-   else
-    vTotalIni1 := edtTotalIni1.TextPrompt;
-
-   if edtTotalIni2.Text.Length>0 then
-    vTotalIni2 := edtTotalIni2.Text
-   else
-    vTotalIni2 := edtTotalIni2.TextPrompt;
-
-   if edtTotalIni3.Text.Length>0 then
-    vTotalIni3 := edtTotalIni3.Text
-   else
-    vTotalIni3 := edtTotalIni3.TextPrompt;
-
-   if edtTotalIni4.Text.Length>0 then
-    vTotalIni4 := edtTotalIni3.Text
-   else
-    vTotalIni4 := edtTotalIni4.TextPrompt;
-
-   if edtTotalIni5.Text.Length>0 then
-    vTotalIni5 := edtTotalIni5.Text
-   else
-    vTotalIni5 := edtTotalIni5.TextPrompt;
-
-   if edtTotalIni6.Text.Length>0 then
-    vTotalIni6 := edtTotalIni6.Text
-   else
-    vTotalIni6 := edtTotalIni6.TextPrompt;
-
-    vTotalizadorIni :=(
-      vTotalIni1+
-      vTotalIni2+
-      vTotalIni3+
-      vTotalIni4+
-      vTotalIni5+
-      ','+
-      vTotalIni6);
-end;
-
-procedure TfrmStartBomba.edtTotalIni6KeyUp(Sender: TObject; var Key: Word;
-  var KeyChar: Char; Shift: TShiftState);
-begin
- if key = vkBack then
-    frmStartBomba.edtTotalIni5.SetFocus;
 end;
 
 procedure TfrmStartBomba.FormCreate(Sender: TObject);
@@ -1152,12 +895,12 @@ begin
 
 
        txt      := TListItemText(Objects.FindDrawable('Text8'));
-       txt.Text := 'Totalizador Start: ';
+       txt.Text := 'Inicio: ';
        txt      := TListItemText(Objects.FindDrawable('Text9'));
        txt.Text := dmDB.TStartbombavolumelitrosIni.AsString;
 
        txt      := TListItemText(Objects.FindDrawable('Text10'));
-       txt.Text := 'Totalizador Fim: ';
+       txt.Text := 'Fim: ';
        txt      := TListItemText(Objects.FindDrawable('Text11'));
        txt.Text := dmDB.TStartbombavolumelitrosFim.AsString;
 
@@ -1204,6 +947,14 @@ begin
         img.Bitmap     := frmPrincipal.imgTotalizadorFim.Bitmap;
         txt      := TListItemText(Objects.FindDrawable('Text15'));
         txt.Text := 'Foto Fim';
+
+        txt      := TListItemText(Objects.FindDrawable('Text17'));
+        txt.Text := 'Consumo:';
+
+        txt      := TListItemText(Objects.FindDrawable('Text16'));
+        txt.Text := FormatFloat('####,##0.00',
+          dmDB.TStartbombavolumelitrosFim.AsFloat-
+                        dmDB.TStartbombavolumelitrosIni.AsFloat);
        end
        else
        begin
@@ -1243,8 +994,8 @@ procedure TfrmStartBomba.LimpaCampos;
 begin
  vStart :=0;
  edtLocalEstoque.Text :='';
- vTotalizadorIni      :='';
- vTotalizadorFim      :='';
+ vTotalizadorIni      :=0;
+ vTotalizadorFim      :=0;
  edtCombustivel.Text  :='';
  imgStart.Bitmap      :=nil;
  imgStop.Bitmap       :=nil;
@@ -1272,17 +1023,9 @@ begin
  vImg64Stop              := '';
 
  edtTotalIni1.Text       := '';
- edtTotalIni2.Text       := '';
- edtTotalIni3.Text       := '';
- edtTotalIni4.Text       := '';
- edtTotalIni5.Text       := '';
  edtTotalIni6.Text       := '';
 
  edtTotalFim1.Text       := '';
- edtTotalFim2.Text       := '';
- edtTotalFim3.Text       := '';
- edtTotalFim4.Text       := '';
- edtTotalFim5.Text       := '';
  edtTotalFim6.Text       := '';
 
 end;
@@ -1348,10 +1091,10 @@ begin
       edtCombustivel.Text  := dmDB.TStartbombaCombustivelNome.AsString;
       vIdLocalEstoque      := dmDB.TStartbombaidlocalestoque.AsString;
       vIdCombustivel       := dmDB.TStartbombacombustivel.AsString;
-      vTotalizadorIni      := dmDB.TStartbombavolumelitrosIni.AsString;
-      AtualizaValoresTotalInicial(vTotalizadorIni);
+      vTotalizadorIni      := dmDB.TStartbombavolumelitrosIni.AsFloat;
+      AtualizaValoresTotalInicial(FloatToStr(vTotalizadorIni));
       edtData.Date         := dmDB.TStartbombadataastart.AsDateTime;
-      vTotalizadorFim      := dmDB.TStartbombavolumelitrosFim.AsString;
+      vTotalizadorFim      := dmDB.TStartbombavolumelitrosFim.AsFloat;
       edtHora.Date         := dmDB.TStartbombahorastart.AsDateTime;
       edtHoraFim.Date      := dmDB.TStartbombahoraend.AsDateTime;
 

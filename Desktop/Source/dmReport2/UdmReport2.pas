@@ -385,9 +385,6 @@ begin
 
    while vDataControle<=vDataFim do
    begin
-    if vDataControle=strToDate('20/07/2022') then
-     vDataControle:=vDataControle;
-
     Clear;
     Add('select coalesce(sum(qtde),0) qtde from tranferencialocalestoque a');
     Add('where a.status=1 and a.idlocalestoquedetino='+LocalEstoque+' and');
@@ -434,6 +431,7 @@ begin
       Add('left join maquinaveiculo c on c.id=a.idmaquina');
       Add('where a.status=1 and a.idlocalestoque='+LocalEstoque);
       Add('and e.datasaidaestoque =:dataControle');
+      Add('order by a.id');
       ParamByName('dataControle').AsDate := vDataControle;
       Open;
       if not vQry2.IsEmpty then
@@ -517,7 +515,7 @@ begin
  with ExtratoDiaMaquina,ExtratoDiaMaquina.sql do
  begin
    Clear;
-   Add('select * from extratoCombustivel order by datadia');
+   Add('select * from extratoCombustivel order by id');
    Open;
    ppLblPeriodoEx.Text :=DataIni+' ate '+DataFim;
    ppRepExtratoMaquinaDia.PrintReport;

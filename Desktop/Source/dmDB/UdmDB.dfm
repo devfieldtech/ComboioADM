@@ -4,22 +4,20 @@ object dmdb: Tdmdb
   Width = 756
   object FDConPG: TFDConnection
     Params.Strings = (
-      'Server=127.0.0.1'
+      'Server=localhost'
       'User_Name=postgres'
       'Password=Dev#110485'
       'Pooled='
-      'Database=ComboioADM_Apontamento'
+      'Database=ComboioADM'
       'DriverID=PG')
     ResourceOptions.AssignedValues = [rvAutoReconnect]
     ResourceOptions.AutoReconnect = True
-    Connected = True
     LoginPrompt = False
     OnLost = FDConPGLost
     Left = 21
     Top = 8
   end
   object PgDriverLink: TFDPhysPgDriverLink
-    VendorLib = 'E:\Projetos2021\ComboioADM\Deploy\libpq.dll'
     Left = 21
     Top = 80
   end
@@ -36,10 +34,20 @@ object dmdb: Tdmdb
     SQL.Strings = (
       'select '
       ' U.*,'
-      ' case '
+      ' cast(case '
       '  when tipo=0 then '#39'PADRAO'#39
       '  when tipo=1 then '#39'ALMOXERIFADO'#39
-      ' end tipoSTR'
+      ' end as Varchar(12)) tipoSTR,'
+      ' cast(case '
+      '  when abastecimento=1 then '#39'SIM'#39
+      '  ELSE'
+      '   '#39'N'#195'O'#39
+      ' end as varchar(3)) AbastecimentoSTR,'
+      ' cast(case '
+      '  when apontamento=1 then '#39'SIM'#39
+      '  ELSE'
+      '   '#39'N'#195'O'#39
+      ' end as varchar(3)) ApontamentoSTR'
       'from usuario U'
       'where Status>-1'
       ''
@@ -105,13 +113,6 @@ object dmdb: Tdmdb
       FieldName = 'syncaws'
       Origin = 'syncaws'
     end
-    object TUsuariotipostr: TWideMemoField
-      AutoGenerateValue = arDefault
-      FieldName = 'tipostr'
-      Origin = 'tipostr'
-      ReadOnly = True
-      BlobType = ftWideMemo
-    end
     object TUsuarioiderp: TIntegerField
       FieldName = 'iderp'
       Origin = 'iderp'
@@ -123,6 +124,20 @@ object dmdb: Tdmdb
     object TUsuarioabastecimento: TIntegerField
       FieldName = 'abastecimento'
       Origin = 'abastecimento'
+    end
+    object TUsuarioabastecimentostr: TWideStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'abastecimentostr'
+      Origin = 'abastecimentostr'
+      ReadOnly = True
+      Size = 3
+    end
+    object TUsuarioapontamentostr: TWideStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'apontamentostr'
+      Origin = 'apontamentostr'
+      ReadOnly = True
+      Size = 3
     end
   end
   object TAuxMarca: TFDQuery
@@ -728,7 +743,8 @@ object dmdb: Tdmdb
       ' end tipoAlerta,'
       ' u.nome UsuariNome,'
       ' c.iderp ID_ERP_CENTROCUSTO,'
-      ' l.iderp ID_ERP_LOCAL_ESTOQUE'
+      ' l.iderp ID_ERP_LOCAL_ESTOQUE,'
+      ' m.tipomedicao'
       'from abastecimento a '
       'join usuario u  on a.idusuario =U.ID'
       'join centrocusto c  on a.idcentrocusto=c.id '
@@ -922,6 +938,11 @@ object dmdb: Tdmdb
       AutoGenerateValue = arDefault
       FieldName = 'id_erp_local_estoque'
       Origin = 'id_erp_local_estoque'
+    end
+    object TAbastecimentotipomedicao: TIntegerField
+      AutoGenerateValue = arDefault
+      FieldName = 'tipomedicao'
+      Origin = 'tipomedicao'
     end
   end
   object TEstoqueEntrada: TFDQuery
@@ -2722,9 +2743,13 @@ object dmdb: Tdmdb
       FieldName = 'horainicio'
       Origin = 'horainicio'
     end
+    object TApontamentokmdestinoescavadeira: TWideStringField
+      FieldName = 'kmdestinoescavadeira'
+      Origin = 'kmdestinoescavadeira'
+      Size = 50
+    end
   end
   object TApontamentoValores: TFDQuery
-    Active = True
     CachedUpdates = True
     IndexFieldNames = 'idapontamento'
     MasterSource = dsApontamento
@@ -2837,5 +2862,118 @@ object dmdb: Tdmdb
     DataSet = TApontamento
     Left = 560
     Top = 432
+  end
+  object TExportaApontamento: TFDQuery
+    Connection = FDConPG
+    SQL.Strings = (
+      'select '
+      '     c.nome Obra,'
+      '     ROW_NUMBER () OVER (ORDER BY a.id)Ordem,   '
+      '     a.dataoperacao, '
+      '     av.horaoperacao,     '
+      '     mv.prefixo PrefixoCaminhao,'
+      '     cast(case '
+      
+        '       when horaoperacao between cast('#39'05:00'#39' as time) and cast(' +
+        #39'18:00'#39' as time) then '#39'DIURNO'#39
+      
+        '       when horaoperacao between cast('#39'18:01'#39' as time) and cast(' +
+        #39'04:59'#39' as time) then '#39'NOTURNO'#39
+      '     end as varchar(20)) Turno,'
+      '     m.prefixo PrefixoEscavadeira,'
+      '     a.observacao,'
+      '     a.kmatualescavadeira,'
+      '     p.nome Material,'
+      '     a.aplicacaoproduto,'
+      '     a.kmdestinoescavadeira '
+      'from apontamento a '
+      'join maquinaveiculo m on a.idescavadeira=m.id '
+      'join centrocusto    c on c.id=a.idCentroCusto  '
+      'join produtos       p on a.idproduto=p.id '
+      'join apontamentoValores av on av.idapontamento=a.id '
+      'join maquinaveiculo mv on av.idmaquina=mv.id '
+      'where a.status>-1 '
+      'order by ROW_NUMBER () OVER (ORDER BY av.horaoperacao)')
+    Left = 624
+    Top = 376
+    object TExportaApontamentoobra: TWideStringField
+      DisplayLabel = 'Obra'
+      FieldName = 'obra'
+      Origin = 'obra'
+      Size = 100
+    end
+    object TExportaApontamentoordem: TLargeintField
+      AutoGenerateValue = arDefault
+      DisplayLabel = 'Ordem Carregamento'
+      FieldName = 'ordem'
+      Origin = 'ordem'
+      ReadOnly = True
+    end
+    object TExportaApontamentodataoperacao: TDateField
+      AutoGenerateValue = arDefault
+      DisplayLabel = 'Data Opera'#231#227'o'
+      FieldName = 'dataoperacao'
+      Origin = 'dataoperacao'
+    end
+    object TExportaApontamentohoraoperacao: TTimeField
+      AutoGenerateValue = arDefault
+      DisplayLabel = 'Hora Carregamento'
+      FieldName = 'horaoperacao'
+      Origin = 'horaoperacao'
+    end
+    object TExportaApontamentoprefixocaminhao: TWideStringField
+      AutoGenerateValue = arDefault
+      DisplayLabel = 'Prefixo'
+      FieldName = 'prefixocaminhao'
+      Origin = 'prefixocaminhao'
+    end
+    object TExportaApontamentoturno: TWideStringField
+      AutoGenerateValue = arDefault
+      DisplayLabel = 'Turno'
+      FieldName = 'turno'
+      Origin = 'turno'
+      ReadOnly = True
+    end
+    object TExportaApontamentoprefixoescavadeira: TWideStringField
+      AutoGenerateValue = arDefault
+      DisplayLabel = 'Prefixo Escavadeira'
+      FieldName = 'prefixoescavadeira'
+      Origin = 'prefixoescavadeira'
+    end
+    object TExportaApontamentoobservacao: TWideStringField
+      AutoGenerateValue = arDefault
+      DisplayLabel = 'Observa'#231#227'o'
+      FieldName = 'observacao'
+      Origin = 'observacao'
+      Size = 100
+    end
+    object TExportaApontamentokmatualescavadeira: TWideStringField
+      AutoGenerateValue = arDefault
+      DisplayLabel = 'KM Origem'
+      FieldName = 'kmatualescavadeira'
+      Origin = 'kmatualescavadeira'
+      Size = 50
+    end
+    object TExportaApontamentomaterial: TWideStringField
+      AutoGenerateValue = arDefault
+      DisplayLabel = 'Material'
+      FieldName = 'material'
+      Origin = 'material'
+      Size = 50
+    end
+    object TExportaApontamentoaplicacaoproduto: TWideStringField
+      AutoGenerateValue = arDefault
+      DisplayLabel = 'Aplica'#231#227'o Material'
+      FieldName = 'aplicacaoproduto'
+      Origin = 'aplicacaoproduto'
+      Size = 50
+    end
+    object TExportaApontamentokmdestinoescavadeira: TWideStringField
+      AutoGenerateValue = arDefault
+      DisplayLabel = 'KM Destino'
+      FieldName = 'kmdestinoescavadeira'
+      Origin = 'kmdestinoescavadeira'
+      Size = 50
+    end
   end
 end

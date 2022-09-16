@@ -235,9 +235,6 @@ Coordinates=568,1939,88,33
 [TAbastecimentocentrocustonome]
 Coordinates=971,833,180,33
 
-[TUsuariotipostr]
-Coordinates=469,1939,91,33
-
 [TStartBombahoraend]
 Coordinates=971,885,119,33
 
@@ -1121,5 +1118,5 @@ Coordinates=123,10,103,1617
 Coordinates=10,10,103,1635
 
 []
-Coordinates=98,2171,100,33
+Coordinates=469,1939,91,33
 

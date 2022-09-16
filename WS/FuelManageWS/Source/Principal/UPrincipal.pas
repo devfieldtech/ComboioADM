@@ -508,6 +508,42 @@ begin
     end;
   end);
 
+  THorse.Post('/Apontamento',
+  procedure(Req: THorseRequest; Res: THorseResponse; Next: TProc)
+  var
+    LBody,LBodyRed: TJSONObject;
+  begin
+    mLog.Lines.Add(FormatDateTime('dd-mm-yyyy-hh:mm:ss',now)+' Recebendo Apontamento');
+    LBody := Req.Body<TJSONObject>;
+    try
+     LBodyRed:=dmLocal.AcceptApontamento(LBody);
+     Res.Send(LBodyRed).Status(200)
+     except on ex:exception do
+     begin
+      mLog.Lines.Add(FormatDateTime('dd-mm-yyyy-hh:mm:ss',now)+' Erro :'+ex.Message);
+      Res.Send(tjsonobject.Create.AddPair('Mensagem', ex.Message)).Status(500);
+     end;
+    end;
+  end);
+
+  THorse.Post('/ApontamentoValores',
+  procedure(Req: THorseRequest; Res: THorseResponse; Next: TProc)
+  var
+    LBody,LBodyRed: TJSONObject;
+  begin
+    mLog.Lines.Add(FormatDateTime('dd-mm-yyyy-hh:mm:ss',now)+' Recebendo Apontamento Valores');
+    LBody := Req.Body<TJSONObject>;
+    try
+     LBodyRed:=dmLocal.AccepTapontamentoValoresValores(LBody);
+     Res.Send(LBodyRed).Status(200)
+     except on ex:exception do
+     begin
+      mLog.Lines.Add(FormatDateTime('dd-mm-yyyy-hh:mm:ss',now)+' Erro :'+ex.Message);
+      Res.Send(tjsonobject.Create.AddPair('Mensagem', ex.Message)).Status(500);
+     end;
+    end;
+  end);
+
   THorse.Post('/AutenticaPatrimonio',
   procedure(Req: THorseRequest; Res: THorseResponse; Next: TProc)
   var
@@ -517,6 +553,24 @@ begin
     LBody := Req.Body<TJSONObject>;
     try
      LBodyRed:=dmLocal.AcceptAutenticaPatrimonio(LBody);
+     Res.Send(LBodyRed).Status(200)
+     except on ex:exception do
+     begin
+      mLog.Lines.Add(FormatDateTime('dd-mm-yyyy-hh:mm:ss',now)+' Erro :'+ex.Message);
+      Res.Send(tjsonobject.Create.AddPair('Mensagem', ex.Message)).Status(500);
+     end;
+    end;
+  end);
+
+  THorse.Post('/LogSync',
+  procedure(Req: THorseRequest; Res: THorseResponse; Next: TProc)
+  var
+    LBody,LBodyRed: TJSONObject;
+  begin
+    mLog.Lines.Add(FormatDateTime('dd-mm-yyyy-hh:mm:ss',now)+' Log de Sincronização');
+    LBody := Req.Body<TJSONObject>;
+    try
+     LBodyRed:=dmLocal.AcceptLogSync(LBody);
      Res.Send(LBodyRed).Status(200)
      except on ex:exception do
      begin

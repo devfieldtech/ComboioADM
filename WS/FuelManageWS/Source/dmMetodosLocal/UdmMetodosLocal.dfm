@@ -1094,8 +1094,8 @@ object dmLocal: TdmLocal
     QueueEndpoint = 'queue.amazonaws.com'
     StorageEndpoint = 's3-us-east-2.amazonaws.com'
     UseDefaultEndpoints = False
-    Left = 32
-    Top = 456
+    Left = 56
+    Top = 448
   end
   object cheklistregrupoitem: TFDQuery
     CachedUpdates = True
@@ -1103,7 +1103,7 @@ object dmLocal: TdmLocal
     SQL.Strings = (
       'select * from cheklistregrupoitem'
       'where status=1')
-    Left = 344
+    Left = 336
     Top = 408
     object cheklistregrupoitemid: TIntegerField
       FieldName = 'id'
@@ -1400,6 +1400,140 @@ object dmLocal: TdmLocal
     object ConfigS3nomes3: TWideStringField
       FieldName = 'nomes3'
       Origin = 'nomes3'
+      Size = 100
+    end
+  end
+  object TApontamento: TFDQuery
+    CachedUpdates = True
+    Connection = frmPrincipal.FDConPG
+    SQL.Strings = (
+      'select'
+      '*'
+      'from apontamento'
+      'where status=-1000')
+    Left = 616
+    Top = 320
+    object TApontamentoid: TIntegerField
+      FieldName = 'id'
+      Origin = 'id'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+    end
+    object TApontamentostatus: TIntegerField
+      FieldName = 'status'
+      Origin = 'status'
+    end
+    object TApontamentodatareg: TSQLTimeStampField
+      FieldName = 'datareg'
+      Origin = 'datareg'
+    end
+    object TApontamentoidusuario: TIntegerField
+      FieldName = 'idusuario'
+      Origin = 'idusuario'
+    end
+    object TApontamentodataalteracao: TSQLTimeStampField
+      FieldName = 'dataalteracao'
+      Origin = 'dataalteracao'
+    end
+    object TApontamentodataoperacao: TDateField
+      FieldName = 'dataoperacao'
+      Origin = 'dataoperacao'
+    end
+    object TApontamentoidusuarioalteracao: TIntegerField
+      FieldName = 'idusuarioalteracao'
+      Origin = 'idusuarioalteracao'
+    end
+    object TApontamentoidcentrocusto: TIntegerField
+      FieldName = 'idcentrocusto'
+      Origin = 'idcentrocusto'
+    end
+    object TApontamentoidescavadeira: TIntegerField
+      FieldName = 'idescavadeira'
+      Origin = 'idescavadeira'
+    end
+    object TApontamentoidproduto: TIntegerField
+      FieldName = 'idproduto'
+      Origin = 'idproduto'
+    end
+    object TApontamentoaplicacaoproduto: TWideStringField
+      FieldName = 'aplicacaoproduto'
+      Origin = 'aplicacaoproduto'
+      Size = 50
+    end
+    object TApontamentokmatualescavadeira: TWideStringField
+      FieldName = 'kmatualescavadeira'
+      Origin = 'kmatualescavadeira'
+      Size = 50
+    end
+    object TApontamentoobservacao: TWideStringField
+      FieldName = 'observacao'
+      Origin = 'observacao'
+      Size = 100
+    end
+    object TApontamentohorainicio: TTimeField
+      FieldName = 'horainicio'
+      Origin = 'horainicio'
+    end
+    object TApontamentokmdestinoescavadeira: TWideStringField
+      FieldName = 'kmdestinoescavadeira'
+      Origin = 'kmdestinoescavadeira'
+      Size = 50
+    end
+  end
+  object TApontamentoValores: TFDQuery
+    CachedUpdates = True
+    IndexFieldNames = 'idapontamento'
+    MasterFields = 'id'
+    DetailFields = 'idapontamento'
+    Connection = frmPrincipal.FDConPG
+    SQL.Strings = (
+      'select'
+      '*'
+      'from apontamentoValores a')
+    Left = 616
+    Top = 256
+    object TApontamentoValoresidusuario: TIntegerField
+      FieldName = 'idusuario'
+      Origin = 'idusuario'
+    end
+    object TApontamentoValoresdataoperacao: TDateField
+      FieldName = 'dataoperacao'
+      Origin = 'dataoperacao'
+    end
+    object TApontamentoValoreshoraoperacao: TTimeField
+      FieldName = 'horaoperacao'
+      Origin = 'horaoperacao'
+    end
+    object TApontamentoValoresidapontamento: TIntegerField
+      FieldName = 'idapontamento'
+      Origin = 'idapontamento'
+    end
+    object TApontamentoValoresidmaquina: TIntegerField
+      FieldName = 'idmaquina'
+      Origin = 'idmaquina'
+    end
+    object TApontamentoValoreslatitude: TFMTBCDField
+      FieldName = 'latitude'
+      Origin = 'latitude'
+      Precision = 9
+      Size = 6
+    end
+    object TApontamentoValoreslongitude: TFMTBCDField
+      FieldName = 'longitude'
+      Origin = 'longitude'
+      Precision = 9
+      Size = 6
+    end
+    object TApontamentoValorestipoidentificacaomaquina: TIntegerField
+      FieldName = 'tipoidentificacaomaquina'
+      Origin = 'tipoidentificacaomaquina'
+    end
+    object TApontamentoValoresimgveiculo: TBlobField
+      FieldName = 'imgveiculo'
+      Origin = 'imgveiculo'
+    end
+    object TApontamentoValoresobservacao: TWideStringField
+      FieldName = 'observacao'
+      Origin = 'observacao'
       Size = 100
     end
   end

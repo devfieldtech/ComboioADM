@@ -322,6 +322,25 @@ type
     TUsuarioabastecimento: TIntegerField;
     TUsuarioapontamento: TIntegerField;
     TProdutosproducao: TIntegerField;
+    TApontamentoValores: TFDQuery;
+    TApontamento: TFDQuery;
+    TApontamentoid: TFDAutoIncField;
+    TApontamentostatus: TWideStringField;
+    TApontamentodatareg: TWideStringField;
+    TApontamentoidusuario: TWideStringField;
+    TApontamentodataalteracao: TWideStringField;
+    TApontamentodataoperacao: TDateField;
+    TApontamentoidusuarioalteracao: TWideStringField;
+    TApontamentoidcentrocusto: TWideStringField;
+    TApontamentoidescavadeira: TWideStringField;
+    TApontamentoidproduto: TWideStringField;
+    TApontamentoaplicacaoproduto: TStringField;
+    TApontamentokmatualescavadeira: TStringField;
+    TApontamentoobservacao: TStringField;
+    TApontamentohorainicio: TTimeField;
+    TApontamentosyncaws: TIntegerField;
+    TApontamentohorafim: TTimeField;
+    TApontamentokmdestinoescavadeira: TStringField;
     procedure cheklistgenericReconcileError(DataSet: TFDDataSet;
       E: EFDException; UpdateKind: TFDDatSRowState;
       var Action: TFDDAptReconcileAction);
@@ -356,12 +375,16 @@ type
     function PostAbastecimentoOutros:string;
     function PostMovLocalEstoque: string;
     function PostAutenticaPatrimonio(Patrimonio:string):string;
+    function PostLogSync:string;
 
     function PostLubrificacao:string;
     function PostLubrificacaoProdutos:string;
 
     function PostCheckList:string;
     function PostDetCheckList:string;
+
+    function PostApontamento:string;
+    function PostApontamentoValores(idApontamento,idSend:string):string;
 
   end;
 
@@ -425,6 +448,66 @@ begin
      Result     := 'Erro:'+vReultHTTP;
    end;
 end;
+
+function TdmSync.PostLogSync:string;
+var
+   URL,vReultHTTP:STRING;
+   JsonToSend  : TStringStream;
+   I:integer;
+   Txt         : TextFile;
+   Quebra      : TStringList;
+   LJSon       : TJSONArray;
+   vReultHTTPc,
+   ResponseBody,vReultCopy: String;
+   StrAux      : TStringWriter;
+   txtJson     : TJsonTextWriter;
+   LJsonObj    : TJSONObject;
+   Patrimonio,IdUsuario,IdCentroCusto:string;
+begin
+  dmDB.qryConfig.Close;
+  dmDB.qryConfig.Open;
+  Patrimonio    := dmDB.qryConfigPATRIMONIO.AsString;
+  IdCentroCusto := dmDB.qryConfigID_CENTRO_CUSTO.AsString;
+  IdUsuario     := dmDB.vIdUser;
+
+  JsonToSend := TStringStream.Create(nil);
+  StrAux  := TStringWriter.Create;
+   txtJson := TJsonTextWriter.Create(StrAux);
+   txtJson.Formatting := TJsonFormatting.Indented;
+   txtJson.WriteStartObject;
+   TxtJSON.WritePropertyName('logSync');
+    TxtJSON.WriteStartArray;
+     txtJson.WriteStartObject;
+       txtJson.WritePropertyName('idusuario');
+       txtJson.WriteValue(IdUsuario);
+       txtJson.WritePropertyName('idcentrocusto');
+       txtJson.WriteValue(IdCentroCusto);
+       txtJson.WritePropertyName('patrimonio');
+       txtJson.WriteValue(Patrimonio);
+     txtJson.WriteEndObject;
+    TxtJSON.WriteEndArray; //Fecha Array dos Itens
+   txtJson.WriteEndObject;
+   LJsonObj := TJsonObject.ParseJSONValue(TEncoding.UTF8.GetBytes(StrAux.ToString),0)as TJSONObject;
+   JsonToSend := TStringStream.Create(LJsonObj.ToJSON);
+   Url := 'http://'+Host+':'+Porta+'/LogSync';
+   IdHTTP1.Request.Accept      := 'application/json';
+   IdHTTP1.Request.ContentType := 'application/json';
+   ResponseBody := IdHTTP1.Post(url,JsonToSend);
+   vReultCopy := copy(ResponseBody,0,5);
+   if vReultCopy='{"OK"'then
+   begin
+     vReultHTTP := StringReplace(ResponseBody,'{"OK":"','',[rfReplaceAll]);
+     vReultHTTP := StringReplace(vReultHTTP,'"}','',[rfReplaceAll]);
+     Result     := vReultHTTP;
+   end
+   else
+   begin
+     vReultHTTP := StringReplace(ResponseBody,'{"Erro":"','',[rfReplaceAll]);
+     vReultHTTP := StringReplace(vReultHTTP,'"}','',[rfReplaceAll]);
+     Result     := 'Erro:'+vReultHTTP;
+   end;
+end;
+
 
 
 function Tdmsync.PostCheckList: string;
@@ -1760,6 +1843,151 @@ begin
 end;
 
 
+
+function Tdmsync.PostApontamento: string;
+var
+ URL,vReultHTTP:STRING;
+ JsonToSend  : TStringStream;
+ I:integer;
+begin
+ with QryAuxLoop,QryAuxLoop.SQL do
+ begin
+   Clear;
+   Add('select * from apontamento where status=2 and syncaws=0');
+   Open;
+   I :=1;
+   while not QryAuxLoop.Eof do
+   begin
+     frmprincipal.mlog.text:='Enviando Apontamento:'+
+      IntToStr(i)+' de '+IntToStr(QryAuxLoop.RecordCount) ;
+
+     with Tapontamento,Tapontamento.SQL do
+     begin
+      Clear;
+      Add('select * from apontamento where id='+QryAuxLoop.FieldByName('id').AsString);
+      Open;
+     end;
+     if not Tapontamento.IsEmpty then
+     begin
+       JsonToSend := TStringStream.Create(nil);
+       Tapontamento.SaveToStream(JsonToSend,sfJSON);
+       Url := 'http://'+Host+':'+Porta+'/Apontamento';
+       IdHTTP1.Request.CustomHeaders.Clear;
+       IdHTTP1.Request.CustomHeaders.Clear;
+       IdHTTP1.Request.ContentType := 'application/json';
+       IdHTTP1.Request.Accept      := 'application/json';
+       try
+         vReultHTTP := IdHTTP1.Post(url,JsonToSend);
+         if copy(vReultHTTP,0,4)='{"OK'then
+         begin
+           vReultHTTP := StringReplace(vReultHTTP,'{"OK":"','',[rfReplaceAll]);
+           vReultHTTP := StringReplace(vReultHTTP,'"}','',[rfReplaceAll]);
+           PostApontamentoValores(QryAuxLoop.FieldByName('id').AsString,vReultHTTP);
+           dmsync.AlteraFlagSync('apontamento','1',QryAuxLoop.FieldByName('id').AsString);
+         end
+         else
+          TThread.Synchronize(nil, procedure
+          begin
+           TDialogService.ShowMessage(vReultHTTP);
+          end);
+         inc(I);
+         QryAuxLoop.Next;
+       except
+        on E: Exception do
+        begin
+         TThread.Synchronize(nil, procedure
+         begin
+           TDialogService.ShowMessage('Erro ao sioncronizar Apontamento : '+e.Message);
+         end);
+         Result:='Erro ao sioncronizar Apontamento : '+e.Message;
+         Break;
+        end;
+       end;
+     end;
+   end;
+ end;
+ Result:= vReultHTTP;
+end;
+
+function Tdmsync.PostApontamentoValores(idApontamento,idSend: string): string;
+var
+ URL,vReultHTTP:STRING;
+ JsonToSend  : TStringStream;
+ I:integer;
+ vQryLoop :TFDQuery;
+begin
+ vQryLoop := TFDQuery.Create(nil);
+ vQryLoop.Connection := dmdb.FCon;
+
+ with vQryLoop,vQryLoop.SQL do
+ begin
+   Clear;
+   Add('select * from apontamentovalores where status=1');
+   Add('and idapontamento='+idApontamento);
+   Open;
+   I :=1;
+   while not vQryLoop.Eof do
+   begin
+     frmprincipal.mlog.text:='Enviando Apontamento:'+
+      IntToStr(i)+' de '+IntToStr(vQryLoop.RecordCount) ;
+
+     with TApontamentoValores,TApontamentoValores.SQL do
+     begin
+      Clear;
+      Add('select ');
+      Add('idusuario,');
+      Add('dataoperacao,');
+      Add('horaoperacao,');
+      Add(idSend+' as idapontamento,');
+      Add('idmaquina,');
+      Add('latitude,');
+      Add('longitude,');
+      Add('tipoidentificacaomaquina,');
+      Add('imgveiculo,');
+      Add('observacao');
+      Add('from apontamentovalores');
+      Add('where id='+vQryLoop.FieldByName('id').AsString);
+      Open;
+     end;
+     if not TApontamentoValores.IsEmpty then
+     begin
+       JsonToSend := TStringStream.Create(nil);
+       TApontamentoValores.SaveToStream(JsonToSend,sfJSON);
+       Url := 'http://'+Host+':'+Porta+'/ApontamentoValores';
+       IdHTTP1.Request.CustomHeaders.Clear;
+       IdHTTP1.Request.CustomHeaders.Clear;
+       IdHTTP1.Request.ContentType := 'application/json';
+       IdHTTP1.Request.Accept      := 'application/json';
+       try
+         vReultHTTP := IdHTTP1.Post(url,JsonToSend);
+         if copy(vReultHTTP,0,4)='{"OK'then
+         begin
+           vReultHTTP := StringReplace(vReultHTTP,'{"OK":"','',[rfReplaceAll]);
+           vReultHTTP := StringReplace(vReultHTTP,'"}','',[rfReplaceAll]);
+         end
+         else
+          TThread.Synchronize(nil, procedure
+          begin
+           TDialogService.ShowMessage(vReultHTTP);
+          end);
+         inc(I);
+         vQryLoop.Next;
+       except
+        on E: Exception do
+        begin
+         TThread.Synchronize(nil, procedure
+         begin
+           TDialogService.ShowMessage('Erro ao sioncronizar Apontamento : '+e.Message);
+         end);
+         Result:='Erro ao sioncronizar Apontamento : '+e.Message;
+         Break;
+        end;
+       end;
+     end;
+   end;
+ end;
+ Result:= vReultHTTP;
+end;
 
 function Tdmsync.PostStartDiario: string;
 var

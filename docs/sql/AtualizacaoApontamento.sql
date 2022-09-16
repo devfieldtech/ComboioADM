@@ -45,3 +45,16 @@ CREATE TABLE public.apontamentovalores (
 
 ALTER TABLE public.usuario ADD apontamento integer NOT NULL DEFAULT 0;
 ALTER TABLE public.usuario ADD abastecimento integer NOT NULL DEFAULT 0;
+
+CREATE TABLE public.LogSync (
+	id serial4 NOT NULL,
+	status int4 NOT NULL DEFAULT 1,
+	datareg timestamptz NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	idusuario int4 NOT NULL,
+	idcentroCusto varchar(50) null,
+	patrimonio integer,
+	CONSTRAINT "LogSync_pkey" PRIMARY KEY (id)
+);
+
+ALTER TABLE public.apontamentovalores ADD CONSTRAINT apontamentovalores_fk FOREIGN KEY (idapontamento) REFERENCES public.apontamento(id) ON DELETE CASCADE ON UPDATE CASCADE;
+

@@ -3,19 +3,20 @@ unit UApontamento;
 interface
 
 uses
-  System.SysUtils, System.Types, System.UITypes, System.Classes, System.Variants, 
+   System.SysUtils, System.Types, System.UITypes, System.Classes, System.Variants,
   FMX.Types, FMX.Graphics, FMX.Controls, FMX.Forms, FMX.Dialogs, FMX.StdCtrls,
   UCadPadrao, System.Rtti, FMX.Grid.Style, FireDAC.Stan.Intf,
   FireDAC.Stan.Option, FireDAC.Stan.Param, FireDAC.Stan.Error, FireDAC.DatS,
   FireDAC.Phys.Intf, FireDAC.DApt.Intf, FireDAC.Stan.Async, FireDAC.DApt,
   Data.DB, FireDAC.Comp.DataSet, FireDAC.Comp.Client, FMX.ActnList,
   System.Actions, FMX.TabControl, FMX.Ani, FMX.ScrollBox, FMX.Grid, FMX.Edit,
-  FMX.Objects, FMX.Controls.Presentation, FMX.Layouts, UdmDB, Fmx.Bind.Grid,
+  FMX.Objects, FMX.Controls.Presentation, FMX.Layouts, Fmx.Bind.Grid,
   System.Bindings.Outputs, Fmx.Bind.Editors, Data.Bind.EngExt,
   Fmx.Bind.DBEngExt, Data.Bind.Components, Data.Bind.Grid, Data.Bind.DBScope,
-  FMX.DateTimeCtrls, UCentrodeCusto, UCadMaquina, UProdutos, FMX.Memo.Types,
-  FMX.Memo, FMX.Effects,Soap.EncdDecd,FMX.BitmapHelper, UdmReport;
-
+  FMX.DateTimeCtrls,FMX.Memo.Types,
+  FMX.Memo, FMX.Effects,Soap.EncdDecd,FMX.BitmapHelper, FMX.ListView.Types,
+  FMX.ListView.Appearances, FMX.ListView.Adapters.Base, FMX.ListView,
+  Data.Cloud.AmazonAPI,Data.Cloud.CloudAPI;
 type
   TfrmCadApontamento = class(TfrmCadPadrao)
     ToolBar2: TToolBar;
@@ -134,6 +135,43 @@ type
     Label21: TLabel;
     edtHoraApontamento: TTimeEdit;
     Label22: TLabel;
+    tbiConf: TTabItem;
+    Rectangle3: TRectangle;
+    Label42: TLabel;
+    imgVoltar: TImage;
+    imgAlerta: TImage;
+    imgSemAlerta: TImage;
+    recConf: TRectangle;
+    Image18: TImage;
+    ToolBar5: TToolBar;
+    lblFoterCout1: TLabel;
+    Label29: TLabel;
+    recAguarde: TRectangle;
+    Label43: TLabel;
+    SaveDialog2: TSaveDialog;
+    Rectangle4: TRectangle;
+    ListaFotos: TListView;
+    imgData: TImage;
+    imgComboio: TImage;
+    imgCombustivel: TImage;
+    imgAux: TImage;
+    imgOrdem: TImage;
+    imgHora: TImage;
+    imgDelete: TImage;
+    imgEdit: TImage;
+    btnFotos: TRectangle;
+    Image14: TImage;
+    Label26: TLabel;
+    imgMaps: TImage;
+    imgFundoAzul: TImage;
+    imgNoImage: TImage;
+    edtKMDestino: TEdit;
+    ClearEditButton10: TClearEditButton;
+    Label28: TLabel;
+    btnExportar: TRectangle;
+    Image16: TImage;
+    Label30: TLabel;
+    SaveDialog1: TSaveDialog;
     procedure StringGrid1SelChanged(Sender: TObject);
     procedure btnAddClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -155,16 +193,23 @@ type
     procedure btnEditarViagemClick(Sender: TObject);
     procedure btnExcluirViagemClick(Sender: TObject);
     procedure btnConferenciaClick(Sender: TObject);
+    procedure btnFotosClick(Sender: TObject);
+    procedure imgVoltarClick(Sender: TObject);
+    procedure ListaFotosItemClickEx(const Sender: TObject; ItemIndex: Integer;
+      const LocalClickPos: TPointF; const ItemObject: TListItemDrawable);
+    procedure btnExportarClick(Sender: TObject);
   private
     vIdCerntroCusto,vIdEscavadeira,vIdProduto,vIdMaquina,
-    vImgMaquina:string;
+    vImgMaquina,vIdViagem,vLatitudeLista,vLongitudeLista:string;
     procedure InsertLimpaCampos;
     procedure InsertLimpaCamposViagem;
     function Base64FromBitmap(Bitmap: TBitmap): string;
     function BitmapFromBase64(const base64: string): TBitmap;
   public
     procedure Filtro;
-    function RetornaTurno(Hora:TTime):string;
+    function  RetornaTurno(Hora:TTime):string;
+    procedure GerarLista;
+    procedure ExpTXT(DataSet: TDataSet; Arq: string);
   end;
 
 var
@@ -172,8 +217,151 @@ var
 
 implementation
 
-uses UPrincipal;
+uses UPrincipal,UCentrodeCusto, UCadMaquina, UProdutos,UdmReport, UdmDB;
 {$R *.fmx}
+
+procedure TfrmCadApontamento.GerarLista;
+var
+ item   : TListViewItem;
+ txt    : TListItemText;
+ txtH   : TListItemPurpose;
+ img    : TListItemImage;
+ URL,urlBomba,urlHorimetro,urlKM,vChekURL    : string;
+ StorageService : TAmazonStorageService;
+ imgCarregaImagem : TImage;
+ Response : TCloudResponseInfo;
+ vLayout  : TLayout;
+ FileSize : Int64;
+begin
+ dmdb.ConfigS3.Close;
+ dmdb.ConfigS3.Open;
+ url := dmdb.ConfigS3urlS3.AsString;
+ ListaFotos.Items.Clear;
+ dmDB.TApontamentoValores.First;
+ ListaFotos.BeginUpdate;
+ if vLayout <>nil then
+  vLayout.free;
+ vLayout  := TLayout.Create(ListaFotos);
+ BindSourceDB1.DataSet :=nil;
+// TThread.CreateAnonymousThread(
+// procedure
+// begin
+//    TThread.Synchronize(TThread.CurrentThread,
+//    procedure()
+//    begin
+     recAguarde.Visible      := true;
+     while not dmDB.TApontamentoValores.eof do
+     begin
+       item := ListaFotos.Items.Add;
+       with frmCadApontamento do
+       begin
+         with item  do
+         begin
+           img := TListItemImage(Objects.FindDrawable('Image23'));
+           img.Bitmap := imgFundoAzul.Bitmap;
+
+           img := TListItemImage(Objects.FindDrawable('Image25'));
+           img.Bitmap := imgFundoAzul.Bitmap;
+           img.Visible:= false;
+
+           txt      := TListItemText(Objects.FindDrawable('Text1'));
+           txt.Text := dmDB.TApontamentoValoresmaquina.AsString;
+           txt.TagString := dmDB.TApontamentoValoresid.AsString;
+
+           img := TListItemImage(Objects.FindDrawable('Image8'));
+           img.Bitmap := imgOrdem.Bitmap;
+
+           txt      := TListItemText(Objects.FindDrawable('Text9'));
+           txt.Text := 'Ordem:';
+           txt.TagString := dmDB.TApontamentoValoreslatitude.AsString;
+
+           txt      := TListItemText(Objects.FindDrawable('Text10'));
+           txt.Text := dmDB.TApontamentoValoresItem.AsString;
+           txt.TagString := dmDB.TApontamentoValoreslongitude.AsString;
+
+           img := TListItemImage(Objects.FindDrawable('Image5'));
+           img.Bitmap := imgData.Bitmap;
+           txt      := TListItemText(Objects.FindDrawable('Text7'));
+           txt.Text := 'Data';
+           txt      := TListItemText(Objects.FindDrawable('Text6'));
+           txt.Text := dmDB.TApontamentoValoresdataoperacao.AsString;
+
+           img := TListItemImage(Objects.FindDrawable('Image35'));
+           img.Bitmap := imgHora.Bitmap;
+           txt      := TListItemText(Objects.FindDrawable('Text37'));
+           txt.Text := 'Hora:';
+           txt      := TListItemText(Objects.FindDrawable('Text36'));
+           txt.Text := dmDB.TApontamentoValoreshoraoperacao.AsString;
+
+           if (dmDB.TApontamentoValoresimgveiculo.AsString.Length>0) and
+           (dmDB.TApontamentoValoresimgsyncs3.AsInteger=1)
+           then
+           begin
+             vChekURL :=copy(dmDB.TApontamentoValoresimgveiculo.AsString,0,5);
+             if vChekURL='https' then
+             begin
+                urlBomba := dmDB.TApontamentoValoresimgveiculo.AsString;
+                try
+                 imgCarregaImagem:= TImage.Create(vLayout);
+                 imgCarregaImagem.Name := 'Caminhao_'+dmDB.TApontamentoValoresid.asstring;
+                 imgCarregaImagem.Bitmap.LoadFromUrl(urlBomba);
+                 img := TListItemImage(Objects.FindDrawable('Image2'));
+                 img.Bitmap    := imgCarregaImagem.Bitmap;
+                 img.TagString := urlBomba;
+                except
+                 on E : EBitmapLoadingFailed do
+                  ShowMessage('Erro ao carregar :'+urlBomba+#13+
+                   E.Message)
+                end;
+             end;
+           end
+           else
+           begin
+             img := TListItemImage(Objects.FindDrawable('Image3'));
+             img.Bitmap := imgNoImage.Bitmap;
+             img.Width  := 50;
+             img.Height := 50;
+           end;
+
+           img := TListItemImage(Objects.FindDrawable('Image38'));
+           img.Bitmap := imgEdit.Bitmap;
+           txt      := TListItemText(Objects.FindDrawable('Text41'));
+           txt.Text := 'Editar';
+
+           img := TListItemImage(Objects.FindDrawable('Image39'));
+           img.Bitmap := imgDelete.Bitmap;
+           txt      := TListItemText(Objects.FindDrawable('Text40'));
+           txt.Text := 'Deletar';
+
+           txt      := TListItemText(Objects.FindDrawable('Text14'));
+           txt.Text := 'Localização';
+
+           img := TListItemImage(Objects.FindDrawable('Image31'));
+           img.Bitmap := imgMaps.Bitmap;
+
+           txt      := TListItemText(Objects.FindDrawable('Text27'));
+           txt.Text := 'Latitude:';
+           txt      := TListItemText(Objects.FindDrawable('Text28'));
+           txt.Text := dmDB.TApontamentoValoreslatitude.AsString;
+
+           txt      := TListItemText(Objects.FindDrawable('Text30'));
+           txt.Text := 'Longitude:';
+           txt      := TListItemText(Objects.FindDrawable('Text29'));
+           txt.Text := dmDB.TApontamentoValoreslongitude.AsString;
+           dmDB.TApontamentoValores.Next;
+         end;
+       end;
+     end;
+      ListaFotos.EndUpdate;
+      BindSourceDB1.DataSet :=dmdb.TApontamento;
+      recAguarde.Visible    := false;
+      MyShowMessage('Lista Carregada com Sucesso!',false);
+      if ListaFotos.items.Count>0 then
+        ListaFotos.ItemIndex :=0;
+//  end);
+// end).Start;
+end;
+
 
 function TfrmCadApontamento.BitmapFromBase64(const base64: string): TBitmap;
 var
@@ -293,6 +481,7 @@ begin
  edtAplicacaoProduto.Text     := dmdb.TApontamentoaplicacaoproduto.AsString;
  edtObs.Text                  := dmdb.TApontamentoobservacao.AsString;
  edtHoraApontamento.Time      := dmdb.TApontamentohorainicio.AsDateTime;
+ edtKMDestino.Text            := dmdb.TApontamentokmdestinoescavadeira.AsString;
  dmdb.TApontamento.Edit;
  MudarAba(tbiCad,tbPrincipal)
 end;
@@ -312,7 +501,7 @@ begin
  end
  else
  begin
-  if dmDB.TAbastecimentoimg2.AsString.Length>0 then
+  if dmDB.TApontamentoValoresimgveiculo.AsString.Length>0 then
     ImgMaquina.Bitmap.LoadFromUrl(vImgMaquina)
   else
    ImgMaquina.Bitmap := nil;
@@ -343,6 +532,67 @@ begin
    end;
  end;
 end;
+
+procedure TfrmCadApontamento.btnExportarClick(Sender: TObject);
+var
+ vFiltro:string;
+begin
+ vFiltro := '';
+
+ vFiltro  := vFiltro+' and a.dataoperacao between '+FormatDateTime('yyyy-mm-dd',edtDataInicio.Date).QuotedString+' and '+
+    FormatDateTime('yyyy-mm-dd',edtDataFim.Date).QuotedString;
+
+ if edtNomeFiltro.Text.Length>0 then
+  vFiltro := ' and m.prefixo like '+QuotedStr('%'+edtNomeFiltro.Text+'%');
+
+ if edtCentroCustoF.Text.Length>0  then
+  vFiltro := vFiltro+' and a.idcentrocusto ='+vIdCerntroCusto;
+
+  dmdb.ExportaApontamento(vFiltro);
+
+  if not dmdb.TExportaApontamento.IsEmpty then
+  begin
+   if SaveDialog1.Execute then
+    ExpTXT(dmdb.TExportaApontamento,SaveDialog1.FileName);
+  end
+  else
+   MyShowMessage('Sem dados para exportar!',false)
+end;
+
+procedure TfrmCadApontamento.btnFotosClick(Sender: TObject);
+begin
+ GerarLista;
+ MudarAba(tbiConf,sender)
+end;
+
+procedure TfrmCadApontamento.ExpTXT(DataSet: TDataSet; Arq: string);
+var
+  i: integer;
+  sl: TStringList;
+  st: string;
+begin
+  DataSet.First;
+  sl := TStringList.Create;
+  try
+    st := '';
+    for i := 0 to DataSet.Fields.Count - 1 do
+      st := st + DataSet.Fields[i].DisplayLabel + ';';
+    sl.Add(st);
+    DataSet.First;
+    while not DataSet.Eof do
+    begin
+      st := '';
+      for i := 0 to DataSet.Fields.Count - 1 do
+        st := st + DataSet.Fields[i].DisplayText + ';';
+      sl.Add(st);
+      DataSet.Next;
+    end;
+    sl.SaveToFile(Arq);
+  finally
+     sl.free;
+  end;
+end;
+
 
 procedure TfrmCadApontamento.btnNovaViagemClick(Sender: TObject);
 begin
@@ -396,7 +646,9 @@ begin
  dmdb.TApontamentoidescavadeira.AsString       := vIdEscavadeira;
  dmdb.TApontamentoaplicacaoproduto.AsString    := edtAplicacaoProduto.Text;
  if edtKMAtualEscavadeira.Text.Length>0 then
-  dmdb.TApontamentokmatualescavadeira.AsString := edtKMAtualEscavadeira.Text;
+  dmdb.TApontamentokmatualescavadeira.AsString   := edtKMAtualEscavadeira.Text;
+ if edtKMDestino.Text.Length>0 then
+  dmdb.TApontamentokmdestinoescavadeira.AsString := edtKMDestino.Text;
  if edtObs.Text.Length>0 then
   dmdb.TApontamentoobservacao.AsString         := edtObs.Text;
  try
@@ -479,6 +731,11 @@ begin
    end;
 end;
 
+procedure TfrmCadApontamento.imgVoltarClick(Sender: TObject);
+begin
+ MudarAba(tbiLista,Sender);
+end;
+
 function TfrmCadApontamento.Base64FromBitmap(Bitmap: TBitmap): string;
 var
   Input: TBytesStream;
@@ -507,6 +764,7 @@ procedure TfrmCadApontamento.InsertLimpaCampos;
 begin
  edtCentroCusto.Text          :='';
  edtKMAtualEscavadeira.Text   :='';
+ edtKMDestino.Text            :='';
  edtCaminhao.Text             :='';
  edtProduto.Text              :='';
  edtAplicacaoProduto.Text     :='';
@@ -522,6 +780,62 @@ begin
  ImgMaquina.Bitmap.Assign(nil);
  dmdb.TApontamentoValores.Insert;
  layPopUpCad.Visible := true;
+end;
+
+procedure TfrmCadApontamento.ListaFotosItemClickEx(const Sender: TObject;
+  ItemIndex: Integer; const LocalClickPos: TPointF;
+  const ItemObject: TListItemDrawable);
+begin
+   vIdViagem   := TAppearanceListViewItem(ListaFotos.Selected).Objects.FindObjectT<TListItemText>
+     ('Text1').TagString;
+
+   vLatitudeLista          := TAppearanceListViewItem(ListaFotos.Selected).Objects.FindObjectT<TListItemText>
+   ('Text9').TagString;
+
+   vLongitudeLista         := TAppearanceListViewItem(ListaFotos.Selected).Objects.FindObjectT<TListItemText>
+   ('Text10').TagString;
+
+
+   if ItemObject is TListItemImage then
+   begin
+    if TListItemImage(ItemObject).Name='Image39' then //delete
+    begin
+     MyShowMessage('Deseja Realmente Deletar esse registro?',true);
+     case frmPrincipal.vMsgConfirma of
+       1:begin
+          try
+            dmdb.InativaViagem(vIdViagem);
+             MyShowMessage('Registro Excluido com sucesso!',false);
+             GerarLista;
+          except
+           on E : Exception do
+            ShowMessage(E.ClassName+' error raised, with message : '+E.Message);
+          end;
+       end;
+     end;
+    end;
+    if TListItemImage(ItemObject).Name='Image38' then //edit
+    begin
+      dmdb.AbreViagem(vIdViagem);
+      btnEditarViagemClick(Sender);
+    end;
+
+    if TListItemImage(ItemObject).Name='Image31' then
+    begin
+     if (vLatitudeLista.Length=0) then
+     begin
+       MyShowMessage('Latitude esta em branco!',false);
+       Exit;
+     end;
+     if (vLongitudeLista.Length=0) then
+     begin
+       MyShowMessage('Longitude esta em branco!',false);
+       Exit;
+     end;
+     frmPrincipal.AbriGoogleMaps(vLatitudeLista,
+      vLongitudeLista);
+    end;
+   end;
 end;
 
 procedure TfrmCadApontamento.RecBlackClick(Sender: TObject);

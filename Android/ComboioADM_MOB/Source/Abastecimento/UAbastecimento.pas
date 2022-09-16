@@ -356,6 +356,7 @@ type
     procedure imgChekBombaaClick(Sender: TObject);
     procedure Image6Click(Sender: TObject);
     procedure Image2Click(Sender: TObject);
+    procedure edtDataFClosePicker(Sender: TObject);
   private
     vLatitude,vLongitude:string;
     vTipoAlerta,vErro:integer;
@@ -396,7 +397,7 @@ type
     procedure LimpaCampos;
     procedure SalvarImagem(Bitmap: TBitmap);
     protected
-     property ImageStream: TStringStream read FImageStream write FImageStream;
+    property ImageStream: TStringStream read FImageStream write FImageStream;
     procedure AfterConstruction; override;
     function  BitmapFromBase64(const base64: string): TBitmap;
     function  Base64FromBitmap(Bitmap: TBitmap): string;
@@ -489,6 +490,10 @@ procedure TfrmAbastecimento.btnConfirmarAClick(Sender: TObject);
 var
  vVolumeF,vLitroF,vPescent,vKM,vHorimetro :double;
 begin
+ dmDB.TAbastecimento.Close;
+ dmDB.TAbastecimento.Open;
+ dmDB.TAbastecimento.Insert;
+
  vErro       :=0;
  if edtMaquina.Text.Length=0 then
  begin
@@ -981,7 +986,7 @@ begin
  HorzScrollBox1.ScrollBy(HorzScrollBox1.ViewportPosition.x,
   HorzScrollBox1.ViewportPosition.y);
  layImagens.Visible := false;
- vFiltro := ' and s.dataastart='+FormatDateTime('yyyy-mm-dd',date).QuotedString;
+ vFiltro := 'and s.status=1 and s.dataastart='+FormatDateTime('yyyy-mm-dd',date).QuotedString;
  dmDB.AbrirStartBomba(vFiltro);
  if dmDB.TStartbomba.IsEmpty then
  begin
@@ -1002,7 +1007,6 @@ begin
    vAbriImg                := 0;
    layBuscaMaquina.Height  := 60;
    lblPage.Text            := 'Novo Abastecimentos';
-   dmDB.TAbastecimento.Insert;
    MudarAba(tbiCad,sender);
  end;
 end;
@@ -1035,18 +1039,42 @@ end;
 
 procedure TfrmAbastecimento.ActFotoDidFinishTaking(Image: TBitmap);
 begin
-  if vImgCapture=1 then
+  if vImgCapture=1 then//Horimetro
   begin
    imgHorimetro.Bitmap.Assign(Image);
+   if not imgHorimetro.Bitmap.IsEmpty then
+   begin
+    vImgCad64Horimetro := Base64FromBitmap(imgHorimetro.Bitmap);
+    ImgMnuHorimetro.Bitmap :=imgHorimetro.Bitmap;
+   end
+   else
+    ImgMnuHorimetro.Bitmap   :=nil;
    Exit;
   end;
-  if vImgCapture=2 then
+
+  if vImgCapture=2 then//Bomba
   begin
    imgBomba.Bitmap.Assign(Image);
+   if not imgBomba.Bitmap.IsEmpty then
+   begin
+    vImgCad64Bomba       := Base64FromBitmap(imgBomba.Bitmap);
+    ImgMnuBomba.Bitmap   := imgBomba.Bitmap;
+   end
+   else
+     ImgMnuBomba.Bitmap   := nil;
    Exit;
   end;
-  if vImgCapture=3 then
+
+  if vImgCapture=3 then//km
   begin
+   imgFotoKM.Bitmap.Assign(Image);
+   if not imgFotoKM.Bitmap.IsEmpty then
+   begin
+    vCadImg64KM          := Base64FromBitmap(imgFotoKM.Bitmap);
+    ImgMnuKM.Bitmap      :=imgFotoKM.Bitmap;
+   end
+   else
+    ImgMnuKM.Bitmap   := nil;
    imgFotoKM.Bitmap.Assign(Image);
    Exit;
   end;
@@ -1176,15 +1204,6 @@ end;
 
 procedure TfrmAbastecimento.btnVoltarBombaClick(Sender: TObject);
 begin
- if not imgBomba.Bitmap.IsEmpty then
- begin
-  vImgCad64Bomba       := Base64FromBitmap(imgBomba.Bitmap);
-  ImgMnuBomba.Bitmap   := imgBomba.Bitmap;
- end
- else
- begin
-   ImgMnuBomba.Bitmap   := nil;
- end;
  if vAbriImg=0 then
   MudarAba(tbiCad,sender);
  if vAbriImg=1 then
@@ -1306,34 +1325,16 @@ end;
 
 procedure TfrmAbastecimento.btnVoltarHorimetroClick(Sender: TObject);
 begin
- if not imgHorimetro.Bitmap.IsEmpty then
- begin
-  vImgCad64Horimetro := Base64FromBitmap(imgHorimetro.Bitmap);
-  ImgMnuHorimetro.Bitmap :=imgHorimetro.Bitmap;
- end
- else
- begin
-  ImgMnuHorimetro.Bitmap   :=nil;
- end;
+ 
  if vAbriImg=0 then
   MudarAba(tbiCad,sender);
  if vAbriImg=1 then
   MudarAba(tbiLista,sender);
-
  layImgHorimetro.Enabled := true;
 end;
 
 procedure TfrmAbastecimento.btnVoltarKMClick(Sender: TObject);
 begin
- if not imgFotoKM.Bitmap.IsEmpty then
- begin
-  vCadImg64KM          := Base64FromBitmap(imgFotoKM.Bitmap);
-  ImgMnuKM.Bitmap      :=imgFotoKM.Bitmap;
- end
- else
- begin
-  ImgMnuKM.Bitmap   := nil;
- end;
  if vAbriImg=0 then
   MudarAba(tbiCad,sender);
  if vAbriImg=1 then
@@ -1404,6 +1405,11 @@ begin
   finally
     frmMaquinas.free;
   end;
+end;
+
+procedure TfrmAbastecimento.edtDataFClosePicker(Sender: TObject);
+begin
+  GeraListaCards(GeraFiltro);
 end;
 
 procedure TfrmAbastecimento.edtHorimetroTyping(Sender: TObject);
@@ -1938,16 +1944,21 @@ begin
   edtLongitude.Text        := '';
   vTipoAlerta              := 0;
   layAlerta.Visible        := false;
+
+  vAbriImg                 := 0;
+  vEditaFoto               := 0;
+
+  LocationSensor1.Active   := false;
+  LocationSensor1.Active   := true;
+
   vImg64Horimetro          := '';
   vImg64Bomba              := '';
   vImg64KM                 := '';
-  vAbriImg                 := 0;
-  vEditaFoto               := 0;
-  LocationSensor1.Active   := false;
-  LocationSensor1.Active   := true;
+
   vImgCad64Horimetro       := '';
   vImgCad64Bomba           := '';
   vCadImg64KM              := '';
+
   imgHorimetro.Bitmap      := nil;
   imgBomba.Bitmap          := nil;
   imgFotoKM.Bitmap         := nil;

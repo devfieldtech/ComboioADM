@@ -846,25 +846,23 @@ object frmPrincipal: TfrmPrincipal
     OnClick = Button1Click
   end
   object Timer1: TTimer
-    Interval = 3600000
+    Interval = 1800000
     OnTimer = Timer1Timer
     Left = 144
     Top = 216
   end
   object FDConPG: TFDConnection
     Params.Strings = (
-      'Database=ComboioADM_Apontamento'
+      'Database=FuelManager'
       'User_Name=postgres'
-      'Password=Dev#110485'
-      'Server=127.0.0.1'
+      'Password=SoloDev#110485'
+      'Server=bdcomboio.chhbmii57c8o.us-east-2.rds.amazonaws.com'
       'DriverID=PG')
-    Connected = True
     LoginPrompt = False
     Left = 240
     Top = 184
   end
   object PgDriverLink: TFDPhysPgDriverLink
-    VendorLib = 'E:\Projetos2021\ComboioADM\Deploy\libpq.dll'
     Left = 240
     Top = 232
   end

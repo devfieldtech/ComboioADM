@@ -880,6 +880,9 @@ type
     ppLabel124: TppLabel;
     ppDBText99: TppDBText;
     pplblTotalViagens: TppLabel;
+    ppDBText100: TppDBText;
+    ppLabel132: TppLabel;
+    TApontamentokmdestinoescavadeira: TWideStringField;
     procedure ppGroupFooterBand6BeforePrint(Sender: TObject);
     procedure ppDetailBand14BeforeGenerate(Sender: TObject);
     procedure imgStartPrint(Sender: TObject);
@@ -941,15 +944,15 @@ begin
    Add('end tipoAlerta,');
    Add(' (select min(volumelitrosini)');
    Add(' from startbomba s');
-   Add(' where idlocalestoque=a.idlocalestoque');
+   Add(' where status=2 and idlocalestoque=a.idlocalestoque');
    Add(' and dataastart =dataabastecimento)TotalizadorInicial,');
    Add(' (select max(volumelitrosfim)');
    Add('  from startbomba s');
-   Add(' where idlocalestoque=a.idlocalestoque');
+   Add(' where status=2 and idlocalestoque=a.idlocalestoque');
    Add(' and dataastart =dataabastecimento)TotalizadorFinal,');
    Add('(select max(volumelitrosfim)-min(volumelitrosini)');
    Add('from startbomba s');
-   Add('where idlocalestoque=a.idlocalestoque');
+   Add('where status=2 and idlocalestoque=a.idlocalestoque');
    Add('and dataastart =dataabastecimento)TotalizadoStart');
    Add('from abastecimento a');
    Add('join centrocusto c  on a.idcentrocusto=c.id');
@@ -1107,7 +1110,7 @@ begin
    Add('join produtos       p on a.idproduto=p.id');
    Add('left join apontamentoValores v on v.idapontamento=a.id and v.status=1');
    Add('left join maquinaveiculo mv on v.idmaquina=mv.id');
-   Add('where a.status=1');
+   Add('where a.status>-1');
    Add(vFiltro);
    Open;
    dmReport.ppRepApontamento.PrintReport;

@@ -35,7 +35,8 @@ begin
     if Str = '' then
         Str := '0';
     try
-         Result := FormatFloat('#,##0.0', strtofloat(str));
+        Result := FormatFloat('#,##', strtofloat(str));
+
     except
         Result := FormatFloat('#,##0.00', 0);
     end;

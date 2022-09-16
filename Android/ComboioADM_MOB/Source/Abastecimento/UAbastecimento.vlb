@@ -809,3 +809,6 @@ Coordinates=1270,3162,67,36
 [imgChekBombaa]
 Coordinates=251,1985,105,58
 
+[dmDB.TCentroCusto]
+Visible=False
+

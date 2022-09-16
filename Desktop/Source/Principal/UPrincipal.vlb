@@ -47,6 +47,7 @@ Visible=False
 Visible=False
 
 [dmdb.TStartBomba]
+Visible=False
 
 [dmdb.TApontamento]
 Visible=False

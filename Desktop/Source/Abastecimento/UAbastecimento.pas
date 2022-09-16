@@ -426,6 +426,7 @@ begin
  edtKMAtual.Text               := dmDB.TAbastecimentokmatual.AsString;
  edtObs.Text                   := dmDB.TAbastecimentoobs.AsString;
  IdCombustivel                 := dmDB.TAbastecimentocombustivel.AsString;
+ vTipoMedicao                  := dmDB.TAbastecimentotipomedicao.AsInteger;
 
  edtDataAbastecimento.DateTime := dmDB.TAbastecimentodataabastecimento.AsDateTime;
  edtHoraAbastecimento.Time     := dmDB.TAbastecimentohora.AsDateTime;
@@ -1094,9 +1095,6 @@ begin
            img := TListItemImage(Objects.FindDrawable('Image31'));
            img.Bitmap := imgMaps.Bitmap;
 
-           img := TListItemImage(Objects.FindDrawable('Image31'));
-           img.Bitmap := imgMaps.Bitmap;
-
            img := TListItemImage(Objects.FindDrawable('Image38'));
            img.Bitmap := imgEdit.Bitmap;
            txt      := TListItemText(Objects.FindDrawable('Text41'));
@@ -1453,7 +1451,7 @@ begin
       edtKMAtual.Text           := dmDB.TAbastecimentokmatual.AsString;
       edtObs.Text               := dmDB.TAbastecimentoobs.AsString;
       IdCombustivel             := dmDB.TAbastecimentocombustivel.AsString;
-
+      edtHoraAbastecimento.Time := dmDB.TAbastecimentohora.AsDateTime;
       if dmDB.TAbastecimentoimg.AsString.Length>0 then
         ImgHorimetroEdit.Bitmap.LoadFromUrl(dmDB.TAbastecimentoimg.AsString)
       else

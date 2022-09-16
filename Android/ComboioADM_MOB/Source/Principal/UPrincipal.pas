@@ -238,6 +238,11 @@ type
     Image18: TImage;
     ShadowEffect15: TShadowEffect;
     Label24: TLabel;
+    Layout14: TLayout;
+    Rectangle18: TRectangle;
+    Image19: TImage;
+    ShadowEffect17: TShadowEffect;
+    lblApontamento: TLabel;
     procedure btnEntrarMouseUp(Sender: TObject; Button: TMouseButton;
       Shift: TShiftState; X, Y: Single);
     procedure btnEntrarMouseDown(Sender: TObject; Button: TMouseButton;
@@ -549,7 +554,7 @@ begin
  begin
   layAbastecimento1.Visible := dmDB.vAbatecimento=1;
   layAbastecimento2.Visible := dmDB.vAbatecimento=1;
-  LayAbastecimento3.Visible := dmDB.vAbatecimento=1;
+//  LayAbastecimento3.Visible := dmDB.vAbatecimento=1;
   layApontamento.Visible    := dmDB.vApontamento =1;
   if chkSalvaSenha.IsChecked then
   begin
@@ -601,7 +606,7 @@ begin
     TThread.Synchronize(nil, procedure
     begin
      mlog.text :=('Enviando Abastecimentos');
-     ProgressBar1.Value :=20;
+     ProgressBar1.Value :=10;
     end);
     mlog.text :=(dmSync.PostAbastecimento);
 
@@ -629,16 +634,16 @@ begin
     TThread.Synchronize(nil, procedure
     begin
      mlog.text :=('Enviando Det Checklist');
-     ProgressBar1.Value :=20;
+     ProgressBar1.Value :=10;
     end);
     mlog.text :=(dmSync.PostDetCheckList);
 
-//    TThread.Synchronize(nil, procedure
-//    begin
-//       mlog.text :=('Enviando Abastecimentos Outros');
-//       ProgressBar1.Value :=30;
-//    end);
-//    mlog.text := (dmSync.PostAbastecimentoOutros);
+     TThread.Synchronize(nil, procedure
+    begin
+     mlog.text :=('Enviando Apontamentos');
+     ProgressBar1.Value :=10;
+    end);
+    mlog.text :=(dmSync.PostApontamento);
 
     TThread.Synchronize(nil, procedure
     begin
@@ -696,30 +701,29 @@ begin
     end);
     mlog.text :=(dmSync.GetCompartimentoLub);
 
-    TThread.Synchronize(nil, procedure
-    begin
-     mlog.text :=('Baixando Check List Padrao...');
-     ProgressBar1.Value :=95;
-    end);
-    mlog.text :=(dmSync.GetCheckListPadrao);
+//    TThread.Synchronize(nil, procedure
+//    begin
+//     mlog.text :=('Baixando Check List Padrao...');
+//     ProgressBar1.Value :=95;
+//    end);
+//    mlog.text :=(dmSync.GetCheckListPadrao);
 
-    TThread.Synchronize(nil, procedure
-    begin
-     mlog.text :=('Baixando Check List Padrao Grupo Itens ...');
-     ProgressBar1.Value :=95;
-    end);
-    mlog.text :=(dmSync.Getcheklistregrupoitem);
-
-
-    TThread.Synchronize(nil, procedure
-    begin
-     mlog.text :=('Baixando Itens Check List...');
-     ProgressBar1.Value :=95;
-    end);
-    mlog.text :=(dmSync.GetDetCheckListPadrao);
+//    TThread.Synchronize(nil, procedure
+//    begin
+//     mlog.text :=('Baixando Check List Padrao Grupo Itens ...');
+//     ProgressBar1.Value :=95;
+//    end);
+//    mlog.text :=(dmSync.Getcheklistregrupoitem);
 
 
+//    TThread.Synchronize(nil, procedure
+//    begin
+//     mlog.text :=('Baixando Itens Check List...');
+//     ProgressBar1.Value :=95;
+//    end);
+//    mlog.text :=(dmSync.GetDetCheckListPadrao);
 
+    dmSync.PostLogSync;
 
     TThread.Synchronize(nil, procedure
     begin
@@ -735,19 +739,24 @@ begin
 
      dmSync.TStartDiario.Close;
      dmSync.TStartDiario.Open;
-     lblStartDiarioSync.Text        := 'Start Diário Pendente :'+IntToStr(dmSync.TStartDiario.RecordCount);
+     lblStartDiarioSync.Text         := 'Start Diário Pendente :'+IntToStr(dmSync.TStartDiario.RecordCount);
 
      dmSync.TMovLocalEstoque.Close;
      dmSync.TMovLocalEstoque.Open;
-     lblTrasnferenciaPendente.Text  := 'Transferência Pendente :'+IntToStr(dmSync.TMovLocalEstoque.RecordCount);
+     lblTrasnferenciaPendente.Text   := 'Transferência Pendente :'+IntToStr(dmSync.TMovLocalEstoque.RecordCount);
 
      dmSync.TLubrificacao.Close;
      dmSync.TLubrificacao.Open;
      lblLubrificacaoSync.Text        := 'Lubrificaçao Pendente :'+IntToStr(dmSync.TAbastecimento.RecordCount);
 
-     dmSync.cheklistRealizado.Close;
-     dmSync.cheklistRealizado.Open;
-     lblCheckListPendente.Text        := 'Cheklist Pendete :'+IntToStr(dmSync.cheklistRealizado.RecordCount);
+//     dmSync.cheklistRealizado.Close;
+//     dmSync.cheklistRealizado.Open;
+//     lblCheckListPendente.Text       := 'Cheklist Pendete :'+IntToStr(dmSync.cheklistRealizado.RecordCount);
+
+     dmSync.TApontamento.Close;
+     dmSync.TApontamento.Open;
+     lblApontamento.Text              := 'Apontamentos Pendete :'+IntToStr(dmSync.TApontamento.RecordCount);
+
 
      MessageDlg('Dados Sincronizados com Sucesso!'+#13+
       'Sistema deve ser reiniciado!', System.UITypes.TMsgDlgType.mtInformation,
@@ -858,9 +867,13 @@ begin
  dmSync.TMovLocalEstoque.Open;
  lblTrasnferenciaPendente.Text  := 'Transferência Pendente :'+IntToStr(dmSync.TMovLocalEstoque.RecordCount);
 
- dmSync.cheklistRealizado.Close;
- dmSync.cheklistRealizado.Open;
- lblCheckListPendente.Text        := 'Cheklist Pendete :'+IntToStr(dmSync.cheklistRealizado.RecordCount);
+// dmSync.cheklistRealizado.Close;
+// dmSync.cheklistRealizado.Open;
+// lblCheckListPendente.Text        := 'Cheklist Pendete :'+IntToStr(dmSync.cheklistRealizado.RecordCount);
+
+ dmSync.TApontamento.Close;
+ dmSync.TApontamento.Open;
+ lblApontamento.Text              := 'Apontamentos Pendete :'+IntToStr(dmSync.TApontamento.RecordCount);
 
 
  MudarAba(tbiSync,sender);

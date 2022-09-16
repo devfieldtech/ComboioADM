@@ -454,26 +454,11 @@ type
     TApontamentoMaquina: TStringField;
     TApontamentoCentroCusto: TStringField;
     TApontamentoProdutos: TStringField;
-    TApontamentoValoresItem: TWideStringField;
-    TApontamentoValoresid: TFDAutoIncField;
-    TApontamentoValoresstatus: TWideStringField;
-    TApontamentoValoresdatareg: TWideStringField;
-    TApontamentoValoresidusuario: TWideStringField;
-    TApontamentoValoresdataalteracao: TWideStringField;
-    TApontamentoValoresdataoperacao: TDateField;
-    TApontamentoValoreshoraoperacao: TTimeField;
-    TApontamentoValoresidusuarioalteracao: TWideStringField;
-    TApontamentoValoresidapontamento: TWideStringField;
-    TApontamentoValoresidmaquina: TWideStringField;
-    TApontamentoValoreslatitude: TFMTBCDField;
-    TApontamentoValoreslongitude: TFMTBCDField;
-    TApontamentoValorestipoidentificacaomaquina: TWideStringField;
-    TApontamentoValoresimgveiculo: TWideStringField;
-    TApontamentoValoresobservacao: TStringField;
-    TApontamentoValoresimgsyncs3: TWideStringField;
-    TApontamentoValoresMaquina: TStringField;
     TApontamentosyncaws: TIntegerField;
     TApontamentostatusStr: TWideStringField;
+    TApontamentoValoresInsert: TFDQuery;
+    TApontamentohorafim: TTimeField;
+    TApontamentokmdestinoescavadeira: TStringField;
     procedure TstartBombaReconcileError(DataSet: TFDDataSet; E: EFDException;
       UpdateKind: TFDDatSRowState; var Action: TFDDAptReconcileAction);
     procedure FConBeforeConnect(Sender: TObject);
@@ -572,8 +557,14 @@ type
     procedure DeletaCheckListRealizado(vId:string);
     function  CheckFotosTirada(vIdChek:string):string;
     procedure AbreApontamento(vFiltro:String);
+    procedure AbreApontamentoEdit(vIdApntamento :string);
     procedure AbreApontamentoValores(vFiltro:string);
     function  VerificaApontamentoAberto:Boolean;
+    function  VerificaQtdViagensApontamento(vIdApontamento:string):Integer;
+    procedure FinalizaApontamento(vFiltro:string);
+    function  AbriMaquinaPrefixoManual(Prefixo: string): Boolean;
+    procedure DeletaApontamento(vId:string);
+    procedure DeletaViagem(vId:string);
   end;
 
 var
@@ -796,6 +787,19 @@ begin
  end;
 end;
 
+function TdmDB.VerificaQtdViagensApontamento(vIdApontamento:string): Integer;
+begin
+ with qryAux,qryAux.sql do
+ begin
+  Clear;
+  Add('select COUNT(*) as qtd from apontamentovalores');
+  Add('where idapontamento='+vIdApontamento);
+  Add('and status=1');
+  Open;
+  RESULT := FieldByName('qtd').AsInteger;
+ end;
+end;
+
 function TdmDB.VerificaStartAberto(vIdLocal: string): Boolean;
 begin
  with qryAux,qryAux.sql do
@@ -861,9 +865,34 @@ begin
    Add('join maquinaveiculo m on a.idescavadeira=m.id');
    Add('join centrocusto    c on c.id=a.idCentroCusto ');
    Add('join produtos       p on a.idproduto=p.id');
-   Add('where a.status=1');
+   Add('where a.status>-1');
    Add(vFiltro);
    Add('order by a.id desc');
+   Open;
+ end;
+end;
+
+procedure TdmDB.AbreApontamentoEdit(vIdApntamento :string);
+begin
+ with TApontamento,TApontamento.SQL do
+ begin
+   Clear;
+   Add('select');
+   Add(' a.*,');
+   Add(' m.prefixo Maquina,');
+   Add(' c.nome CentroCusto,');
+   Add(' p.nome Produtos,');
+   Add(' p.nome Produtos,');
+   Add(' case');
+   Add('   when A.status=1 then ''ABERTO''');
+   Add('   when A.status=2 then ''FINALIZADO''');
+   Add(' end statusStr');
+   Add('from apontamento a');
+   Add('join maquinaveiculo m on a.idescavadeira=m.id');
+   Add('join centrocusto    c on c.id=a.idCentroCusto ');
+   Add('join produtos       p on a.idproduto=p.id');
+   Add('where a.id='+vIdApntamento);
+   TApontamento.SQL.Text;
    Open;
  end;
 end;
@@ -885,6 +914,8 @@ begin
    Open;
  end;
 end;
+
+
 
 procedure TdmDB.AbreCheckList(IdGrupo: string);
 begin
@@ -949,6 +980,20 @@ begin
  end
  else
   Result := true;
+end;
+
+function TdmDB.AbriMaquinaPrefixoManual(Prefixo: string): Boolean;
+var
+ vqrcodeInt:integer;
+begin
+ with TMaquinas,TMaquinas.SQL do
+ begin
+   Clear;
+   Add('select * from maquinaveiculo');
+   Add('where replace(prefixo,'' '','''')='+Prefixo.QuotedString);
+   Open;
+   Result := TMaquinas.IsEmpty;
+ end;
 end;
 
 procedure TdmDB.AbrirAbastecimento(vFiltro: string);
@@ -1177,6 +1222,23 @@ begin
  qryAux.free;
 end;
 
+procedure TdmDB.FinalizaApontamento(vFiltro: string);
+var
+ qryAux : TFDQuery;
+begin
+ qryAux := TFDQuery.Create(nil);
+ qryAux.Connection := FCon;
+ with qryAux,qryAux.sql do
+ begin
+   Clear;
+   Add('update apontamento set status=2');
+   Add(',horafim=current_timestamp');
+   Add('where id='+vFiltro);
+   ExecSQL;
+ end;
+ qryAux.free;
+end;
+
 procedure TdmDB.FinalizaCheckList(idI: string);
 var
  qryAux : TFDQuery;
@@ -1298,6 +1360,23 @@ begin
  qryAux.free;
 end;
 
+procedure TdmDB.DeletaApontamento(vId:string);
+var
+ qryAux : TFDQuery;
+begin
+ qryAux := TFDQuery.Create(nil);
+ qryAux.Connection := FCon;
+ with qryAux,qryAux.sql do
+ begin
+   Clear;
+   Add('delete from apontamento');
+   Add('WHERE ID='+vId);
+   ExecSQL;
+ end;
+ qryAux.free;
+end;
+
+
 procedure TdmDB.DeletaStart(vId:string);
 var
  qryAux : TFDQuery;
@@ -1378,6 +1457,22 @@ begin
  qryAux.free;
 end;
 
+procedure TdmDB.DeletaViagem(vId: string);
+var
+ qryAux : TFDQuery;
+begin
+ qryAux := TFDQuery.Create(nil);
+ qryAux.Connection := FCon;
+ with qryAux,qryAux.sql do
+ begin
+   Clear;
+   Add('delete from apontamentovalores');
+   Add('WHERE ID='+vId);
+   ExecSQL;
+ end;
+ qryAux.free;
+end;
+
 procedure TdmDB.detcheklistgenericReconcileError(DataSet: TFDDataSet;
   E: EFDException; UpdateKind: TFDDatSRowState;
   var Action: TFDDAptReconcileAction);
@@ -1399,7 +1494,7 @@ begin
  {$IF DEFINED(iOS) or DEFINED(ANDROID)}
    FCon.Params.DriverID :='SQLite';
    FCon.Params.Values['Database'] :=
-   TPath.Combine(TPath.GetDocumentsPath,'CbAdm1.db');
+   TPath.Combine(TPath.GetDocumentsPath,'CbAdm3.db');
  {$ENDIF}
  {$IFDEF MSWINDOWS}
    vPath := 'E:\20102021\Projetos2021\Pecuarizze\ManejoPastagem\Mobile\db\dbw.db';
@@ -1664,7 +1759,7 @@ begin
   Clear;
   Add('select * from startbomba s');
   Add('where s.status>-1 and idlocalestoque='+idBomba);
-  Add('order by dataastart desc limit 1');
+  Add('order by id desc limit 1');
   Open;
   Result := FieldByName('volumelitrosfim').AsString;
  end;
@@ -1778,11 +1873,11 @@ var
 begin
  vQryAux:=TFDQuery.Create(nil);
  vQryAux.Connection := FCon;
- if not VerificaCampoExiste('abastecimento','usuario')then
+ if not VerificaCampoExiste('kmdestinoescavadeira','apontamento')then
  with vQryAux,vQryAux.SQL do
  begin
    Clear;
-   Add('ALTER TABLE usuario add abastecimento integer not null default 0');
+   Add('ALTER TABLE apontamento add kmdestinoescavadeira varchar(50)');
    try
     ExecSQL;
    except
@@ -1790,18 +1885,18 @@ begin
       ShowMessage('Erro ao inserir Campo : '+E.Message);
    end;
  end;
- if not VerificaCampoExiste('apontamento','usuario')then
- with vQryAux,vQryAux.SQL do
- begin
-   Clear;
-   Add('ALTER TABLE usuario add apontamento integer not null default 0');
-   try
-    ExecSQL;
-   except
-     on E : Exception do
-      ShowMessage('Erro ao inserir Campo : '+E.Message);
-   end;
- end;
+// if not VerificaCampoExiste('apontamento','horafim')then
+// with vQryAux,vQryAux.SQL do
+// begin
+//   Clear;
+//   Add('ALTER TABLE apontamento add horafim time');
+//   try
+//    ExecSQL;
+//   except
+//     on E : Exception do
+//      ShowMessage('Erro ao inserir Campo : '+E.Message);
+//   end;
+// end;
  vQryAux.Free;
 end;
 

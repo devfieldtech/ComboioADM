@@ -241,7 +241,7 @@
     <PropertyGroup Condition="'$(Cfg_2_Android)'!=''">
         <DCC_ExeOutput>E:\Projetos2021\FuelManager\Android\Deploy\</DCC_ExeOutput>
         <VerInfo_Build>1</VerInfo_Build>
-        <VerInfo_Keys>package=com.embarcadero.$(MSBuildProjectName);label=$(MSBuildProjectName);versionCode=1;versionName=1.0.0.16;persistent=False;restoreAnyVersion=False;installLocation=auto;largeHeap=False;theme=TitleBar;hardwareAccelerated=true;apiKey=</VerInfo_Keys>
+        <VerInfo_Keys>package=com.embarcadero.$(MSBuildProjectName);label=$(MSBuildProjectName);versionCode=1;versionName=1.0.2.06;persistent=False;restoreAnyVersion=False;installLocation=auto;largeHeap=False;theme=TitleBar;hardwareAccelerated=true;apiKey=</VerInfo_Keys>
         <Android_NotificationAccentColor>#000000</Android_NotificationAccentColor>
         <Android_LauncherIcon36>..\..\img\logo\3636.png</Android_LauncherIcon36>
         <Android_LauncherIcon48>..\..\img\logo\4848.png</Android_LauncherIcon48>
@@ -343,7 +343,7 @@
         <None Include="..\..\mp3\OpaErro.mp3"/>
         <None Include="..\..\mp3\OperacaoFinalizada.mp3"/>
         <None Include="..\..\mp3\StarteAntes.mp3"/>
-        <None Include="..\..\db\CbAdm1.db"/>
+        <None Include="..\..\db\CbAdm3.db"/>
         <BuildConfiguration Include="Debug">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>
@@ -365,6 +365,10 @@
                     <Source Name="MainSource">ComboioADM_Mob.dpr</Source>
                 </Source>
                 <Excluded_Packages>
+                    <Excluded_Packages Name="C:\Users\User\Documents\Skia4Delphi\Library\RAD Studio 10.4 Sydney\Win32\Release\Bpl\Skia.Package.FMX270.bpl">File C:\Users\User\Documents\Skia4Delphi\Library\RAD Studio 10.4 Sydney\Win32\Release\Bpl\Skia.Package.FMX270.bpl not found</Excluded_Packages>
+                    <Excluded_Packages Name="C:\Users\User\Documents\Skia4Delphi\Library\RAD Studio 10.4 Sydney\Win32\Release\Bpl\Skia.Package.VCL270.bpl">File C:\Users\User\Documents\Skia4Delphi\Library\RAD Studio 10.4 Sydney\Win32\Release\Bpl\Skia.Package.VCL270.bpl not found</Excluded_Packages>
+                    <Excluded_Packages Name="C:\Users\User\Documents\Skia4Delphi\Library\RAD Studio 10.4 Sydney\Win32\Release\Bpl\Skia.Package.FMX.Designtime270.bpl">File C:\Users\User\Documents\Skia4Delphi\Library\RAD Studio 10.4 Sydney\Win32\Release\Bpl\Skia.Package.FMX.Designtime270.bpl not found</Excluded_Packages>
+                    <Excluded_Packages Name="C:\Users\User\Documents\Skia4Delphi\Library\RAD Studio 10.4 Sydney\Win32\Release\Bpl\Skia.Package.VCL.Designtime270.bpl">File C:\Users\User\Documents\Skia4Delphi\Library\RAD Studio 10.4 Sydney\Win32\Release\Bpl\Skia.Package.VCL.Designtime270.bpl not found</Excluded_Packages>
                     <Excluded_Packages Name="$(BDSBIN)\dcloffice2k270.bpl">Microsoft Office 2000 Sample Automation Server Wrapper Components</Excluded_Packages>
                     <Excluded_Packages Name="$(BDSBIN)\dclofficexp270.bpl">Microsoft Office XP Sample Automation Server Wrapper Components</Excluded_Packages>
                 </Excluded_Packages>
@@ -431,8 +435,9 @@
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
-                <DeployFile LocalName="..\..\..\..\..\FuelManager\Android\Deploy\AndroidManifest.xml" Configuration="Debug" Class="ProjectAndroidManifest">
+                <DeployFile LocalName="..\..\..\Deploy\classes.dex" Configuration="Debug" Class="AndroidClassesDexFile">
                     <Platform Name="Android">
+                        <RemoteName>classes.dex</RemoteName>
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
@@ -442,9 +447,8 @@
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
-                <DeployFile LocalName="..\..\..\Deploy\classes.dex" Configuration="Debug" Class="AndroidClassesDexFile">
+                <DeployFile LocalName="..\..\..\..\..\FuelManager\Android\Deploy\AndroidManifest.xml" Configuration="Debug" Class="ProjectAndroidManifest">
                     <Platform Name="Android">
-                        <RemoteName>classes.dex</RemoteName>
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
@@ -584,12 +588,6 @@
                 <DeployFile LocalName="$(BDS)\bin\Artwork\Android\FM_NotificationIcon_72x72.png" Configuration="Debug" Class="Android_NotificationIcon72">
                     <Platform Name="Android">
                         <RemoteName>ic_notification.png</RemoteName>
-                        <Overwrite>true</Overwrite>
-                    </Platform>
-                </DeployFile>
-                <DeployFile LocalName="..\..\db\CbAdm1.db" Configuration="Debug" Class="ProjectFile">
-                    <Platform Name="Android">
-                        <RemoteDir>.\assets\internal\</RemoteDir>
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
@@ -747,6 +745,12 @@
                 </DeployFile>
                 <DeployFile LocalName="$(BDS)\redist\osx32\libsqladapter.dylib" Configuration="Release" Class="File">
                     <Platform Name="iOSSimulator">
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="..\..\db\CbAdm3.db" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Android">
+                        <RemoteDir>.\assets\internal\</RemoteDir>
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>

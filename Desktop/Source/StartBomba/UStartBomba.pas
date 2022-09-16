@@ -298,7 +298,7 @@ end;
 
 procedure TfrmSatrtDiario.btnConferenciaClick(Sender: TObject);
 begin
- GerarLista;
+ Filtro2;
  MudarAba(tbiConf,sender)
 end;
 
@@ -405,7 +405,6 @@ begin
     dmdb.TStartBomba.ApplyUpdates(-1);
     MyShowMessage('Registro Atualizado com Sucesso!',false);
     Filtro2;
-    GerarLista;
     MudarAba(tbiConf,sender)
   except
     on E : Exception do
@@ -429,7 +428,6 @@ begin
    Exit;
  end;
  Filtro2;
- GerarLista;
 end;
 
 procedure TfrmSatrtDiario.GerarLista;
@@ -784,6 +782,7 @@ begin
  FormatDateTime('yyyy-mm-dd',edtDataFim1.Date).QuotedString;
  dmDB.AbreStartBomba(vFiltro);
  SomarColunasGrid;
+ GerarLista;
 end;
 
 procedure TfrmSatrtDiario.FormShow(Sender: TObject);
@@ -888,10 +887,9 @@ begin
           dmDB.TStartBombaDataAlteracao.AsDateTime     := now;
           dmDB.TStartBombasyncaws.AsInteger            :=0;
           try
-            dmDB.TAbastecimento.ApplyUpdates(-1);
+            dmDB.TStartBomba.ApplyUpdates(-1);
             MyShowMessage('Registro Excluido com sucesso!',false);
             Filtro2;
-            GerarLista;
           except
            on E : Exception do
             ShowMessage(E.ClassName+' error raised, with message : '+E.Message);

@@ -20,7 +20,8 @@ uses
   System.Net.HttpClient,FMX.Types,System.Net.URLClient,
   System.Net.HttpClientComponent, FireDAC.ConsoleUI.Wait,FireDAC.Comp.ScriptCommands,
   FireDAC.Stan.Util, FireDAC.Comp.Script,IdHashMessageDigest, Data.Cloud.CloudAPI,
-  Data.Cloud.AmazonAPI,FMX.Graphics,Soap.EncdDecd,FMX.Memo.Types;
+  Data.Cloud.AmazonAPI,FMX.Graphics,Soap.EncdDecd,FMX.Memo.Types,
+  System.Generics.Collections,System.Threading;
 
 type
   TdmLocal = class(TDataModule)
@@ -330,6 +331,33 @@ type
     TUsuarioapontamento: TIntegerField;
     TUsuarioabastecimento: TIntegerField;
     TProdutosproducao: TIntegerField;
+    TApontamento: TFDQuery;
+    TApontamentoValores: TFDQuery;
+    TApontamentoValoresidusuario: TIntegerField;
+    TApontamentoValoresdataoperacao: TDateField;
+    TApontamentoValoreshoraoperacao: TTimeField;
+    TApontamentoValoresidapontamento: TIntegerField;
+    TApontamentoValoresidmaquina: TIntegerField;
+    TApontamentoValoreslatitude: TFMTBCDField;
+    TApontamentoValoreslongitude: TFMTBCDField;
+    TApontamentoValorestipoidentificacaomaquina: TIntegerField;
+    TApontamentoValoresimgveiculo: TBlobField;
+    TApontamentoValoresobservacao: TWideStringField;
+    TApontamentoid: TIntegerField;
+    TApontamentostatus: TIntegerField;
+    TApontamentodatareg: TSQLTimeStampField;
+    TApontamentoidusuario: TIntegerField;
+    TApontamentodataalteracao: TSQLTimeStampField;
+    TApontamentodataoperacao: TDateField;
+    TApontamentoidusuarioalteracao: TIntegerField;
+    TApontamentoidcentrocusto: TIntegerField;
+    TApontamentoidescavadeira: TIntegerField;
+    TApontamentoidproduto: TIntegerField;
+    TApontamentoaplicacaoproduto: TWideStringField;
+    TApontamentokmatualescavadeira: TWideStringField;
+    TApontamentoobservacao: TWideStringField;
+    TApontamentohorainicio: TTimeField;
+    TApontamentokmdestinoescavadeira: TWideStringField;
     procedure TStartDiarioReconcileError(DataSet: TFDDataSet; E: EFDException;
       UpdateKind: TFDDatSRowState; var Action: TFDDAptReconcileAction);
     procedure TAbastecimentoReconcileError(DataSet: TFDDataSet; E: EFDException;
@@ -352,6 +380,7 @@ type
     procedure AbreAbastecimento(vIdMaquina,vData,vHora:string);
     function BitmapFromBase64(const base64: string): TBitmap;
     procedure UpdateFlagS3(vTabela,vID:STRING);
+
   public
     procedure AtualizaImagemArquivoExiste(img:string);
     function SendImgS3:string;
@@ -384,6 +413,13 @@ type
     function AcceptCheckList(obj: TJSONObject): TJSONObject;
     function AcceptDetCheckListRealizado(obj: TJSONObject): TJSONObject;
     function CheckFileOnlineExists(url:string): Boolean;
+
+    function AcceptApontamento(obj: TJSONObject): TJSONObject;
+    function AccepTapontamentoValoresValores(obj: TJSONObject): TJSONObject;
+
+    function VerificaApontamentoExite(vIdMaquina,vHora:string):Boolean;
+    function VerificaViagemExiste(vIdApontamento,vIdMaquina,vHora:string):Boolean;
+    function AcceptLogSync(obj: TJSONObject): TJSONObject;
   end;
 
 var
@@ -554,6 +590,154 @@ begin
   Result := TJsonObject.ParseJSONValue(TEncoding.UTF8.GetBytes(StrAux.ToString),0)as TJSONObject;
 end;
 
+function TdmLocal.AcceptApontamento(obj: TJSONObject): TJSONObject;
+var
+  I,X,vEdit: Integer;
+  JsonToSend :TStringStream;
+  vField,vFieldJS,vMaxID:string;
+  LJSon      : TJSONArray;
+  StrAux     : TStringWriter;
+  txtJson    : TJsonTextWriter;
+  vQry       : TFDQuery;
+  vIdResult,vId  :string;
+begin
+  vQry       := TFDQuery.Create(nil);
+  vQry.Connection := frmPrincipal.FDConPG;
+  Tapontamento.Connection := frmPrincipal.FDConPG;
+  Tapontamento.Open();
+  JsonToSend := TStringStream.Create(obj.ToJSON);
+  vQry.LoadFromStream(JsonToSend,sfJSON);
+  vIdResult:='';
+  while not vQry.eof do
+  begin
+    Tapontamento.Filtered := false;
+    IF VerificaApontamentoExite(
+     vQry.FieldByName('idescavadeira').AsString,
+     vQry.FieldByName('horainicio').AsString)then
+     begin
+       Tapontamento.Insert;
+       vEdit :=0;
+     end
+    ELSE
+    begin
+      vEdit :=1;
+      Tapontamento.Edit;
+    end;
+    vId := TApontamentoid.AsString;
+    for x := 0 to Tapontamento.Fields.Count -1 do
+    begin
+     vField  := StringReplace(Tapontamento.Fields[x].Name,
+      'TApontamento','',[rfReplaceAll]);
+     if (vField<>'datareg') and (vField<>'id') and (vQry.FindField(vField) <> nil)
+     and (Tapontamento.FindField(vField) <> nil) then
+      Tapontamento.FieldByName(vField).AsString     := vQry.FieldByName(vField).AsString;
+    end;
+    try
+      Tapontamento.ApplyUpdates(-1);
+      if vEdit=0 then
+        vIdResult := RetornaMaxId('apontamento')
+      else
+        vIdResult := vId;
+      vQry.Next;
+     except
+       on E: Exception do
+       begin
+         StrAux  := TStringWriter.Create;
+         txtJson := TJsonTextWriter.Create(StrAux);
+         txtJson.Formatting := TJsonFormatting.Indented;
+         txtJson.WriteStartObject;
+         txtJson.WritePropertyName('Erro');
+         txtJson.WriteValue('Erro Ao Sincronizar Apontamento:'+E.Message);
+         txtJson.WriteEndObject;
+         Result := TJsonObject.ParseJSONValue(TEncoding.UTF8.GetBytes(StrAux.ToString),0)as TJSONObject;
+       end;
+    end;
+  end;
+  StrAux  := TStringWriter.Create;
+  txtJson := TJsonTextWriter.Create(StrAux);
+  txtJson.Formatting := TJsonFormatting.Indented;
+  txtJson.WriteStartObject;
+  txtJson.WritePropertyName('OK');
+  txtJson.WriteValue(vIdResult);
+  txtJson.WriteEndObject;
+  Result := TJsonObject.ParseJSONValue(TEncoding.UTF8.GetBytes(StrAux.ToString),0)as TJSONObject;
+end;
+
+
+function TdmLocal.AccepTapontamentoValoresValores(obj: TJSONObject): TJSONObject;
+var
+  I,X: Integer;
+  JsonToSend :TStringStream;
+  vField,vFieldJS,vMaxID:string;
+  LJSon      : TJSONArray;
+  StrAux     : TStringWriter;
+  txtJson    : TJsonTextWriter;
+  vQry       : TFDQuery;
+  vQryInsert : TFDQuery;
+  vIdResult,vIdProduto  :string;
+begin
+  vQry       := TFDQuery.Create(nil);
+  vQry.Connection := frmPrincipal.FDConPG;
+  vQryInsert := TFDQuery.Create(nil);
+  vQryInsert.Connection := frmPrincipal.FDConPG;
+
+  TapontamentoValores.Connection := frmPrincipal.FDConPG;
+  TapontamentoValores.Open();
+  JsonToSend := TStringStream.Create(obj.ToJSON);
+  vQry.LoadFromStream(JsonToSend,sfJSON);
+  vIdResult:='';
+    with vQryInsert,vQryInsert.SQL do
+    begin
+      Clear;
+      Add('INSERT INTO apontamentovalores');
+      Add('(idusuario,');
+      Add(' dataoperacao,');
+      Add(' horaoperacao,');
+      Add(' idapontamento,');
+      Add(' idmaquina,');
+      Add(' latitude,');
+      Add(' longitude,');
+      Add(' tipoidentificacaomaquina,');
+      Add(' imgveiculo)');
+      Add(' Values(');
+      Add(vQry.FieldByName('idusuario').AsString);
+      Add(','+FormatDateTime('yyyy-mm-dd',vQry.FieldByName('dataoperacao').AsDateTime).QuotedString);
+      Add(','+vQry.FieldByName('horaoperacao').AsString.QuotedString);
+      Add(','+vQry.FieldByName('idapontamento').AsString);
+      Add(','+vQry.FieldByName('idmaquina').AsString);
+      Add(','+StringReplace(vQry.FieldByName('latitude').AsString,',','.',[rfReplaceAll]).QuotedString);
+      Add(','+StringReplace(vQry.FieldByName('longitude').AsString,',','.',[rfReplaceAll]).QuotedString);
+      Add(','+vQry.FieldByName('tipoidentificacaomaquina').AsString);
+      Add(','+vQry.FieldByName('imgveiculo').AsString.QuotedString);
+      Add(')');
+//      Add('ON CONFLICT ON CONSTRAINT apontamentovalores_un');
+//      Add('DO NOTHING');
+      try
+       vQryInsert.ExecSQL;
+      except
+       on E: Exception do
+       begin
+         StrAux  := TStringWriter.Create;
+         txtJson := TJsonTextWriter.Create(StrAux);
+         txtJson.Formatting := TJsonFormatting.Indented;
+         txtJson.WriteStartObject;
+         txtJson.WritePropertyName('Erro');
+         txtJson.WriteValue('Erro Ao Sincronizar Apontamento Valores:'+E.Message);
+         txtJson.WriteEndObject;
+         Result := TJsonObject.ParseJSONValue(TEncoding.UTF8.GetBytes(StrAux.ToString),0)as TJSONObject;
+       end;
+      end;
+    end;
+  StrAux  := TStringWriter.Create;
+  txtJson := TJsonTextWriter.Create(StrAux);
+  txtJson.Formatting := TJsonFormatting.Indented;
+  txtJson.WriteStartObject;
+  txtJson.WritePropertyName('OK');
+  txtJson.WriteValue(vIdResult);
+  txtJson.WriteEndObject;
+  Result := TJsonObject.ParseJSONValue(TEncoding.UTF8.GetBytes(StrAux.ToString),0)as TJSONObject;
+end;
+
 procedure TdmLocal.InsereSaidaAbastecimento(dataSaida, idcentrocusto,
   idlocalestoque, idproduto, qtditens, idresponsavel,idabastecimento: string);
 var
@@ -637,6 +821,50 @@ begin
     txtJson.WriteEndObject;
     Result := TJsonObject.ParseJSONValue(TEncoding.UTF8.GetBytes(StrAux.ToString),0)as TJSONObject;
   end;
+end;
+
+function TdmLocal.AcceptLogSync(obj: TJSONObject): TJSONObject;
+var
+  I,X: Integer;
+  JsonToSend :TStringStream;
+  vJsonString,  vPatrimonio,vIdusuario,VidcentroCusto:string;
+  vJoItem,vJoItem1   : TJSONArray;
+  vJoInsert,vJoItemO: TJSONObject;
+  vQry       : TFDQuery;
+  StrAux     : TStringWriter;
+  txtJson    : TJsonTextWriter;
+begin
+  vQry            := TFDQuery.Create(nil);
+  vQry.Connection := frmPrincipal.FDConPG;
+
+  vJsonString    := obj.ToString;
+  vJoInsert      := TJSONObject.ParseJSONValue(vJsonString) as TJSONObject;
+  vJoItem        := vJoInsert.GetValue('logSync') as TJSONArray;
+  for i := 0 to vJoItem.Count-1 do
+  begin
+   vJoItemO       := vJoItem.Items[i] as TJSONObject;
+   vIdusuario     := vJoItemO.GetValue('idusuario').value;
+	 VidcentroCusto := vJoItemO.GetValue('idcentrocusto').value;
+	 vPatrimonio    := vJoItemO.GetValue('patrimonio').value;
+  end;
+
+  with vQry,vQry.sql do
+  begin
+    Clear;
+    Add('insert into LogSync(idusuario,idcentrocusto,patrimonio)values(');
+    Add(vIdusuario+',');
+    Add(VidcentroCusto+',');
+    Add(vPatrimonio+')');
+    ExecSQL;
+  end;
+  StrAux  := TStringWriter.Create;
+  txtJson := TJsonTextWriter.Create(StrAux);
+  txtJson.Formatting := TJsonFormatting.Indented;
+  txtJson.WriteStartObject;
+  txtJson.WritePropertyName('OK');
+  txtJson.WriteValue('1');
+  txtJson.WriteEndObject;
+  Result := TJsonObject.ParseJSONValue(TEncoding.UTF8.GetBytes(StrAux.ToString),0)as TJSONObject;
 end;
 
 function TdmLocal.AcceptCentroCusto(obj: TJSONObject): TJSONObject;
@@ -1391,13 +1619,16 @@ begin
                                          amzbaPublicReadWrite,
                                          Response) then
           begin
-           frmPrincipal.mlog.Lines.Add(vNameFiel+ 'Enviado com sucesso!');
-           vPath  :='https://comboiodemo.s3.us-east-2.amazonaws.com/'+vNameFiel;
-           dmLocal.AtualizaPathImagemS3(
-            vPath,
-            'ABASTECIMENTO',
-            vQry.FieldByName('id').AsString,
-            'img');
+           if Response.StatusMessage='OK' then
+           begin
+             frmPrincipal.mlog.Lines.Add(vNameFiel+ 'Enviado com sucesso!');
+             vPath  :='https://comboiodemo.s3.us-east-2.amazonaws.com/'+vNameFiel;
+             dmLocal.AtualizaPathImagemS3(
+              vPath,
+              'ABASTECIMENTO',
+              vQry.FieldByName('id').AsString,
+              'img');
+           end;
           end
           else
            frmPrincipal.mlog.Lines.Add('Erro ao enviar objeto: ' + Response.StatusMessage);
@@ -1439,13 +1670,16 @@ begin
                                          amzbaPublicReadWrite,
                                          Response) then
           begin
-           frmPrincipal.mlog.Lines.Add(vNameFiel+ 'Enviado com sucesso!');
-           vPath  :='https://comboiodemo.s3.us-east-2.amazonaws.com/'+vNameFiel;
-           dmLocal.AtualizaPathImagemS3(
-            vPath,
-            'ABASTECIMENTO',
-            vQry.FieldByName('id').AsString,
-            'img2');
+           if Response.StatusMessage='OK' then
+           begin
+             frmPrincipal.mlog.Lines.Add(vNameFiel+ 'Enviado com sucesso!');
+             vPath  :='https://comboiodemo.s3.us-east-2.amazonaws.com/'+vNameFiel;
+             dmLocal.AtualizaPathImagemS3(
+              vPath,
+              'ABASTECIMENTO',
+              vQry.FieldByName('id').AsString,
+              'img2');
+           end;
           end
           else
            frmPrincipal.mlog.Lines.Add('Erro ao enviar objeto: ' + Response.StatusMessage);
@@ -1485,6 +1719,8 @@ begin
                                          amzbaPublicReadWrite,
                                          Response) then
         begin
+          if Response.StatusMessage='OK' then
+          begin
            frmPrincipal.mlog.Lines.Add(vNameFiel+ 'Enviado com sucesso!');
            vPath  :='https://comboiodemo.s3.us-east-2.amazonaws.com/'+vNameFiel;
            dmLocal.AtualizaPathImagemS3(
@@ -1492,6 +1728,7 @@ begin
             'ABASTECIMENTO',
             vQry.FieldByName('id').AsString,
             'img3');
+          end;
         end
         else
          frmPrincipal.mlog.Lines.Add('Erro ao enviar objeto: ' + Response.StatusMessage);
@@ -1543,13 +1780,16 @@ begin
                                            amzbaPublicReadWrite,
                                            Response) then
            begin
-            frmPrincipal.mlog.Lines.Add(vNameFiel+ 'Enviado com sucesso!');
-            vPath  :='https://comboiodemo.s3.us-east-2.amazonaws.com/'+vNameFiel;
-            dmLocal.AtualizaPathImagemS3(
-             vPath,
-             'startbomba',
-             vQry.FieldByName('id').AsString,
-             'imgstart');
+            if Response.StatusMessage='OK' then
+            begin
+             frmPrincipal.mlog.Lines.Add(vNameFiel+ 'Enviado com sucesso!');
+             vPath  :='https://comboiodemo.s3.us-east-2.amazonaws.com/'+vNameFiel;
+             dmLocal.AtualizaPathImagemS3(
+              vPath,
+              'startbomba',
+              vQry.FieldByName('id').AsString,
+              'imgstart');
+            end;
           end
             else
              frmPrincipal.mlog.Lines.Add('Erro ao enviar objeto: ' + Response.StatusMessage);
@@ -1591,6 +1831,8 @@ begin
                                            amzbaPublicReadWrite,
                                            Response) then
             begin
+            if Response.StatusMessage='OK' then
+            begin
              frmPrincipal.mlog.Lines.Add(vNameFiel+ 'Enviado com sucesso!');
              vPath  :='https://comboiodemo.s3.us-east-2.amazonaws.com/'+vNameFiel;
              dmLocal.AtualizaPathImagemS3(
@@ -1598,6 +1840,7 @@ begin
              'startbomba',
              vQry.FieldByName('id').AsString,
              'imgend');
+            end;
           end
             else
              frmPrincipal.mlog.Lines.Add('Erro ao enviar objeto: ' + Response.StatusMessage);
@@ -1650,13 +1893,16 @@ begin
                                            amzbaPublicReadWrite,
                                            Response) then
             begin
-             frmPrincipal.mlog.Lines.Add(vNameFiel+ 'Enviado com sucesso!');
-             vPath  :='https://comboiodemo.s3.us-east-2.amazonaws.com/'+vNameFiel;
-             dmLocal.AtualizaPathImagemS3(
-             vPath,
-             'tranferencialocalestoque',
-             vQry.FieldByName('id').AsString,
-             'img');
+             if Response.StatusMessage='OK' then
+             begin
+               frmPrincipal.mlog.Lines.Add(vNameFiel+ 'Enviado com sucesso!');
+               vPath  :='https://comboiodemo.s3.us-east-2.amazonaws.com/'+vNameFiel;
+               dmLocal.AtualizaPathImagemS3(
+               vPath,
+               'tranferencialocalestoque',
+               vQry.FieldByName('id').AsString,
+               'img');
+             end;
             end
             else
              frmPrincipal.mlog.Lines.Add('Erro ao enviar objeto: ' + Response.StatusMessage);
@@ -1698,14 +1944,82 @@ begin
                                            amzbaPublicReadWrite,
                                            Response) then
             begin
-             frmPrincipal.mlog.Lines.Add(vNameFiel+ 'Enviado com sucesso!');
-             vPath  :='https://comboiodemo.s3.us-east-2.amazonaws.com/'+vNameFiel;
-             dmLocal.AtualizaPathImagemS3(
-              vPath,
-              'tranferencialocalestoque',
-              vQry.FieldByName('id').AsString,
-              'imgfim');
+             if Response.StatusMessage='OK' then
+             begin
+               frmPrincipal.mlog.Lines.Add(vNameFiel+ 'Enviado com sucesso!');
+               vPath  :='https://comboiodemo.s3.us-east-2.amazonaws.com/'+vNameFiel;
+               dmLocal.AtualizaPathImagemS3(
+                vPath,
+                'tranferencialocalestoque',
+                vQry.FieldByName('id').AsString,
+                'imgfim');
+             end;
             end
+            else
+             frmPrincipal.mlog.Lines.Add('Erro ao enviar objeto: ' + Response.StatusMessage);
+          finally
+            Response.DisposeOf;
+            Header.DisposeOf;
+            Metadata.DisposeOf;
+            img_stream.DisposeOf;
+            StorageService.DisposeOf;
+          end;
+        end;
+        vQry.Next;
+     end;
+   end;
+
+
+   with vQry,vQry.SQL do //IMG S3 APONTAMENTO
+   begin
+     Clear;
+     Add('select * from apontamentovalores a2');
+     Add('where imgsyncs3 =0');
+     Open;
+     while not vQry.eof  do
+     begin
+        if vQry.FieldByName('imgveiculo').AsString.Length>0 then
+        begin
+          frmPrincipal.MemoSaveFoto.Lines.Clear;
+          frmPrincipal.MemoSaveFoto.Lines.Add(vQry.FieldByName('imgveiculo').AsString);
+          frmPrincipal.MemoSaveFoto.Lines.SaveToFile(vPathSaveTXT+
+           'Apontamento_Caminhao_'+vQry.FieldByName('id').AsString+'.txt'
+           );
+          try
+            vNameFiel  :=  'Apontamento_Caminhao_'+vQry.FieldByName('id').AsString+'.png';
+            img_stream :=  TBytesStream.Create;
+            img_bitmap :=  BitmapFromBase64(vQry.FieldByName('imgveiculo').AsString);
+            img_stream :=  TBytesStream.Create;
+            img_bitmap.SaveToStream(img_stream);
+
+            StorageService := TAmazonStorageService.Create(AmazonConnectionInfo1);
+            Response := TCloudResponseInfo.Create;
+            Metadata := TStringList.Create;
+            Metadata.Values['Obs'] := 'Teste de upload';
+            Header := TStringList.Create;
+            Header.Values['Content-Type'] := 'image/png';
+            if StorageService.UploadObject('comboiodemo',
+                                           vNameFiel,
+                                           img_stream.Bytes,
+                                           false,
+                                           Metadata,
+                                           Header,
+                                           amzbaPublicReadWrite,
+                                           Response) then
+           begin
+            if Response.StatusMessage='OK' then
+            begin
+              frmPrincipal.mlog.Lines.Add(vNameFiel+ 'Enviado com sucesso!');
+              vPath  :='https://comboiodemo.s3.us-east-2.amazonaws.com/'+vNameFiel;
+              dmLocal.AtualizaPathImagemS3(
+               vPath,
+               'apontamentovalores',
+               vQry.FieldByName('id').AsString,
+               'imgveiculo');
+            end
+            else
+              frmPrincipal.mlog.Lines.Add('Erro ao Subir imagem:'+Response.StatusMessage);
+          end
             else
              frmPrincipal.mlog.Lines.Add('Erro ao enviar objeto: ' + Response.StatusMessage);
           finally
@@ -1785,6 +2099,35 @@ begin
    Add('update '+vTabela+' set imgSyncS3=1');
    Add('where id='+vID);
    ExecSQL;
+ end;
+end;
+
+function TdmLocal.VerificaApontamentoExite(vIdMaquina, vHora: string): Boolean;
+begin
+ with TApontamento,TApontamento.SQL do
+ begin
+   Clear;
+   Add('select * from apontamento');
+   Add('where idescavadeira='+vIdMaquina);
+   Add('AND horainicio='+vHora.QuotedString);
+   Open;
+   Result  := TApontamento.IsEmpty;
+ end;
+
+end;
+
+function TdmLocal.VerificaViagemExiste(vIdApontamento, vIdMaquina,
+  vHora: string): Boolean;
+begin
+ with TApontamentoValores,TApontamentoValores.SQL do
+ begin
+   Clear;
+   Add('select * from apontamentoValores ');
+   Add('where idapontamento='+vIdApontamento);
+   Add('AND idmaquina='+vIdMaquina);
+   Add('AND horaoperacao='+vHora.QuotedString);
+   Open;
+   Result  := TApontamentoValores.IsEmpty;
  end;
 end;
 

@@ -1,7 +1,7 @@
 object dmsync: Tdmsync
   OldCreateOrder = False
-  Height = 408
-  Width = 731
+  Height = 438
+  Width = 774
   object IdHTTP1: TIdHTTP
     ProxyParams.BasicAuthentication = False
     ProxyParams.ProxyPort = 0
@@ -30,7 +30,7 @@ object dmsync: Tdmsync
     SQL.Strings = (
       'select * from usuario'
       '')
-    Left = 56
+    Left = 136
     Top = 112
     object TUsuarioid: TIntegerField
       FieldName = 'id'
@@ -466,7 +466,7 @@ object dmsync: Tdmsync
     Connection = dmDB.FCon
     SQL.Strings = (
       'select * from maquinaveiculo')
-    Left = 90
+    Left = 138
     Top = 184
     object TMaquinasid: TIntegerField
       FieldName = 'id'
@@ -925,8 +925,8 @@ object dmsync: Tdmsync
   end
   object QryAuxLoop: TFDQuery
     Connection = dmDB.FCon
-    Left = 56
-    Top = 304
+    Left = 136
+    Top = 256
   end
   object TMovLocalEstoque: TFDQuery
     CachedUpdates = True
@@ -1720,6 +1720,121 @@ object dmsync: Tdmsync
       Origin = 'syncaws'
       Required = True
       Size = 32767
+    end
+  end
+  object TApontamentoValores: TFDQuery
+    CachedUpdates = True
+    IndexFieldNames = 'idapontamento'
+    MasterFields = 'id'
+    DetailFields = 'idapontamento'
+    Connection = dmDB.FCon
+    SQL.Strings = (
+      'select'
+      'idusuario,'
+      'dataoperacao,'
+      'horaoperacao,'
+      '100 as idapontamento,'
+      'idmaquina,'
+      'latitude,'
+      'longitude,'
+      'tipoidentificacaomaquina,'
+      'imgveiculo,'
+      'observacao'
+      'from apontamentoValores a')
+    Left = 616
+    Top = 256
+  end
+  object TApontamento: TFDQuery
+    CachedUpdates = True
+    Connection = dmDB.FCon
+    SQL.Strings = (
+      'select'
+      '*'
+      'from apontamento'
+      'where status=2 and syncaws=0')
+    Left = 616
+    Top = 320
+    object TApontamentoid: TFDAutoIncField
+      FieldName = 'id'
+      Origin = 'id'
+      ProviderFlags = [pfInWhere, pfInKey]
+      ReadOnly = True
+    end
+    object TApontamentostatus: TWideStringField
+      FieldName = 'status'
+      Origin = 'status'
+      Size = 32767
+    end
+    object TApontamentodatareg: TWideStringField
+      FieldName = 'datareg'
+      Origin = 'datareg'
+      Size = 32767
+    end
+    object TApontamentoidusuario: TWideStringField
+      FieldName = 'idusuario'
+      Origin = 'idusuario'
+      Size = 32767
+    end
+    object TApontamentodataalteracao: TWideStringField
+      FieldName = 'dataalteracao'
+      Origin = 'dataalteracao'
+      Size = 32767
+    end
+    object TApontamentodataoperacao: TDateField
+      FieldName = 'dataoperacao'
+      Origin = 'dataoperacao'
+    end
+    object TApontamentoidusuarioalteracao: TWideStringField
+      FieldName = 'idusuarioalteracao'
+      Origin = 'idusuarioalteracao'
+      Size = 32767
+    end
+    object TApontamentoidcentrocusto: TWideStringField
+      FieldName = 'idcentrocusto'
+      Origin = 'idcentrocusto'
+      Size = 32767
+    end
+    object TApontamentoidescavadeira: TWideStringField
+      FieldName = 'idescavadeira'
+      Origin = 'idescavadeira'
+      Size = 32767
+    end
+    object TApontamentoidproduto: TWideStringField
+      FieldName = 'idproduto'
+      Origin = 'idproduto'
+      Size = 32767
+    end
+    object TApontamentoaplicacaoproduto: TStringField
+      FieldName = 'aplicacaoproduto'
+      Origin = 'aplicacaoproduto'
+      Size = 50
+    end
+    object TApontamentokmatualescavadeira: TStringField
+      FieldName = 'kmatualescavadeira'
+      Origin = 'kmatualescavadeira'
+      Size = 50
+    end
+    object TApontamentoobservacao: TStringField
+      FieldName = 'observacao'
+      Origin = 'observacao'
+      Size = 100
+    end
+    object TApontamentohorainicio: TTimeField
+      FieldName = 'horainicio'
+      Origin = 'horainicio'
+    end
+    object TApontamentosyncaws: TIntegerField
+      FieldName = 'syncaws'
+      Origin = 'syncaws'
+    end
+    object TApontamentohorafim: TTimeField
+      FieldName = 'horafim'
+      Origin = 'horafim'
+    end
+    object TApontamentokmdestinoescavadeira: TStringField
+      FieldName = 'kmdestinoescavadeira'
+      Origin = 'kmdestinoescavadeira'
+      Size = 50
     end
   end
 end

@@ -34,7 +34,6 @@ type
     TUsuariosenha: TWideStringField;
     TUsuariotipo: TIntegerField;
     TUsuariosyncaws: TIntegerField;
-    TUsuariotipostr: TWideMemoField;
     TAuxMarca: TFDQuery;
     TAuxMarcaid: TIntegerField;
     TAuxMarcastatus: TIntegerField;
@@ -551,6 +550,23 @@ type
     TApontamentohorainicio: TTimeField;
     TUsuarioapontamento: TIntegerField;
     TUsuarioabastecimento: TIntegerField;
+    TApontamentokmdestinoescavadeira: TWideStringField;
+    TExportaApontamento: TFDQuery;
+    TExportaApontamentoobra: TWideStringField;
+    TExportaApontamentoordem: TLargeintField;
+    TExportaApontamentodataoperacao: TDateField;
+    TExportaApontamentoprefixocaminhao: TWideStringField;
+    TExportaApontamentoprefixoescavadeira: TWideStringField;
+    TExportaApontamentoobservacao: TWideStringField;
+    TExportaApontamentokmatualescavadeira: TWideStringField;
+    TExportaApontamentomaterial: TWideStringField;
+    TExportaApontamentoaplicacaoproduto: TWideStringField;
+    TExportaApontamentokmdestinoescavadeira: TWideStringField;
+    TExportaApontamentohoraoperacao: TTimeField;
+    TExportaApontamentoturno: TWideStringField;
+    TUsuarioabastecimentostr: TWideStringField;
+    TUsuarioapontamentostr: TWideStringField;
+    TAbastecimentotipomedicao: TIntegerField;
     procedure TUsuarioReconcileError(DataSet: TFDDataSet; E: EFDException;
       UpdateKind: TFDDatSRowState; var Action: TFDDAptReconcileAction);
     procedure TAuxMarcaReconcileError(DataSet: TFDDataSet; E: EFDException;
@@ -618,6 +634,9 @@ type
     procedure ChecaItem(idItem,tipo: string);
     procedure CopyChecklist;
     procedure AbreApontamento(vFiltro:String);
+    procedure AbreViagem(vId:String);
+    procedure InativaViagem(vId:String);
+    procedure ExportaApontamento(vFiltro: String);
 end;
 
 var
@@ -946,6 +965,23 @@ begin
  end;
 end;
 
+procedure Tdmdb.AbreViagem(vId: String);
+begin
+ with TApontamentoValores,TApontamentoValores.SQL do
+ begin
+   Clear;
+   Add('select');
+   Add(' ROW_NUMBER () OVER (ORDER BY a.id)Item,');
+   Add(' a.*,');
+   Add(' m.prefixo Maquina');
+   Add('from apontamentoValores a');
+   Add('join maquinaveiculo m on a.idmaquina=m.id');
+   Add('where a.status=1');
+   Add('and a.id='+vId);
+   Open;
+ end;
+end;
+
 procedure Tdmdb.AbrirColetores(vFiltro: string);
 begin
  with TDevice,TDevice.SQL do
@@ -1043,11 +1079,45 @@ begin
    Add('join maquinaveiculo m on a.idescavadeira=m.id');
    Add('join centrocusto    c on c.id=a.idCentroCusto ');
    Add('join produtos       p on a.idproduto=p.id');
-   Add('where a.status=1');
+   Add('where a.status>-1');
    Add(vFiltro);
    Add('order by a.id desc');
    Open;
    TApontamentoValores.Open();
+ end;
+end;
+
+procedure Tdmdb.ExportaApontamento(vFiltro: String);
+begin
+ with TExportaApontamento,TExportaApontamento.SQL do
+ begin
+   Clear;
+   Add('select');
+   Add('     c.nome Obra,');
+   Add('     ROW_NUMBER () OVER (ORDER BY a.id)Ordem,');
+   Add('     a.dataoperacao,');
+   Add('     av.horaoperacao,');
+   Add('     mv.prefixo PrefixoCaminhao,');
+   Add('     cast(case');
+   Add('       when horaoperacao between cast(''05:00'' as time) and cast(''18:00'' as time) then ''DIURNO''');
+   Add('       when horaoperacao between cast(''18:01'' as time) and cast(''04:59'' as time) then ''NOTURNO''');
+   Add('     end as varchar(20)) Turno,');
+   Add('     m.prefixo PrefixoEscavadeira,');
+   Add('     a.observacao,');
+   Add('     a.kmatualescavadeira,');
+   Add('     p.nome Material,');
+   Add('     a.aplicacaoproduto,');
+   Add('     a.kmdestinoescavadeira');
+   Add('from apontamento a');
+   Add('join maquinaveiculo m on a.idescavadeira=m.id');
+   Add('join centrocusto    c on c.id=a.idCentroCusto');
+   Add('join produtos       p on a.idproduto=p.id');
+   Add('join apontamentoValores av on av.idapontamento=a.id');
+   Add('join maquinaveiculo mv on av.idmaquina=mv.id');
+   Add('where a.status>-1');
+   Add(vFiltro);
+   Add('order by ROW_NUMBER () OVER (ORDER BY av.horaoperacao)');
+   Open;
  end;
 end;
 
@@ -1214,7 +1284,8 @@ begin
    Add('end tipoAlerta,');
    Add('u.nome UsuariNome,');
    Add('c.iderp ID_ERP_CENTROCUSTO,');
-   Add('l.iderp ID_ERP_LOCAL_ESTOQUE');
+   Add('l.iderp ID_ERP_LOCAL_ESTOQUE,');
+   Add('m.TipoMedicao');
    Add('from abastecimento a');
    Add('join usuario u  on a.idusuario =U.ID');
    Add('join centrocusto c  on a.idcentrocusto=c.id');
@@ -1234,6 +1305,7 @@ begin
  end;
  
 end;
+
 
 function Tdmdb.RetornaMaxId(AnomeTabela: string): string;
 begin
@@ -1415,6 +1487,22 @@ end;
 procedure Tdmdb.FDConPGLost(Sender: TObject);
 begin
  ShowMessage('Morreu largatixa')
+end;
+
+procedure Tdmdb.InativaViagem(vId: String);
+begin
+ with vQry,vQry.SQL do
+ begin
+   Clear;
+   Add('update apontamentovalores set ');
+   Add('status =-1');
+   Add(',idusuarioalteracao='+vIdUsuarioLogado);
+   Add(',dataalteracao=current_timestamp');
+   Add('where id='+vId);
+   ExecSQL;
+   TApontamentoValores.CommitUpdates;
+   TApontamentoValores.Refresh;
+ end;
 end;
 
 function Tdmdb.LerIni(Diretorio, Chave1, Chave2,

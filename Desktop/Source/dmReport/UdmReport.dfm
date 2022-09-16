@@ -39212,7 +39212,7 @@ object dmReport: TdmReport
   object ppDBPLub: TppDBPipeline
     DataSource = dsLubrificacao
     UserName = 'ppDBPLub'
-    Left = 669
+    Left = 645
     Top = 402
     object ppDBPLubppField1: TppField
       FieldAlias = 'id'
@@ -45573,7 +45573,7 @@ object dmReport: TdmReport
     CloudDriveSettings.GoogleDriveSettings.DirectorySupport = False
     CloudDriveSettings.OneDriveSettings.OAuth2.RedirectPort = 0
     CloudDriveSettings.OneDriveSettings.DirectorySupport = True
-    Left = 907
+    Left = 843
     Top = 330
     Version = '21.02'
     mmColumnWidth = 98650
@@ -45582,12 +45582,12 @@ object dmReport: TdmReport
       Background.Brush.Style = bsClear
       Border.mmPadding = 0
       mmBottomOffset = 0
-      mmHeight = 72761
+      mmHeight = 70908
       mmPrintPosition = 0
       object ppShape8: TppShape
         DesignLayer = ppDesignLayer4
         UserName = 'Shape90'
-        mmHeight = 40398
+        mmHeight = 38462
         mmLeft = 1058
         mmTop = 26723
         mmWidth = 195791
@@ -52849,7 +52849,7 @@ object dmReport: TdmReport
         Pen.Style = psClear
         mmHeight = 4807
         mmLeft = 1058
-        mmTop = 67687
+        mmTop = 65510
         mmWidth = 96762
         BandType = 0
         LayerName = BandLayer20
@@ -52996,9 +52996,9 @@ object dmReport: TdmReport
         Transparent = True
         DataPipelineName = 'ppDBPApontamento'
         mmHeight = 4763
-        mmLeft = 84976
-        mmTop = 42461
-        mmWidth = 38947
+        mmLeft = 85226
+        mmTop = 42091
+        mmWidth = 38894
         BandType = 0
         LayerName = BandLayer20
       end
@@ -53041,7 +53041,7 @@ object dmReport: TdmReport
         VerticalAlignment = avCenter
         mmHeight = 4763
         mmLeft = 18633
-        mmTop = 67710
+        mmTop = 65533
         mmWidth = 29903
         BandType = 0
         LayerName = BandLayer20
@@ -53261,9 +53261,9 @@ object dmReport: TdmReport
       object ppShape39: TppShape
         DesignLayer = ppDesignLayer4
         UserName = 'Shape39'
-        mmHeight = 11293
-        mmLeft = 26950
-        mmTop = 54285
+        mmHeight = 8631
+        mmLeft = 26708
+        mmTop = 54043
         mmWidth = 168123
         BandType = 0
         LayerName = BandLayer20
@@ -53273,19 +53273,20 @@ object dmReport: TdmReport
         UserName = 'DBMemo1'
         Border.mmPadding = 0
         CharWrap = False
+        DataField = 'observacao'
         DataPipeline = ppDBPApontamento
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Name = 'Arial'
-        Font.Size = 10
+        Font.Size = 9
         Font.Style = [fsBold]
         RemoveEmptyLines = False
         Transparent = True
         DataPipelineName = 'ppDBPApontamento'
-        mmHeight = 9754
-        mmLeft = 27396
-        mmTop = 54662
-        mmWidth = 166915
+        mmHeight = 6615
+        mmLeft = 27213
+        mmTop = 55011
+        mmWidth = 166226
         BandType = 0
         LayerName = BandLayer20
         mmBottomOffset = 0
@@ -53312,7 +53313,7 @@ object dmReport: TdmReport
         VerticalAlignment = avCenter
         mmHeight = 4763
         mmLeft = 1693
-        mmTop = 67756
+        mmTop = 65555
         mmWidth = 15966
         BandType = 0
         LayerName = BandLayer20
@@ -53335,7 +53336,7 @@ object dmReport: TdmReport
         VerticalAlignment = avCenter
         mmHeight = 4763
         mmLeft = 49181
-        mmTop = 67756
+        mmTop = 65555
         mmWidth = 47811
         BandType = 0
         LayerName = BandLayer20
@@ -53380,6 +53381,48 @@ object dmReport: TdmReport
         mmLeft = 67250
         mmTop = 28598
         mmWidth = 21533
+        BandType = 0
+        LayerName = BandLayer20
+      end
+      object ppDBText100: TppDBText
+        DesignLayer = ppDesignLayer4
+        UserName = 'DBText100'
+        Border.mmPadding = 0
+        DataField = 'kmdestinoescavadeira'
+        DataPipeline = ppDBPApontamento
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Name = 'Arial'
+        Font.Size = 10
+        Font.Style = []
+        ParentDataPipeline = False
+        Transparent = True
+        DataPipelineName = 'ppDBPApontamento'
+        mmHeight = 4763
+        mmLeft = 149127
+        mmTop = 42091
+        mmWidth = 38894
+        BandType = 0
+        LayerName = BandLayer20
+      end
+      object ppLabel132: TppLabel
+        DesignLayer = ppDesignLayer4
+        UserName = 'Label132'
+        AutoSize = False
+        Border.mmPadding = 0
+        Caption = 'KM Destino :'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 10
+        Font.Style = [fsBold]
+        FormFieldSettings.FormSubmitInfo.SubmitMethod = fstPost
+        FormFieldSettings.FormFieldType = fftNone
+        Transparent = True
+        mmHeight = 4763
+        mmLeft = 125723
+        mmTop = 42114
+        mmWidth = 22612
         BandType = 0
         LayerName = BandLayer20
       end
@@ -53615,166 +53658,6 @@ object dmReport: TdmReport
     UserName = 'ppDBPApontamento'
     Left = 915
     Top = 265
-    object ppDBPApontamentoppField1: TppField
-      Alignment = taRightJustify
-      FieldAlias = 'id'
-      FieldName = 'id'
-      FieldLength = 0
-      DataType = dtInteger
-      DisplayWidth = 0
-      Position = 0
-    end
-    object ppDBPApontamentoppField2: TppField
-      Alignment = taRightJustify
-      FieldAlias = 'status'
-      FieldName = 'status'
-      FieldLength = 0
-      DataType = dtInteger
-      DisplayWidth = 10
-      Position = 1
-    end
-    object ppDBPApontamentoppField3: TppField
-      FieldAlias = 'datareg'
-      FieldName = 'datareg'
-      FieldLength = 0
-      DataType = dtDateTime
-      DisplayWidth = 34
-      Position = 2
-    end
-    object ppDBPApontamentoppField4: TppField
-      Alignment = taRightJustify
-      FieldAlias = 'idusuario'
-      FieldName = 'idusuario'
-      FieldLength = 0
-      DataType = dtInteger
-      DisplayWidth = 10
-      Position = 3
-    end
-    object ppDBPApontamentoppField5: TppField
-      FieldAlias = 'dataalteracao'
-      FieldName = 'dataalteracao'
-      FieldLength = 0
-      DataType = dtDateTime
-      DisplayWidth = 34
-      Position = 4
-    end
-    object ppDBPApontamentoppField6: TppField
-      FieldAlias = 'dataoperacao'
-      FieldName = 'dataoperacao'
-      FieldLength = 0
-      DataType = dtDate
-      DisplayWidth = 10
-      Position = 5
-    end
-    object ppDBPApontamentoppField7: TppField
-      Alignment = taRightJustify
-      FieldAlias = 'idusuarioalteracao'
-      FieldName = 'idusuarioalteracao'
-      FieldLength = 0
-      DataType = dtInteger
-      DisplayWidth = 10
-      Position = 6
-    end
-    object ppDBPApontamentoppField8: TppField
-      Alignment = taRightJustify
-      FieldAlias = 'idcentrocusto'
-      FieldName = 'idcentrocusto'
-      FieldLength = 0
-      DataType = dtInteger
-      DisplayWidth = 10
-      Position = 7
-    end
-    object ppDBPApontamentoppField9: TppField
-      Alignment = taRightJustify
-      FieldAlias = 'idescavadeira'
-      FieldName = 'idescavadeira'
-      FieldLength = 0
-      DataType = dtInteger
-      DisplayWidth = 10
-      Position = 8
-    end
-    object ppDBPApontamentoppField10: TppField
-      Alignment = taRightJustify
-      FieldAlias = 'idproduto'
-      FieldName = 'idproduto'
-      FieldLength = 0
-      DataType = dtInteger
-      DisplayWidth = 10
-      Position = 9
-    end
-    object ppDBPApontamentoppField11: TppField
-      FieldAlias = 'aplicacaoproduto'
-      FieldName = 'aplicacaoproduto'
-      FieldLength = 50
-      DisplayWidth = 50
-      Position = 10
-    end
-    object ppDBPApontamentoppField12: TppField
-      FieldAlias = 'kmatualescavadeira'
-      FieldName = 'kmatualescavadeira'
-      FieldLength = 50
-      DisplayWidth = 50
-      Position = 11
-    end
-    object ppDBPApontamentoppField13: TppField
-      FieldAlias = 'observacao'
-      FieldName = 'observacao'
-      FieldLength = 100
-      DisplayWidth = 100
-      Position = 12
-    end
-    object ppDBPApontamentoppField14: TppField
-      FieldAlias = 'maquina'
-      FieldName = 'maquina'
-      FieldLength = 20
-      DisplayWidth = 20
-      Position = 13
-    end
-    object ppDBPApontamentoppField15: TppField
-      FieldAlias = 'centrocusto'
-      FieldName = 'centrocusto'
-      FieldLength = 50
-      DisplayWidth = 50
-      Position = 14
-    end
-    object ppDBPApontamentoppField16: TppField
-      FieldAlias = 'produtos'
-      FieldName = 'produtos'
-      FieldLength = 50
-      DisplayWidth = 50
-      Position = 15
-    end
-    object ppDBPApontamentoppField17: TppField
-      FieldAlias = 'horainicio'
-      FieldName = 'horainicio'
-      FieldLength = 0
-      DataType = dtTime
-      DisplayWidth = 10
-      Position = 16
-    end
-    object ppDBPApontamentoppField18: TppField
-      FieldAlias = 'item'
-      FieldName = 'item'
-      FieldLength = 0
-      DataType = dtLargeInt
-      DisplayWidth = 15
-      Position = 17
-    end
-    object ppDBPApontamentoppField19: TppField
-      FieldAlias = 'horaoperacao'
-      FieldName = 'horaoperacao'
-      FieldLength = 0
-      DataType = dtTime
-      DisplayWidth = 10
-      Position = 18
-    end
-    object ppDBPApontamentoppField20: TppField
-      FieldAlias = 'maquinaapontamento'
-      FieldName = 'maquinaapontamento'
-      FieldLength = 20
-      DisplayWidth = 20
-      Position = 19
-    end
   end
   object dsApontamento: TDataSource
     DataSet = TApontamento
@@ -53782,7 +53665,6 @@ object dmReport: TdmReport
     Top = 232
   end
   object TApontamento: TFDQuery
-    Active = True
     CachedUpdates = True
     Connection = dmdb.FDConPG
     SQL.Strings = (
@@ -53902,6 +53784,11 @@ object dmReport: TdmReport
       AutoGenerateValue = arDefault
       FieldName = 'maquinaapontamento'
       Origin = 'maquinaapontamento'
+    end
+    object TApontamentokmdestinoescavadeira: TWideStringField
+      FieldName = 'kmdestinoescavadeira'
+      Origin = 'kmdestinoescavadeira'
+      Size = 50
     end
   end
 end

@@ -280,6 +280,7 @@ type
     procedure cbxTipoRelatorioChange(Sender: TObject);
     procedure TreeProdutoProdClick(Sender: TObject);
     procedure TreeApontamentosClick(Sender: TObject);
+    procedure TreeProducaoClick(Sender: TObject);
   private
     vWebBrowser:TWebBrowser;
     procedure ReCreateBrowser(URL: STRING);
@@ -974,6 +975,17 @@ begin
     AnimationPrincipal.Start;
     frmPlanoManutencao.Free;
   end;
+end;
+
+procedure TfrmPrincipal.TreeProducaoClick(Sender: TObject);
+begin
+ if TreeProducao.IsExpanded then
+  TreeProducao.IsExpanded := false
+ else
+ begin
+  TreeMnu.CollapseAll;
+  TreeProducao.IsExpanded := true;
+ end;
 end;
 
 procedure TfrmPrincipal.TreeProdutoProdClick(Sender: TObject);

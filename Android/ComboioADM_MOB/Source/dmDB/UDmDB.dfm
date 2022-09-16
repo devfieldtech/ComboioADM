@@ -34,9 +34,8 @@ object dmDB: TdmDB
     Params.Strings = (
       
         'Database=E:\Projetos2021\ComboioADM\Android\ComboioADM_MOB\db\Cb' +
-        'Adm1.db'
+        'Adm2.db'
       'DriverID=SQLite')
-    Connected = True
     LoginPrompt = False
     BeforeConnect = FConBeforeConnect
     Left = 80
@@ -2431,6 +2430,7 @@ object dmDB: TdmDB
     Top = 400
     object TApontamentoid: TFDAutoIncField
       FieldName = 'id'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
       ReadOnly = True
     end
     object TApontamentostatus: TWideStringField
@@ -2509,6 +2509,15 @@ object dmDB: TdmDB
       ReadOnly = True
       Size = 32767
     end
+    object TApontamentohorafim: TTimeField
+      FieldName = 'horafim'
+      Origin = 'horafim'
+    end
+    object TApontamentokmdestinoescavadeira: TStringField
+      FieldName = 'kmdestinoescavadeira'
+      Origin = 'kmdestinoescavadeira'
+      Size = 50
+    end
   end
   object TApontamentoValores: TFDQuery
     CachedUpdates = True
@@ -2529,101 +2538,19 @@ object dmDB: TdmDB
       'order by a.horaoperacao ')
     Left = 480
     Top = 456
-    object TApontamentoValoresItem: TWideStringField
-      AutoGenerateValue = arDefault
-      FieldName = 'Item'
-      Origin = 'Item'
-      ProviderFlags = []
-      ReadOnly = True
-      Size = 32767
-    end
-    object TApontamentoValoresid: TFDAutoIncField
-      FieldName = 'id'
-      Origin = 'id'
-      ProviderFlags = [pfInWhere, pfInKey]
-      ReadOnly = True
-    end
-    object TApontamentoValoresstatus: TWideStringField
-      FieldName = 'status'
-      Origin = 'status'
-      Size = 32767
-    end
-    object TApontamentoValoresdatareg: TWideStringField
-      FieldName = 'datareg'
-      Origin = 'datareg'
-      Size = 32767
-    end
-    object TApontamentoValoresidusuario: TWideStringField
-      FieldName = 'idusuario'
-      Origin = 'idusuario'
-      Size = 32767
-    end
-    object TApontamentoValoresdataalteracao: TWideStringField
-      FieldName = 'dataalteracao'
-      Origin = 'dataalteracao'
-      Size = 32767
-    end
-    object TApontamentoValoresdataoperacao: TDateField
-      FieldName = 'dataoperacao'
-      Origin = 'dataoperacao'
-    end
-    object TApontamentoValoreshoraoperacao: TTimeField
-      FieldName = 'horaoperacao'
-      Origin = 'horaoperacao'
-    end
-    object TApontamentoValoresidusuarioalteracao: TWideStringField
-      FieldName = 'idusuarioalteracao'
-      Origin = 'idusuarioalteracao'
-      Size = 32767
-    end
-    object TApontamentoValoresidapontamento: TWideStringField
-      FieldName = 'idapontamento'
-      Origin = 'idapontamento'
-      Size = 32767
-    end
-    object TApontamentoValoresidmaquina: TWideStringField
-      FieldName = 'idmaquina'
-      Origin = 'idmaquina'
-      Size = 32767
-    end
-    object TApontamentoValoreslatitude: TFMTBCDField
-      FieldName = 'latitude'
-      Origin = 'latitude'
-      Precision = 9
-      Size = 6
-    end
-    object TApontamentoValoreslongitude: TFMTBCDField
-      FieldName = 'longitude'
-      Origin = 'longitude'
-      Precision = 9
-      Size = 6
-    end
-    object TApontamentoValorestipoidentificacaomaquina: TWideStringField
-      FieldName = 'tipoidentificacaomaquina'
-      Origin = 'tipoidentificacaomaquina'
-      Size = 32767
-    end
-    object TApontamentoValoresimgveiculo: TWideStringField
-      FieldName = 'imgveiculo'
-      Origin = 'imgveiculo'
-      Size = 32767
-    end
-    object TApontamentoValoresobservacao: TStringField
-      FieldName = 'observacao'
-      Origin = 'observacao'
-      Size = 100
-    end
-    object TApontamentoValoresimgsyncs3: TWideStringField
-      FieldName = 'imgsyncs3'
-      Origin = 'imgsyncs3'
-      Size = 32767
-    end
-    object TApontamentoValoresMaquina: TStringField
-      AutoGenerateValue = arDefault
-      FieldName = 'Maquina'
-      Origin = 'prefixo'
-      ProviderFlags = []
-      ReadOnly = True
-    end
+  end
+  object TApontamentoValoresInsert: TFDQuery
+    CachedUpdates = True
+    IndexFieldNames = 'idapontamento'
+    MasterFields = 'id'
+    DetailFields = 'idapontamento'
+    OnReconcileError = TApontamentoValoresReconcileError
+    Connection = FCon
+    SQL.Strings = (
+      'select'
+      '*'
+      'from apontamentoValores a')
+    Left = 608
+    Top = 400
   end
 end

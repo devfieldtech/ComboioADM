@@ -11,7 +11,7 @@ type
   TFListaApontamento = class(TFrame)
     RecBack: TRectangle;
     imgEditar: TImage;
-    imgExluir: TImage;
+    imgViagens: TImage;
     imgFinalizar: TImage;
     Layout1: TLayout;
     Layout2: TLayout;
@@ -33,15 +33,20 @@ type
     Layout4: TLayout;
     lblMaquina: TLabel;
     layImg: TLayout;
-    layBtnDel: TLayout;
+    btnViagens: TLayout;
     Label4: TLabel;
-    LayEditar: TLayout;
+    btnFinalizar: TLayout;
     Label7: TLabel;
-    layEdit: TLayout;
+    btnEditar: TLayout;
     Label8: TLabel;
     Layout9: TLayout;
     Label9: TLabel;
     lblStatus: TLabel;
+    Label10: TLabel;
+    lblTotalViagens: TLabel;
+    Layout10: TLayout;
+    Label11: TLabel;
+    lblKMDestinoEscavadeira: TLabel;
   private
     { Private declarations }
   public
